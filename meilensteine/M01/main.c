@@ -7,11 +7,11 @@
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 
 int main(int argc, char * argv[]){
-  
+
   //Game-id und Spielernummer
     char *g;
     char *p;
-    
+
   //Schleife für kommandozeilenparameter
     int i = 1;
     while (i < argc) {
@@ -23,7 +23,7 @@ int main(int argc, char * argv[]){
         }
         i++;
     }
-    
+
   //Socket
     int clientsocket;
     clientsocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -32,10 +32,10 @@ int main(int argc, char * argv[]){
     char buffer[1024];
     struct sockaddr_in serverAddr;
     socklen_t addr_size;
-    
+
 */
   printf("%s %s\n", g, p);
   //printf("%s %s %i \n", GAMEKINDNAME, HOSTNAME, PORTNUMBER);
-    
+
   return 0;
-}  
+}
