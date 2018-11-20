@@ -12,7 +12,7 @@ int main(int argc, char * argv[]){
     char *g;
     char *p;
 
-  //Schleife für kommandozeilenparameter
+  //Schleife für Kommandozeilenparameter
     int i = 1;
     while (i < argc) {
         if (strcmp("-g", argv[i])==0) {
