@@ -1,0 +1,8 @@
+## This file is only here to tell GIT that there should be absolutly no file!
+## OK, GIT simply can't index empty directories, so I have to create a
+## useless file in here, which tells GIT that there should be no file
+*
+
+# ... except this file of course!
+!.gitignore
+
