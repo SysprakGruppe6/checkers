@@ -3,3 +3,7 @@ sysprak_client: output/main.o
 
 output/main.o: project/main.c
 	gcc -c project/main.c -o output/main.o
+
+.PHONY : clean
+clean:
+	-rm output/* sysprak_client $(objects)

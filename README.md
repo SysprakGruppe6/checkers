@@ -5,11 +5,11 @@ Structure
 - output/        - Currently the Makefile puts the output here (main.o)
 - project/       - where the project code files are
 - README.md      - The file you're reading
-- sysprak_client - The runnable client
 - tmp/           - Temporary files 
 
 Build
 ------
 
-`make` - builds the projekt
+`make` - builds the project
+`make clean` - deletes output files
 `./sysprak_client [-g <Game-ID>] [-p <Player-ID]`
