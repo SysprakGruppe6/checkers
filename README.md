@@ -2,7 +2,6 @@ Structure
 ---------
 
 - Makefile       - Builds the project
-- output/        - Currently the Makefile puts the output here (main.o)
 - project/       - where the project code files are
 - README.md      - The file you're reading
 - tmp/           - Temporary files 
