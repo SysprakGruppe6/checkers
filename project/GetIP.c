@@ -7,9 +7,10 @@
 
 int main(int argc, char * argv[]){
   struct hostent *gethostbyname(const char *rechnername);
-  hostent = *gethostbyname('www.google.de');
+  hostent = *gethostbyname("snwblnd.com");
   if (NULL==NULL){
 printf("Diese geht nix");
+return 0;
 
   }
 
