@@ -6,15 +6,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <netdb.h> //für getaddrinfo
-#include "performConnection.h"
+#include <netdb.h>
+//#include "performConnection.h"
 #define GAMEKINDNAME "Checkers"
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 int main(int argc, char * argv[])
 {
 
-    //test
+    //gethostbyname
     int l;
     struct hostent *he;
     struct in_addr **addr_list;
@@ -79,7 +79,6 @@ int main(int argc, char * argv[])
         exit(EXIT_FAILURE);
     }
 
-
     //setzt sa auf 0
     memset(&sa, 0, sizeof sa);
 
@@ -95,7 +94,7 @@ int main(int argc, char * argv[])
     }
 
     /* perform read write operations ... */
-    performConnection(SocketFD);
+    //performConnection(SocketFD);
 
     shutdown(SocketFD, SHUT_RDWR);
 
