@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <string.h>
+#include <performConnecton.h>
 #define GAMEKINDNAME "Checkers"
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"

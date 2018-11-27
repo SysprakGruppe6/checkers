@@ -12,7 +12,7 @@
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 int main(int argc, char * argv[])
 {
-    
+
     //test
     int l;
     struct hostent *he;
@@ -22,7 +22,7 @@ int main(int argc, char * argv[])
         herror("gethostbyname");
         return 2;
     }
-    
+
     // print information about this host:
     printf("Official name is: %s\n", he->h_name);
     printf("    IP addresses: ");
@@ -31,12 +31,12 @@ int main(int argc, char * argv[])
         printf("%s", inet_ntoa(*addr_list[l]));
     }
     printf("\n");
-    
-    
+
+
     //Game-id und Spielernummer
     char *g;
     char *p;
-    
+
     //Schleife für Kommandozeilenparameter
     int i = 1;
     while (i < argc) {
@@ -65,27 +65,27 @@ int main(int argc, char * argv[])
         }
         i++;
     }
-    
+
     //Socketvariablen
     struct sockaddr_in sa;
     int res;
     int SocketFD;
-    
+
     //Socket
     SocketFD = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (SocketFD == -1) {
         perror("cannot create socket");
         exit(EXIT_FAILURE);
     }
-    
-    
+
+
     //setzt sa auf 0
     memset(&sa, 0, sizeof sa);
-    
+
     sa.sin_family = AF_INET;
     sa.sin_port = htons(PORTNUMBER);
     res = inet_pton(AF_INET, inet_ntoa(*addr_list[0]), &sa.sin_addr);                   //konvertiert die ip und speichert sie in &sa.sin_addr
-    
+
     //testet die connection
     if (connect(SocketFD, (struct sockaddr *)&sa, sizeof sa) == -1) {
         perror("connect failed");
@@ -95,10 +95,9 @@ int main(int argc, char * argv[])
     
     /* perform read write operations ... */
     performConnection(SocketFD);
-    
+
     shutdown(SocketFD, SHUT_RDWR);
-    
+
     close(SocketFD);
     return EXIT_SUCCESS;
 }
-
