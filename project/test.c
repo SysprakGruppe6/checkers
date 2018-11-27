@@ -7,6 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h> //für getaddrinfo
+#include "performConnecton.h"
 #define GAMEKINDNAME "Checkers"
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
@@ -92,7 +93,7 @@ int main(int argc, char * argv[])
         close(SocketFD);
         exit(EXIT_FAILURE);
     }
-    
+
     /* perform read write operations ... */
     performConnection(SocketFD);
 
