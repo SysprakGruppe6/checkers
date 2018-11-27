@@ -94,6 +94,7 @@ int main(int argc, char * argv[])
     }
     
     /* perform read write operations ... */
+    performConnection(SocketFD);
     
     shutdown(SocketFD, SHUT_RDWR);
     
