@@ -7,7 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h> //für getaddrinfo
-#include "performConnecton.h"
+#include "performConnection.h"
 #define GAMEKINDNAME "Checkers"
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"

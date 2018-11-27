@@ -1,5 +1,5 @@
 #ifndef performConnection
-#define performConnecton
+#define performConnection
 
 
 #endif
