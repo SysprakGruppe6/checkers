@@ -49,13 +49,14 @@ int main(int argc, char * argv[])
                 printf("Die Game-ID muss 13 stellig sein!\n");
                 return -1;
             }
+            printf("Game-ID: %s\n", g);
         }
         if (strcmp("-p", argv[i])==0) {
             p=argv[i+1];
             char spanset[] = " ";
             if (strcspn(argv[i+1], spanset) != 1) {
                 printf("Fehler!\n");
-                printf("Die Spielernummer muss 1 oder 2 sein!\n");
+                printf("Die Spielernummer muss 1 oder 2 sein!\n");//Existenzcheck
                 return -1;
             }
             if ((strcmp("1", argv[i+1])!=0) && (strcmp("2", argv[i+1])!=0)) {
@@ -63,6 +64,7 @@ int main(int argc, char * argv[])
                 printf("Die Spielernummer muss 1 oder 2 sein!\n");
                 return -1;
             }
+            printf("Die Spielernummer ist %s\n", p);
         }
         i++;
     }
