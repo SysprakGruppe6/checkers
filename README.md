@@ -10,5 +10,6 @@ Build
 ------
 
 `make` - builds the project
+`make test` - builds the project with extra Flags (-Wall -Wextra -Werror)
 `make clean` - deletes output files
 `./sysprak_client [-g <Game-ID>] [-p <Player-ID]`
