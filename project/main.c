@@ -19,7 +19,7 @@ int main(int argc, char * argv[])
     char *p;        //Variable für die Spielernummer
     
     //Schleife für Kommandozeilenparameter
-    if (argc<5) {
+    if (argc<5) {                                               //prüft ob zu wenige Parameter angegeben wurden
         printf("Fehler!\n");
         printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
         printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
@@ -36,7 +36,7 @@ int main(int argc, char * argv[])
             }
             g=argv[i+1];
             char spanset[] = " ";
-            if (strcspn(argv[i+1], spanset) != 13) {            //vorderer Existenzprüfer G-ID
+            if (strcspn(argv[i+1], spanset) != 13) {            //prüft die länge der game-id
                 printf("Fehler!\n");
                 printf("Die Game-ID muss 13-stellig sein!\n");
                 return -1;
