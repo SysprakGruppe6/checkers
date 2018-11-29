@@ -14,6 +14,60 @@
 int main(int argc, char * argv[])
 {
 
+    //Game-id und Spielernummer
+    char *g;        //Variable für die Game-ID
+    char *p;        //Variable für die Spielernummer
+    
+    //Schleife für Kommandozeilenparameter
+    if (argc<5) {
+        printf("Fehler!\n");
+        printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
+        printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
+        return -1;
+    }
+    int i = 1;
+    while (i < argc) {
+        if (strcmp("-g", argv[i])==0) {
+            if (i==(argc-1)) {                                  //hinterer Existenzprüfer G-ID
+                printf("Fehler!\n");
+                printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
+                printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
+                return -1;
+            }
+            g=argv[i+1];
+            char spanset[] = " ";
+            if (strcspn(argv[i+1], spanset) != 13) {            //vorderer Existenzprüfer G-ID
+                printf("Fehler!\n");
+                printf("Die Game-ID muss 13-stellig sein!\n");
+                return -1;
+            }
+        }
+        if (strcmp("-p", argv[i])==0) {
+            if (i==(argc-1)) {                                  //hinterer Existenzprüfer SN
+                printf("Fehler!\n");
+                printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
+                printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
+                return -1;
+            }
+            p=argv[i+1];
+            char spanset[] = " ";
+            if (strcspn(argv[i+1], spanset) != 1) {             //vorderer Existenzprüfer SN
+                printf("Fehler!\n");
+                printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
+                printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
+                return -1;
+            }
+            if ((strcmp("1", argv[i+1])!=0) && (strcmp("2", argv[i+1])!=0)) {   //Werteprüfer SN
+                printf("Fehler!\n");
+                printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
+                printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
+                return -1;
+            }
+        }
+        i++;
+    }
+    
+    
     //gethostbyname
     int l;
     struct hostent *he;
@@ -23,7 +77,6 @@ int main(int argc, char * argv[])
         herror("gethostbyname");
         return 2;
     }
-
     // print information about this host:
     printf("Official name is: %s\n", he->h_name);
     printf("    IP addresses: ");
@@ -32,43 +85,8 @@ int main(int argc, char * argv[])
         printf("%s", inet_ntoa(*addr_list[l]));
     }
     printf("\n");
-
-
-    //Game-id und Spielernummer
-    char *g;
-    char *p;
-
-    //Schleife für Kommandozeilenparameter
-    int i = 1;
-    while (i < argc) {
-        if (strcmp("-g", argv[i])==0) {
-            g=argv[i+1];
-            char spanset[] = " ";
-            if (strcspn(argv[i+1], spanset) != 13) {
-                printf("Fehler!\n");
-                printf("Die Game-ID muss 13 stellig sein!\n");
-                return -1;
-            }
-            printf("Game-ID: %s\n", g);
-        }
-        if (strcmp("-p", argv[i])==0) {
-            p=argv[i+1];
-            char spanset[] = " ";
-            if (strcspn(argv[i+1], spanset) != 1) {
-                printf("Fehler!\n");
-                printf("Die Spielernummer muss 1 oder 2 sein!\n");//Existenzcheck
-                return -1;
-            }
-            if ((strcmp("1", argv[i+1])!=0) && (strcmp("2", argv[i+1])!=0)) {
-                printf("Fehler!\n");
-                printf("Die Spielernummer muss 1 oder 2 sein!\n");
-                return -1;
-            }
-            printf("Die Spielernummer ist %s\n", p);
-        }
-        i++;
-    }
-
+    
+    
     //Socketvariablen
     struct sockaddr_in sa;
     int res;
@@ -80,7 +98,8 @@ int main(int argc, char * argv[])
         perror("cannot create socket");
         exit(EXIT_FAILURE);
     }
-
+    
+    
     //setzt sa auf 0
     memset(&sa, 0, sizeof sa);
 
@@ -88,7 +107,7 @@ int main(int argc, char * argv[])
     sa.sin_port = htons(PORTNUMBER);
     res = inet_pton(AF_INET, inet_ntoa(*addr_list[0]), &sa.sin_addr);                   //konvertiert die ip und speichert sie in &sa.sin_addr
 
-    //testet die connection
+    //connect
     if (connect(SocketFD, (struct sockaddr *)&sa, sizeof sa) == -1) {
         perror("connect failed");
         close(SocketFD);
