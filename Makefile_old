@@ -1,4 +1,4 @@
-FLAGS= 
+FLAGS=
 EXTFLAGS= -Wall -Wextra -Werror
 
 all: sysprak_client
@@ -14,4 +14,4 @@ tmp/main.o: project/main.c
 
 .PHONY : clean
 clean:
-	-rm sysprak_client tmp/* $(objects)
+	-rm sysprak-client tmp/* $(objects)

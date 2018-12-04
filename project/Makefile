@@ -6,5 +6,5 @@ OBJ = performConnection.o main.o
 %.o: %.c $(DEPS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-sysprak_client: $(OBJ)
+sysprak-client: $(OBJ)
 	gcc $(CFLAGS) -o $@ $^
