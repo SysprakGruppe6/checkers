@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -Wextra -Werror
 DEPS = performConnection.h
 OBJ = performConnection.o main.o
 
