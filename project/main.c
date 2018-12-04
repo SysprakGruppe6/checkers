@@ -17,7 +17,7 @@ int main(int argc, char * argv[])
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
     char *p;        //Variable für die Spielernummer
-
+    
     //Schleife für Kommandozeilenparameter
     if (argc<5) {                                               //prüft ob zu wenige Parameter angegeben wurden
         printf("Fehler!\n");
@@ -66,9 +66,8 @@ int main(int argc, char * argv[])
         }
         i++;
     }
- //Test der header Implementierung für PerformConnection
-pCTest();
-
+    
+    
     //gethostbyname
     int l;  //Schleifenvariable für die IP-Liste
     struct hostent *he;
@@ -86,8 +85,8 @@ pCTest();
         printf("%s", inet_ntoa(*addr_list[l]));
     }
     printf("\n");
-
-
+    
+    
     //Socketvariablen
     struct sockaddr_in sa;
     int res;
@@ -99,8 +98,8 @@ pCTest();
         perror("cannot create socket");
         exit(EXIT_FAILURE);
     }
-
-
+    
+    
     //setzt sa auf 0
     memset(&sa, 0, sizeof sa);
 
@@ -114,28 +113,54 @@ pCTest();
         close(SocketFD);
         exit(EXIT_FAILURE);
     }
-
-
+    
+    
     /* perform read write operations ... */
     //performConnection(SocketFD);
+    
     int n = 0;
+    
     char recvBuff[1024];    //Buffer
+    
+    //Print Server version
     memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
-    while ( (n = read(SocketFD, recvBuff, sizeof(recvBuff)-1)) > 0) //Schleife gibt den gesamten Inhalt des Buffers aus
+    n = recv(SocketFD, recvBuff, sizeof(recvBuff)-1, 0); //Schleife gibt den gesamten Inhalt des Buffers aus
+    if(fputs(recvBuff, stdout) == EOF)
     {
-        recvBuff[n] = 0;
-        if(fputs(recvBuff, stdout) == EOF)
-        {
-            printf("\n Error : Fputs error\n");
-        }
+        printf("\n Error : Fputs error\n");
     }
-
     if(n < 0)
     {
         printf("\n Read error \n");
     }
-
-
+    
+    //send client version
+    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
+    recvBuff[0]='2';
+    
+    recvBuff[1]='.';
+    
+    recvBuff[2]='0';
+    printf("%s\n", recvBuff);
+    
+    n=send(SocketFD, recvBuff, sizeof(recvBuff)-1, 0);
+    if(n < 0){
+        printf("\n Read error \n");
+    }
+    
+    //get Frage nach Game-ID
+    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
+    
+    n = recv(SocketFD, recvBuff, sizeof(recvBuff)-1, 0); //Schleife gibt den gesamten Inhalt des Buffers aus
+    if(fputs(recvBuff, stdout) == EOF)
+    {
+        printf("\n Error : Fputs error\n");
+    }
+    if(n < 0)
+    {
+        printf("\n Read error \n");
+    }
+    
     shutdown(SocketFD, SHUT_RDWR);
 
     close(SocketFD);
