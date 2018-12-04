@@ -120,7 +120,7 @@ int main(int argc, char * argv[])
     
     int n = 0;
     
-    char recvBuff[1024];    //Buffer
+    char recvBuff[128];    //Buffer
     
     //Print Server version
     memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
@@ -131,21 +131,18 @@ int main(int argc, char * argv[])
     }
     if(n < 0)
     {
-        printf("\n Read error \n");
+        printf("\n Recv error \n");
     }
     
+    printf("\n");
     //send client version
     memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
-    recvBuff[0]='2';
+    strcpy(recvBuff, "VERSION 2.3\n");
+    printf("%s\n", recvBuff); //testprint
     
-    recvBuff[1]='.';
-    
-    recvBuff[2]='0';
-    printf("%s\n", recvBuff);
-    
-    n=send(SocketFD, recvBuff, sizeof(recvBuff)-1, 0);
+    n=send(SocketFD, "VERSION 2.3\n", sizeof("VERSION 2.3\n"), 0);
     if(n < 0){
-        printf("\n Read error \n");
+        printf("\n Send error \n");
     }
     
     //get Frage nach Game-ID
@@ -158,7 +155,30 @@ int main(int argc, char * argv[])
     }
     if(n < 0)
     {
-        printf("\n Read error \n");
+        printf("\n Recv error \n");
+    }
+    
+    printf("\n");
+    //send game ID
+    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
+    strcpy(recvBuff, "ID 3d1oibv5qj0se\n");
+    printf("%s\n", recvBuff); //testprint
+    n=send(SocketFD, "ID 3d1oibv5qj0se\n", sizeof("ID 3d1oibv5qj0se\n"), 0);
+    if(n < 0){
+        printf("\n Send error \n");
+    }
+    
+    //get playing gamekind name
+    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
+    
+    n = recv(SocketFD, recvBuff, sizeof(recvBuff)-1, 0); //Schleife gibt den gesamten Inhalt des Buffers aus
+    if(fputs(recvBuff, stdout) == EOF)
+    {
+        printf("\n Error : Fputs error\n");
+    }
+    if(n < 0)
+    {
+        printf("\n Recv error \n");
     }
     
     shutdown(SocketFD, SHUT_RDWR);
