@@ -50,13 +50,13 @@ int main(int argc, char * argv[])
                 return -1;
             }
             p=argv[i+1];
-            char spanset[] = " ";
-            if (strcspn(argv[i+1], spanset) != 1) {             //vorderer Existenzprüfer SN
+            /*char spanset[] = " ";
+            if (strcspn(argv[i+1], spanset) != 1) {             //vorderer Existenzprüfer SN; überflüssig
                 printf("Fehler!\n");
                 printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
                 printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
                 return -1;
-            }
+            }*/
             if ((strcmp("1", argv[i+1])!=0) && (strcmp("2", argv[i+1])!=0)) {   //Werteprüfer SN
                 printf("Fehler!\n");
                 printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
@@ -69,7 +69,7 @@ int main(int argc, char * argv[])
     
     
     //gethostbyname
-    int l;
+    int l;  //Schleifenvariable für die IP-Liste
     struct hostent *he;
     struct in_addr **addr_list;
     // get the host info
@@ -105,7 +105,7 @@ int main(int argc, char * argv[])
 
     sa.sin_family = AF_INET;
     sa.sin_port = htons(PORTNUMBER);
-    res = inet_pton(AF_INET, inet_ntoa(*addr_list[0]), &sa.sin_addr);                   //konvertiert die ip und speichert sie in &sa.sin_addr
+    res = inet_pton(AF_INET, inet_ntoa(*addr_list[0]), &sa.sin_addr);   //konvertiert die ip und speichert sie in &sa.sin_addr
 
     //connect
     if (connect(SocketFD, (struct sockaddr *)&sa, sizeof sa) == -1) {
@@ -113,10 +113,28 @@ int main(int argc, char * argv[])
         close(SocketFD);
         exit(EXIT_FAILURE);
     }
-
+    
+    
     /* perform read write operations ... */
     //performConnection(SocketFD);
-
+    int n = 0;
+    char recvBuff[1024];    //Buffer
+    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
+    while ( (n = read(SocketFD, recvBuff, sizeof(recvBuff)-1)) > 0) //Schleife gibt den gesamten Inhalt des Buffers aus
+    {
+        recvBuff[n] = 0;
+        if(fputs(recvBuff, stdout) == EOF)
+        {
+            printf("\n Error : Fputs error\n");
+        }
+    }
+    
+    if(n < 0)
+    {
+        printf("\n Read error \n");
+    }
+    
+    
     shutdown(SocketFD, SHUT_RDWR);
 
     close(SocketFD);
