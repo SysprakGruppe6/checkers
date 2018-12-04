@@ -17,7 +17,7 @@ int main(int argc, char * argv[])
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
     char *p;        //Variable für die Spielernummer
-    
+
     //Schleife für Kommandozeilenparameter
     if (argc<5) {                                               //prüft ob zu wenige Parameter angegeben wurden
         printf("Fehler!\n");
@@ -66,8 +66,8 @@ int main(int argc, char * argv[])
         }
         i++;
     }
-    
-    
+
+
     //gethostbyname
     int l;  //Schleifenvariable für die IP-Liste
     struct hostent *he;
@@ -85,8 +85,8 @@ int main(int argc, char * argv[])
         printf("%s", inet_ntoa(*addr_list[l]));
     }
     printf("\n");
-    
-    
+
+
     //Socketvariablen
     struct sockaddr_in sa;
     int res;
@@ -98,8 +98,8 @@ int main(int argc, char * argv[])
         perror("cannot create socket");
         exit(EXIT_FAILURE);
     }
-    
-    
+
+
     //setzt sa auf 0
     memset(&sa, 0, sizeof sa);
 
@@ -113,8 +113,8 @@ int main(int argc, char * argv[])
         close(SocketFD);
         exit(EXIT_FAILURE);
     }
-    
-    
+
+
     /* perform read write operations ... */
     //performConnection(SocketFD);
     int n = 0;
@@ -128,13 +128,13 @@ int main(int argc, char * argv[])
             printf("\n Error : Fputs error\n");
         }
     }
-    
+
     if(n < 0)
     {
         printf("\n Read error \n");
     }
-    
-    
+
+
     shutdown(SocketFD, SHUT_RDWR);
 
     close(SocketFD);
