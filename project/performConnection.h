@@ -1,6 +1,8 @@
 #ifndef performConnection
-#define performConnection
+//#define performConnection
+
 
 void performConnection(int SocketFD);
+void pCTest();
 
 #endif

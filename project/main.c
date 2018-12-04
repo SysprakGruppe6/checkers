@@ -66,7 +66,8 @@ int main(int argc, char * argv[])
         }
         i++;
     }
-
+ //Test der header Implementierung für PerformConnection
+pCTest();
 
     //gethostbyname
     int l;  //Schleifenvariable für die IP-Liste
