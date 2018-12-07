@@ -7,7 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h>
-//#include "performConnection.h"
+#include "performConnection.h"
 #define GAMEKINDNAME "Checkers"
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
@@ -116,8 +116,10 @@ int main(int argc, char * argv[])
     
     
     /* perform read write operations ... */
-    //performConnection(SocketFD);      //Protokollphase
+    performConnection(SocketFD);      //Protokollphase
     
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
     int n = 0;
     
     char recvBuff[128];    //Buffer
@@ -180,6 +182,8 @@ int main(int argc, char * argv[])
     {
         printf("\n Recv error \n");
     }
+    */
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     shutdown(SocketFD, SHUT_RDWR);
 
