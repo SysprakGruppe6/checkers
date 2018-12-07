@@ -116,7 +116,7 @@ int main(int argc, char * argv[])
     
     
     /* perform read write operations ... */
-    //performConnection(SocketFD);
+    //performConnection(SocketFD);      //Protokollphase
     
     int n = 0;
     
