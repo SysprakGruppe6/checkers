@@ -65,6 +65,9 @@ void performConnection(int SocketFD){
     sendServer(SocketFD, "ID 1111111111111\n");    //sendet die Versionsnummer
     //bufferClear(buffer);      //Cleared den Buffer
     
+    recvServer(SocketFD);   //gibt zweite Nachricht des Servers aus
+    //bufferClear(buffer);      //Cleared den Buffer
+    
     //Protokollphase
 }
 
