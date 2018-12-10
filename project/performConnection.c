@@ -10,7 +10,6 @@
 #include <unistd.h>
 #include <netdb.h>
 //noch zu ueberpruefen welche noetig sind
-char buffer[128];
 
 //Funktion zum Clearen des Buffers
 void bufferClear(char buffer[128]){
@@ -18,12 +17,14 @@ void bufferClear(char buffer[128]){
 }
 
 //Funktion zum Ausgeben der erhaltenen Servernachrichten
-void recvServer(int SocketFD, char buffer){
+void recvServer(int SocketFD){
     //recv
     int n = 0;
-    n = recv(SocketFD, &buffer, sizeof(buffer)-1, 0);
+    char buffer[128];
+    memset(&buffer, ' ',sizeof(buffer[128]));
+    n = recv(SocketFD, buffer, sizeof(buffer)-1, 0);
     printf("Server: ");
-        if(fputs(&buffer, stdout) == EOF)
+        if(fputs(buffer, stdout) == EOF)
         {
             printf("\n Error : Fputs error\n");
         }
@@ -35,12 +36,14 @@ void recvServer(int SocketFD, char buffer){
 }
 
 //Funktion zum Senden von Nachrichten an den Server
-void sendServer(int SocketFD, char buffer, char *nachricht){
+void sendServer(int SocketFD, char *nachricht){
     //send
+    char buffer[128];
+    memset(buffer, ' ',sizeof(buffer[128]));
     int n=0;
-    strcpy(&buffer, nachricht);
-    printf("Client: %s\n", &buffer); //testprint
-    n=send(SocketFD, &buffer, sizeof(buffer), 0);
+    strcpy(buffer, nachricht);
+    printf("Client: %s\n", buffer); //testprint
+    n=send(SocketFD, buffer, sizeof(buffer), 0);
     if(n < 0){
         printf("\n Send error \n");
     }
@@ -48,20 +51,19 @@ void sendServer(int SocketFD, char buffer, char *nachricht){
 
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD){
-    //char buffer[128];   //Buffer
-    bufferClear(buffer);      //Cleared den Buffer
+    //bufferClear(buffer);      //Cleared den Buffer
     
-    recvServer(SocketFD, buffer[0]);   //gibt erste Nachricht des Servers aus
-    bufferClear(buffer);      //Cleared den Buffer
+    recvServer(SocketFD);   //gibt erste Nachricht des Servers aus
+    //bufferClear(buffer);      //Cleared den Buffer
     
-    sendServer(SocketFD, buffer[0], "VERSION 2.1");    //sendet die Versionsnummer
-    bufferClear(buffer);      //Cleared den Buffer
+    sendServer(SocketFD, "VERSION 2.1");    //sendet die Versionsnummer
+    //bufferClear(buffer);      //Cleared den Buffer
     
-    recvServer(SocketFD, buffer[0]);   //gibt zweite Nachricht des Servers aus
-    bufferClear(buffer);      //Cleared den Buffer
+    recvServer(SocketFD);   //gibt zweite Nachricht des Servers aus
+    //bufferClear(buffer);      //Cleared den Buffer
     
-    sendServer(SocketFD, buffer[0], "1111111111111");    //sendet die Versionsnummer
-    bufferClear(buffer);      //Cleared den Buffer
+    sendServer(SocketFD, "1111111111111");    //sendet die Versionsnummer
+    //bufferClear(buffer);      //Cleared den Buffer
     
     //Protokollphase
 }

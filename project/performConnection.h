@@ -4,7 +4,7 @@
 void bufferClear(char buffer[128]);
 void performConnection(int SocketFD);
 void pCTest();
-void sendServer(int SocketFD, char buffer, char *nachricht);
-void recvServer(int SocketFD, char buffer);
+void sendServer(int SocketFD, char *nachricht);
+void recvServer(int SocketFD);
 
 #endif
