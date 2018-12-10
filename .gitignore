@@ -1,3 +1,4 @@
 sysprak-client
 .DS_Store
 compiling_error.txt
+.nfs*
