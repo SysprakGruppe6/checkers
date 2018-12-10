@@ -13,11 +13,11 @@
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 int main(int argc, char * argv[])
 {
-
+    //Test
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
     char *p;        //Variable für die Spielernummer
-    
+
     //Schleife für Kommandozeilenparameter
     if (argc<5) {                                               //prüft ob zu wenige Parameter angegeben wurden
         printf("Fehler!\n");
@@ -66,8 +66,8 @@ int main(int argc, char * argv[])
         }
         i++;
     }
-    
-    
+
+
     //gethostbyname
     int l;  //Schleifenvariable für die IP-Liste
     struct hostent *he;
@@ -85,8 +85,8 @@ int main(int argc, char * argv[])
         printf("%s", inet_ntoa(*addr_list[l]));
     }
     printf("\n");
-    
-    
+
+
     //Socketvariablen
     struct sockaddr_in sa;
     int res;
@@ -98,8 +98,8 @@ int main(int argc, char * argv[])
         perror("cannot create socket");
         exit(EXIT_FAILURE);
     }
-    
-    
+
+
     //setzt sa auf 0
     memset(&sa, 0, sizeof sa);
 
@@ -113,17 +113,17 @@ int main(int argc, char * argv[])
         close(SocketFD);
         exit(EXIT_FAILURE);
     }
-    
-    
+
+
     /* perform read write operations ... */
     performConnection(SocketFD);      //Protokollphase
-    
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     /*
     int n = 0;
-    
+
     char recvBuff[128];    //Buffer
-    
+
     //Print Server version
     memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
     n = recv(SocketFD, recvBuff, sizeof(recvBuff)-1, 0); //Schleife gibt den gesamten Inhalt des Buffers aus
@@ -135,21 +135,21 @@ int main(int argc, char * argv[])
     {
         printf("\n Recv error \n");
     }
-    
+
     printf("\n");
     //send client version
     memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
     strcpy(recvBuff, "VERSION 2.3\n");
     printf("%s\n", recvBuff); //testprint
-    
+
     n=send(SocketFD, "VERSION 2.3\n", sizeof("VERSION 2.3\n"), 0);
     if(n < 0){
         printf("\n Send error \n");
     }
-    
+
     //get Frage nach Game-ID
     memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
-    
+
     n = recv(SocketFD, recvBuff, sizeof(recvBuff)-1, 0); //Schleife gibt den gesamten Inhalt des Buffers aus
     if(fputs(recvBuff, stdout) == EOF)
     {
@@ -159,7 +159,7 @@ int main(int argc, char * argv[])
     {
         printf("\n Recv error \n");
     }
-    
+
     printf("\n");
     //send game ID
     memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
@@ -169,10 +169,10 @@ int main(int argc, char * argv[])
     if(n < 0){
         printf("\n Send error \n");
     }
-    
+
     //get playing gamekind name
     memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
-    
+
     n = recv(SocketFD, recvBuff, sizeof(recvBuff)-1, 0); //Schleife gibt den gesamten Inhalt des Buffers aus
     if(fputs(recvBuff, stdout) == EOF)
     {
@@ -184,7 +184,7 @@ int main(int argc, char * argv[])
     }
     */
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     shutdown(SocketFD, SHUT_RDWR);
 
     close(SocketFD);
