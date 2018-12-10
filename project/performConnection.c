@@ -33,6 +33,7 @@ void recvServer(int SocketFD){
             printf("\n Recv error \n");
         }
     printf("\n");
+    memset(&buffer, ' ',sizeof(buffer[128]));
 }
 
 //Funktion zum Senden von Nachrichten an den Server
