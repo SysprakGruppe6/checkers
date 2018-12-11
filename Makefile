@@ -1,5 +1,5 @@
 CC = gcc
-FLAGS=
+FLAGS= -std=c99
 CFLAGS= -Wall -Wextra -Werror
 DEPS = project/performConnection.h
 OBJ = tmp/performConnection.o tmp/main.o
@@ -17,4 +17,4 @@ tmp/%.o: project/%.c
 
 .PHONY : clean
 clean:
-	-rm sysprak-client tmp/* 
+	-rm sysprak-client tmp/*

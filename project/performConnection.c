@@ -20,27 +20,30 @@ void bufferClear(char buffer[128]){
 void recvServer(int SocketFD){
     //recv
     int n = 0;
-    char buffer[128];
-    memset(&buffer, ' ',sizeof(buffer[128]));
-    n = read(SocketFD, buffer, sizeof(buffer)-1);
+    char buffer[2048];
+    memset(buffer, '0',sizeof(buffer));
+    n = read(SocketFD, buffer, sizeof(buffer));
     printf("Server: ");
-        if(fputs(buffer, stdout) == EOF)
-        {
-            printf("\n Error : Fputs error\n");
-        }
-        if(n < 0)
-        {
-            printf("\n Recv error \n");
+        //if(fputs(buffer, stdout) == EOF)
+        //{
+        //    printf("\n Error : Fputs error\n");
+        //}
+        //if(n < 0)
+        //{
+        //    printf("\n Recv error \n");
+        //}
+        for(int i =  0; i<n; i++){
+          printf("%c", buffer[i]);
         }
     printf("\n");
-    memset(&buffer, ' ',sizeof(buffer[128]));
+    memset(buffer, '0',sizeof(buffer));
 }
 
 //Funktion zum Senden von Nachrichten an den Server
-void sendServer(int SocketFD, char *nachricht){
+void sendServer(int SocketFD, char *nachricht, int laenge){
     //send
-    char buffer[128];
-    memset(buffer, ' ',sizeof(buffer[128]));
+    char buffer[laenge];
+    memset(buffer, '0',sizeof(buffer));
     int n=0;
     strcpy(buffer, nachricht);
     printf("Client: %s\n", buffer); //testprint
@@ -57,13 +60,13 @@ void performConnection(int SocketFD){
     recvServer(SocketFD);   //gibt erste Nachricht des Servers aus
     //bufferClear(buffer);      //Cleared den Buffer
 
-    sendServer(SocketFD, "VERSION 2.1\n");    //sendet die Versionsnummer
+    sendServer(SocketFD, "VERSION 2.1\n", 12);    //sendet die Versionsnummer
     //bufferClear(buffer);      //Cleared den Buffer
 
     recvServer(SocketFD);   //gibt zweite Nachricht des Servers aus
     //bufferClear(buffer);      //Cleared den Buffer
 
-    sendServer(SocketFD, "ID 1111111111111\n");    //sendet die ID
+    sendServer(SocketFD, "ID 08hcwormcqb75\n", 17);    //sendet die ID
     //bufferClear(buffer);      //Cleared den Buffer
 
     recvServer(SocketFD);   //gibt dritte Nachricht des Servers aus
