@@ -71,8 +71,12 @@ void performConnection(int SocketFD){
 
     recvServer(SocketFD);   //gibt dritte Nachricht des Servers aus
     //bufferClear(buffer);      //Cleared den Buffer
-
+    recvServer(SocketFD);
     //Protokollphase
+    sendServer(SocketFD, "PLAYER 1\n", 9); //send player number
+    recvServer(SocketFD);
+    recvServer(SocketFD);
+
 }
 
 //Testfunktion
