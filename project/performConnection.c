@@ -22,7 +22,7 @@ void recvServer(int SocketFD){
     int n = 0;
     char buffer[128];
     memset(&buffer, ' ',sizeof(buffer[128]));
-    n = recv(SocketFD, buffer, sizeof(buffer)-1, 0);
+    n = read(SocketFD, buffer, sizeof(buffer)-1);
     printf("Server: ");
         if(fputs(buffer, stdout) == EOF)
         {
@@ -44,7 +44,7 @@ void sendServer(int SocketFD, char *nachricht){
     int n=0;
     strcpy(buffer, nachricht);
     printf("Client: %s\n", buffer); //testprint
-    n=send(SocketFD, buffer, sizeof(buffer), 0);
+    n=write(SocketFD, buffer, sizeof(buffer));
     if(n < 0){
         printf("\n Send error \n");
     }
@@ -53,22 +53,22 @@ void sendServer(int SocketFD, char *nachricht){
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD){
     //bufferClear(buffer);      //Cleared den Buffer
-    
+
     recvServer(SocketFD);   //gibt erste Nachricht des Servers aus
     //bufferClear(buffer);      //Cleared den Buffer
-    
+
     sendServer(SocketFD, "VERSION 2.1\n");    //sendet die Versionsnummer
     //bufferClear(buffer);      //Cleared den Buffer
-    
+
     recvServer(SocketFD);   //gibt zweite Nachricht des Servers aus
     //bufferClear(buffer);      //Cleared den Buffer
-    
-    sendServer(SocketFD, "ID 1111111111111\n");    //sendet die Versionsnummer
+
+    sendServer(SocketFD, "ID 1111111111111\n");    //sendet die ID
     //bufferClear(buffer);      //Cleared den Buffer
-    
-    recvServer(SocketFD);   //gibt zweite Nachricht des Servers aus
+
+    recvServer(SocketFD);   //gibt dritte Nachricht des Servers aus
     //bufferClear(buffer);      //Cleared den Buffer
-    
+
     //Protokollphase
 }
 
