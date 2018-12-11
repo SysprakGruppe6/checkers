@@ -54,7 +54,7 @@ void sendServer(int SocketFD, char *nachricht, int laenge){
 }
 
 //Funktion welche die Protokollphase ausführt
-void performConnection(int SocketFD){
+void performConnection(int SocketFD, char* gId, char* pId){
     //bufferClear(buffer);      //Cleared den Buffer
 
     recvServer(SocketFD);   //gibt erste Nachricht des Servers aus
@@ -65,8 +65,11 @@ void performConnection(int SocketFD){
 
     recvServer(SocketFD);   //gibt zweite Nachricht des Servers aus
     //bufferClear(buffer);      //Cleared den Buffer
-
-    sendServer(SocketFD, "ID 08hcwormcqb75\n", 17);    //sendet die ID
+    char* gameId = malloc(sizeof(char)*17);
+    strcpy(gameId, "ID ");
+    strcat(gameId, gId);
+    strcat(gameId, "\n");
+    sendServer(SocketFD, gameId , 17);    //sendet die ID
     //bufferClear(buffer);      //Cleared den Buffer
 
     recvServer(SocketFD);   //gibt dritte Nachricht des Servers aus
