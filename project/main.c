@@ -18,18 +18,16 @@
 
 int main(int argc, char * argv[])
 {
-<<<<<<< HEAD
     printf("%i \n",SHmem());
-    //Test
-=======
-    
+    //Test für Shared Memory
+
+
     if (fork()==0){					//beginn connector
         pid_t parent_id = getppid();			//ID des Elternprozesses
 	pid_t child_id = getpid();			//ID des Kindprozesses
 	printf("Prozess IDS:\n");			//testprint
     	printf("child : %d parent: %d\n", child_id, parent_id);
-    
->>>>>>> e84cab32c208cf4a569f9697c8c18abdf31a95c1
+
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
     char *p;        //Variable für die Spielernummer
@@ -134,15 +132,10 @@ int main(int argc, char * argv[])
     /* perform read write operations ... */
     performConnection(SocketFD, g, p);      //Protokollphase
 
-<<<<<<< HEAD
-=======
-    
-
->>>>>>> e84cab32c208cf4a569f9697c8c18abdf31a95c1
     shutdown(SocketFD, SHUT_RDWR);
 
     close(SocketFD);
-    
+
     }//ende connector
     else {//beginn thinker
         printf("i bims eins thinker\n");
@@ -151,4 +144,3 @@ int main(int argc, char * argv[])
     }//end thinker
     return EXIT_SUCCESS;
 }
-
