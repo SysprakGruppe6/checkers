@@ -8,11 +8,16 @@
 #include <unistd.h>
 #include <netdb.h>
 #include "performConnection.h"
+#include <sys/shm.h> // include für Shared Memory
+#include <sys/ipc.h> // include für Shared Memory
 #define GAMEKINDNAME "Checkers"
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
+
+
 int main(int argc, char * argv[])
 {
+    printf("%i \n",SHmem());
     //Test
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
@@ -117,73 +122,6 @@ int main(int argc, char * argv[])
 
     /* perform read write operations ... */
     performConnection(SocketFD, g, p);      //Protokollphase
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-    int n = 0;
-
-    char recvBuff[128];    //Buffer
-
-    //Print Server version
-    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
-    n = recv(SocketFD, recvBuff, sizeof(recvBuff)-1, 0); //Schleife gibt den gesamten Inhalt des Buffers aus
-    if(fputs(recvBuff, stdout) == EOF)
-    {
-        printf("\n Error : Fputs error\n");
-    }
-    if(n < 0)
-    {
-        printf("\n Recv error \n");
-    }
-
-    printf("\n");
-    //send client version
-    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
-    strcpy(recvBuff, "VERSION 2.3\n");
-    printf("%s\n", recvBuff); //testprint
-
-    n=send(SocketFD, "VERSION 2.3\n", sizeof("VERSION 2.3\n"), 0);
-    if(n < 0){
-        printf("\n Send error \n");
-    }
-
-    //get Frage nach Game-ID
-    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
-
-    n = recv(SocketFD, recvBuff, sizeof(recvBuff)-1, 0); //Schleife gibt den gesamten Inhalt des Buffers aus
-    if(fputs(recvBuff, stdout) == EOF)
-    {
-        printf("\n Error : Fputs error\n");
-    }
-    if(n < 0)
-    {
-        printf("\n Recv error \n");
-    }
-
-    printf("\n");
-    //send game ID
-    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
-    strcpy(recvBuff, "ID 3d1oibv5qj0se\n");
-    printf("%s\n", recvBuff); //testprint
-    n=send(SocketFD, "ID 3d1oibv5qj0se\n", sizeof("ID 3d1oibv5qj0se\n"), 0);
-    if(n < 0){
-        printf("\n Send error \n");
-    }
-
-    //get playing gamekind name
-    memset(recvBuff, '0',sizeof(recvBuff)); //Buffer wird mit 0 initialisiert
-
-    n = recv(SocketFD, recvBuff, sizeof(recvBuff)-1, 0); //Schleife gibt den gesamten Inhalt des Buffers aus
-    if(fputs(recvBuff, stdout) == EOF)
-    {
-        printf("\n Error : Fputs error\n");
-    }
-    if(n < 0)
-    {
-        printf("\n Recv error \n");
-    }
-    */
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     shutdown(SocketFD, SHUT_RDWR);
 

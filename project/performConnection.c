@@ -9,6 +9,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h>
+#include <sys/shm.h> // include für Shared Memory
+#include <sys/ipc.h> // include für Shared Memory
 //noch zu ueberpruefen welche noetig sind
 
 //Funktion zum Clearen des Buffers
@@ -52,6 +54,26 @@ void sendServer(int SocketFD, char *nachricht, int laenge){
         printf("\n Send error \n");
     }
 }
+
+//Funktion für Shared Memory
+
+int SHmem(){
+
+  struct SHmem_str {
+    key_t key;
+    size_t groesse;
+  } mem;
+  mem.key=1337;
+  mem.groesse = 64;
+
+  int err = 0;
+  //key_t key = 1337;
+  //size_t groesse = 64;
+  err=shmget(mem.key, mem.groesse,IPC_CREAT | 0666);
+
+  return err;
+}
+
 
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD, char* gId, char* pId){
