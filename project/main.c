@@ -18,6 +18,7 @@
 
 int main(int argc, char * argv[])
 {
+
     printf("%i \n",SHmem());
     //Test für Shared Memory
 

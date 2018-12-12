@@ -56,20 +56,21 @@ void sendServer(int SocketFD, char *nachricht, int laenge){
 }
 
 //Funktion für Shared Memory
+ struct SHmem_str{
+  key_t key;
+  size_t groesse;
+  int err;
+} mem ;
 
 int SHmem(){
 
-  struct SHmem_str {
-    key_t key;
-    size_t groesse;
-  } mem;
   mem.key=1337;
   mem.groesse = 64;
 
-  int err = 0;
-  err=shmget(mem.key, mem.groesse,IPC_CREAT | 0666);
 
-  return err;
+  mem.err=shmget(mem.key, mem.groesse,IPC_CREAT | 0666);
+
+  return mem.err;
 }
 
 
