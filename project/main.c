@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <netdb.h>     
 #include "performConnection.h"
+#include "configParser.h"
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
 #define GAMEKINDNAME "Checkers"
@@ -80,7 +81,7 @@ int main(int argc, char * argv[])
             }
         }
         if(strcmp("-c", argv[i])==0){
-            if(access(argv[i+1], F_OK) == -1){
+            if(access(argv[i+1], F_OK) == -1){ //Check ob File existiert
                 printf(ERR);
                 printf("Bitte vergewisser dich, das die angegebene Config-Datei existiert");
             }
@@ -88,7 +89,16 @@ int main(int argc, char * argv[])
         }
         i++;
     }
-
+    
+    //config parameters
+    struct parameters cfg = read_cfg(c);
+    
+//     printf("\n\n\n TEST\n\n\n");
+//     printf(cfg.hostName);
+//     printf(cfg.portNr);
+//     printf(cfg.gameType);
+//     printf("\n\n\n TEST\n\n\n");
+    
     //gethostbyname
     int l;  //Schleifenvariable für die IP-Liste
     struct hostent *he;
