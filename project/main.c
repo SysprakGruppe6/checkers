@@ -7,8 +7,7 @@
 #include <wait.h>
 #include <string.h>
 #include <unistd.h>
-#include <netdb.h>
-#include "getIP.h"      
+#include <netdb.h>     
 #include "performConnection.h"
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
@@ -82,15 +81,14 @@ int main(int argc, char * argv[])
         }
         i++;
     }
-/*
-/////////////////////////////////////////////////////
+
     //gethostbyname
     int l;  //Schleifenvariable für die IP-Liste
     struct hostent *he;
     struct in_addr **addr_list;
     // get the host info
     if ((he = gethostbyname(HOSTNAME)) == NULL) {
-        herror("gethostbyname");
+        printf("gethostbyname error\n");
         return 2;
     }
     // print information about this host:
@@ -101,12 +99,7 @@ int main(int argc, char * argv[])
         printf("%s", inet_ntoa(*addr_list[l]));
     }
     printf("\n");
-////////////////////////////////////////////////////
-        */
-        struct in_addr **addr_list;//Adressvariable für gethostbyname
-        if(getIP(addr_list)!=0){
-            return -1;
-        }
+
 
     //Socketvariablen
     struct sockaddr_in sa;
