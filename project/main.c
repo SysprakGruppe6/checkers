@@ -32,6 +32,7 @@ int main(int argc, char * argv[])
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
     char *p;        //Variable für die Spielernummer
+    char *c = "client.conf";
     
     const char ERR[] = "Fehler!\n";
     const char MSG[] = "Kommandozeilenparameter bitte in folgender Form angeben:\n./sysprak-client -g <GAME-ID> -p <{1,2}>\n";
@@ -77,6 +78,13 @@ int main(int argc, char * argv[])
                 printf(MSG);
                 return -1;
             }
+        }
+        if(strcmp("-c", argv[i])==0){
+            if(access(argv[i+1], F_OK) == -1){
+                printf(ERR);
+                printf("Bitte vergewisser dich, das die angegebene Config-Datei existiert");
+            }
+            c=argv[i+1];
         }
         i++;
     }
