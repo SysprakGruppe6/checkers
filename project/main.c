@@ -32,50 +32,49 @@ int main(int argc, char * argv[])
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
     char *p;        //Variable für die Spielernummer
-
+    
+    const char ERR[] = "Fehler!\n";
+    const char MSG[] = "Kommandozeilenparameter bitte in folgender Form angeben:\n./sysprak-client -g <GAME-ID> -p <{1,2}>\n";
+    
     //Schleife für Kommandozeilenparameter
     if (argc<5) {                                               //prüft ob zu wenige Parameter angegeben wurden
-        printf("Fehler!\n");
-        printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
-        printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
+        printf(ERR);
+        printf(MSG);
         return -1;
     }
     int i = 1;
     while (i < argc) {
         if (strcmp("-g", argv[i])==0) {
             if (i==(argc-1)) {                                  //hinterer Existenzprüfer G-ID
-                printf("Fehler!\n");
-                printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
-                printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
+                printf(ERR);
+                printf(MSG);
                 return -1;
             }
             g=argv[i+1];
             char spanset[] = " ";
             if (strcspn(argv[i+1], spanset) != 13) {            //prüft die länge der game-id
-                printf("Fehler!\n");
+                printf(ERR);
                 printf("Die Game-ID muss 13-stellig sein!\n");
                 return -1;
             }
         }
         if (strcmp("-p", argv[i])==0) {
             if (i==(argc-1)) {                                  //hinterer Existenzprüfer SN
-                printf("Fehler!\n");
-                printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
-                printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
+                printf(ERR);
+                printf(MSG);
                 return -1;
             }
             p=argv[i+1];
             /*char spanset[] = " ";
             if (strcspn(argv[i+1], spanset) != 1) {             //vorderer Existenzprüfer SN; überflüssig
-                printf("Fehler!\n");
+                printf(ERR);
                 printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
                 printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
                 return -1;
             }*/
             if ((strcmp("1", argv[i+1])!=0) && (strcmp("2", argv[i+1])!=0)) {   //Werteprüfer SN
-                printf("Fehler!\n");
-                printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
-                printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
+                printf(ERR);
+                printf(MSG);
                 return -1;
             }
         }
