@@ -4,7 +4,7 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <wait.h>
+//#include <wait.h>
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h>
@@ -27,10 +27,6 @@ int main(int argc, char * argv[])
     shm_mem_addr = shmat(shm_addr,NULL,0);
     printf("Shared Memory angebunden an %i \n",shm_addr);
 
-    //SHM lösen
-    shmdt(shm_mem_addr);
-    printf("SharedMemory gelöst \n");
-
     //struct für Gamedaten
     struct game_data_struct{
     char gameID[13];
@@ -38,9 +34,14 @@ int main(int argc, char * argv[])
     int anzahl_spieler;
     int pid_connector;
     int pid_thinker;
-
    } game_data ;
+   // Struct in SHM speichern
 
+   //memmove(shm_mem_addr;&game_data;sizeof(game_data));
+
+   //SHM lösen
+   shmdt(shm_mem_addr);
+   printf("SharedMemory gelöst \n");
 
 
     if (fork()==0){					//beginn connector
@@ -178,7 +179,7 @@ int main(int argc, char * argv[])
     else {//beginn thinker
         printf("i bims eins thinker\n");
         waitpid(-1, NULL, 0);		//Parent wartet auf ende des Kindprozesses
-	think();	
+	think();
 	printf("parent out");
     }//end thinker
     return EXIT_SUCCESS;
