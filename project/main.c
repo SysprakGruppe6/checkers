@@ -104,7 +104,7 @@ int main(int argc, char * argv[])
     struct hostent *he;
     struct in_addr **addr_list;
     // get the host info
-    if ((he = gethostbyname(HOSTNAME)) == NULL) {
+    if ((he = gethostbyname(cfg.hostName)) == NULL) {
         printf("gethostbyname error\n");
         return 2;
     }
@@ -135,7 +135,7 @@ int main(int argc, char * argv[])
     memset(&sa, 0, sizeof sa);
 
     sa.sin_family = AF_INET;
-    sa.sin_port = htons(PORTNUMBER);
+    sa.sin_port = htons(cfg.portNr);
     res = inet_pton(AF_INET, inet_ntoa(*addr_list[0]), &sa.sin_addr);   //konvertiert die ip und speichert sie in &sa.sin_addr
 
     //connect
