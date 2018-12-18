@@ -4,7 +4,7 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include <wait.h>
+#include <wait.h>
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h>
@@ -20,7 +20,7 @@ int main(int argc, char * argv[])
 {
     //Test für Shared Memory
     int shm_addr = SHmem();
-    // printf("%i \n",shm_addr);
+     printf("%i \n",shm_addr);
 
     //SHM anbinden
     void *shm_mem_addr;
@@ -37,7 +37,7 @@ int main(int argc, char * argv[])
    } game_data ;
    // Struct in SHM speichern
 
-   //memmove(shm_mem_addr;&game_data;sizeof(game_data));
+   //memmove(shm_mem_addr,&game_data,sizeof(game_data));
 
    //SHM lösen
    shmdt(shm_mem_addr);
