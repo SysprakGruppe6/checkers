@@ -15,7 +15,8 @@
 #define GAMEKINDNAME "Checkers"
 #define PORTNUMBER 1357
 #define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
-
+#define ERR "Fehler!\n"
+#define MSG "Kommandozeilenparameter bitte in folgender Form angeben:\n./sysprak-client -g <GAME-ID> -p <{1,2}>\n"
 
 int main(int argc, char * argv[])
 {
@@ -34,9 +35,6 @@ int main(int argc, char * argv[])
     char *g;        //Variable für die Game-ID
     char *p;        //Variable für die Spielernummer
     char *c = "client.conf";
-    
-    const char ERR[] = "Fehler!\n";
-    const char MSG[] = "Kommandozeilenparameter bitte in folgender Form angeben:\n./sysprak-client -g <GAME-ID> -p <{1,2}>\n";
     
     //Schleife für Kommandozeilenparameter
     if (argc<5) {                                               //prüft ob zu wenige Parameter angegeben wurden
@@ -81,9 +79,14 @@ int main(int argc, char * argv[])
             }
         }
         if(strcmp("-c", argv[i])==0){
+            if (i==(argc-1)) {                                  //hinterer Existenzprüfer Config-File
+                printf(ERR);
+                printf(MSG);
+                return -1;
+            }
             if(access(argv[i+1], F_OK) == -1){ //Check ob File existiert
                 printf(ERR);
-                printf("Bitte vergewisser dich, das die angegebene Config-Datei existiert");
+                printf("Bitte vergewisser dich, das die angegebene Config-Datei existiert\n");
             }
             c=argv[i+1];
         }
