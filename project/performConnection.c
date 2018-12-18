@@ -68,7 +68,7 @@ int SHmem(){
   mem.groesse = 64;
 
 
-  mem.err=shmget(mem.key, mem.groesse,IPC_CREAT | 0666);
+  mem.err=shmget(mem.key, mem.groesse,IPC_PRIVATE);
 
   return mem.err;
 }

@@ -15,18 +15,18 @@ struct parameters{
 };
 
 struct parameters read_cfg (char *cfgpath){
-    
+
     struct parameters file; //result
-    
+
     FILE *cfgfile = fopen(cfgpath, "r");
-    
+
     char pName[BUFFER];
     char pValue[BUFFER];
     char line[BUFFER];
-    
+
     while(fgets(line, BUFFER, cfgfile) != NULL){
         sscanf(line, "%s = %s", pName, pValue);
-        
+
         if(line[0]!='#'){
             if(strcmp(pName, "HOSTNAME") == 0) {
                 strcpy(file.hostName, pValue);
@@ -39,7 +39,7 @@ struct parameters read_cfg (char *cfgpath){
             }
         }
     }
-    
+
     fclose(cfgfile);
     return file;
 }

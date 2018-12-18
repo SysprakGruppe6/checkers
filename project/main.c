@@ -4,10 +4,10 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <wait.h>
+//#include <wait.h>
 #include <string.h>
 #include <unistd.h>
-#include <netdb.h>     
+#include <netdb.h>
 #include "performConnection.h"
 #include "configParser.h"
 #include <sys/shm.h> // include für Shared Memory
@@ -17,9 +17,29 @@
 
 int main(int argc, char * argv[])
 {
-
-    printf("%i \n",SHmem());
     //Test für Shared Memory
+    int shm_addr = SHmem();
+    // printf("%i \n",shm_addr);
+
+    //SHM anbinden
+    void *shm_mem_addr;
+    shm_mem_addr = shmat(shm_addr,NULL,0);
+    printf("Shared Memory angebunden an %i \n",shm_addr);
+
+    //SHM lösen
+    shmdt(shm_mem_addr);
+    printf("SharedMemory gelöst \n");
+
+    //struct für Gamedaten
+    struct game_data_struct{
+    char gameID[13];
+    int spielernummer;
+    int anzahl_spieler;
+    int pid_connector;
+    int pid_thinker;
+
+   } game_data ;
+
 
 
     if (fork()==0){					//beginn connector
@@ -32,7 +52,7 @@ int main(int argc, char * argv[])
     char *g;        //Variable für die Game-ID
     char *p;        //Variable für die Spielernummer
     char *c = "client.conf";
-    
+
     //Schleife für Kommandozeilenparameter
     if (argc<5) {                                               //prüft ob zu wenige Parameter angegeben wurden
         printf(ERR);
@@ -89,16 +109,16 @@ int main(int argc, char * argv[])
         }
         i++;
     }
-    
+
     //config parameters
     struct parameters cfg = read_cfg(c);
-    
+
 //     printf("\n\n\n TEST\n\n\n");
 //     printf(cfg.hostName);
 //     printf(cfg.portNr);
 //     printf(cfg.gameType);
 //     printf("\n\n\n TEST\n\n\n");
-    
+
     //gethostbyname
     int l;  //Schleifenvariable für die IP-Liste
     struct hostent *he;
