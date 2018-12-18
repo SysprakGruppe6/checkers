@@ -12,9 +12,6 @@
 #include "configParser.h"
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
-#define GAMEKINDNAME "Checkers"
-#define PORTNUMBER 1357
-#define HOSTNAME "sysprak.priv.lab.nm.ifi.lmu.de"
 #define ERR "Fehler!\n"
 #define MSG "Kommandozeilenparameter bitte in folgender Form angeben:\n./sysprak-client -g <GAME-ID> -p <{1,2}>\n"
 

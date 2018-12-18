@@ -100,6 +100,9 @@ void performConnection(int SocketFD, char* gId, char* pId){
     sendServer(SocketFD, "PLAYER 1\n", 9); //send player number
     recvServer(SocketFD);
     recvServer(SocketFD);
+    sendServer(SocketFD, "THINKING\n", 9);
+    recvServer(SocketFD);
+    recvServer(SocketFD);
 
 }
 
