@@ -1,8 +1,8 @@
 CC = gcc
 FLAGS= -std=c99
 CFLAGS= -Wall -Wextra -Werror
-DEPS = project/performConnection.h
-OBJ = tmp/performConnection.o tmp/main.o
+DEPS = project/performConnection.h project/ai.h
+OBJ = tmp/performConnection.o tmp/ai.o tmp/main.o
 
 all: sysprak-client
 

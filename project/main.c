@@ -10,6 +10,7 @@
 #include <netdb.h>
 #include "performConnection.h"
 #include "configParser.h"
+#include "ai.h"
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
 #define ERR "Fehler!\n"
@@ -177,6 +178,7 @@ int main(int argc, char * argv[])
     else {//beginn thinker
         printf("i bims eins thinker\n");
         waitpid(-1, NULL, 0);		//Parent wartet auf ende des Kindprozesses
+	think();	
 	printf("parent out");
     }//end thinker
     return EXIT_SUCCESS;
