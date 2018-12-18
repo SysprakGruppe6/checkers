@@ -4,7 +4,7 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include <wait.h>
+#include <wait.h>
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h>
