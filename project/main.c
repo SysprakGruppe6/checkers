@@ -114,11 +114,13 @@ int main(int argc, char * argv[])
     //config parameters
     struct parameters cfg = read_cfg(c);
 
-//     printf("\n\n\n TEST\n\n\n");
-//     printf(cfg.hostName);
-//     printf(cfg.portNr);
-//     printf(cfg.gameType);
-//     printf("\n\n\n TEST\n\n\n");
+    printf("\n\n\n TEST\n\n\n");
+    printf(cfg.hostName);
+    printf("\n");
+    printf("%d", cfg.portNr);
+    printf("\n");
+    printf(cfg.gameType);
+    printf("\n\n\n TEST\n\n\n");
 
     //gethostbyname
     int l;  //Schleifenvariable für die IP-Liste

@@ -10,7 +10,7 @@
 
 struct parameters{
 	char hostName[BUFFER];
-	char portNr[BUFFER];
+	unsigned short portNr;
 	char gameType[BUFFER];
 };
 
@@ -32,7 +32,7 @@ struct parameters read_cfg (char *cfgpath){
                 strcpy(file.hostName, pValue);
             }
             if(strcmp(pName, "PORT_NR") == 0) {
-                strcpy(file.portNr, pValue);
+                file.portNr=(unsigned short) atoi(pValue);
             }
             if(strcmp(pName, "GAME_TYPE") == 0) {
                 strcpy(file.gameType, pValue);
