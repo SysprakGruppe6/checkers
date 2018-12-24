@@ -8,6 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h>
+#include <getopt.h>
 #include "performConnection.h"
 #include "configParser.h"
 #include "ai.h"
@@ -55,61 +56,59 @@ int main(int argc, char * argv[])
     char *p;        //Variable für die Spielernummer
     char *c = "client.conf";
 
+    char spanset[] = " ";
+    
+    int test = 1;
+
     //Schleife für Kommandozeilenparameter
     if (argc<5) {                                               //prüft ob zu wenige Parameter angegeben wurden
         printf(ERR);
         printf(MSG);
         return -1;
     }
-    int i = 1;
-    while (i < argc) {
-        if (strcmp("-g", argv[i])==0) {
-            if (i==(argc-1)) {                                  //hinterer Existenzprüfer G-ID
+    int opt;
+    while ((opt=getopt(argc, argv, "g:p:c"))!=-1) {
+        
+        switch(opt){
+            case 'g':
+                if (strcspn(optarg, spanset) != 13) {            //prüft die länge der game-id
+                    printf(ERR);
+                    printf("Die Game-ID muss 13-stellig sein!\n");
+                    return -1;
+                }
+                
+                g=optarg;
+                
+                break;
+                
+            case 'p': 
+                if ((strcmp(optarg,"1")!=0) && (strcmp(optarg,"2")!=0)) {   //Werteprüfer SN
+                    printf(ERR);
+                    printf(MSG);
+                    return -1;
+                }
+                p=optarg;
+                break;
+            
+            case 'c':
+                if(access(optarg, F_OK) == -1){ //Check ob File existiert
+                    printf(ERR);
+                    printf("Bitte vergewisser dich, das die angegebene Config-Datei existiert\n");
+                    return -1;
+                }
+                
+                c=optarg;
+                break;
+            
+            case '?':                           //hinterer Existenzprüfer
                 printf(ERR);
                 printf(MSG);
-                return -1;
-            }
-            g=argv[i+1];
-            char spanset[] = " ";
-            if (strcspn(argv[i+1], spanset) != 13) {            //prüft die länge der game-id
-                printf(ERR);
-                printf("Die Game-ID muss 13-stellig sein!\n");
-                return -1;
-            }
+                break;
+            
+            default:
+                break;
         }
-        if (strcmp("-p", argv[i])==0) {
-            if (i==(argc-1)) {                                  //hinterer Existenzprüfer SN
-                printf(ERR);
-                printf(MSG);
-                return -1;
-            }
-            p=argv[i+1];
-            /*char spanset[] = " ";
-            if (strcspn(argv[i+1], spanset) != 1) {             //vorderer Existenzprüfer SN; überflüssig
-                printf(ERR);
-                printf("Kommandozeilenparameter bitte in folgender Form angeben:\n");
-                printf("./sysprak-client -g <GAME-ID> -p <{1,2}>\n");
-                return -1;
-            }*/
-            if ((strcmp("1", argv[i+1])!=0) && (strcmp("2", argv[i+1])!=0)) {   //Werteprüfer SN
-                printf(ERR);
-                printf(MSG);
-                return -1;
-            }
-        }
-        if(strcmp("-c", argv[i])==0){
-            if (i==(argc-1)) {                                  //hinterer Existenzprüfer Config-File
-                printf(ERR);
-                printf(MSG);
-                return -1;
-            }
-            if(access(argv[i+1], F_OK) == -1){ //Check ob File existiert
-                printf(ERR);
-                printf("Bitte vergewisser dich, das die angegebene Config-Datei existiert\n");
-            }
-            c=argv[i+1];
-        }
-        i++;
+        
     }
 
     //config parameters
