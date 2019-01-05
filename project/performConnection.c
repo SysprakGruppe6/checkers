@@ -11,6 +11,7 @@
 #include <netdb.h>
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
+#include <sys/stat.h> // include für Shared Memory
 //noch zu ueberpruefen welche noetig sind
 
 //Funktion zum Clearen des Buffers
@@ -57,18 +58,16 @@ void sendServer(int SocketFD, char *nachricht, int laenge){
 
 //Funktion für Shared Memory
  struct SHmem_str{
-  key_t key;
-  size_t groesse;
+   size_t groesse;
   int err;
 } mem ;
 
 int SHmem(){
 
-  mem.key=1337;
   mem.groesse = 64;
 
 
-  mem.err=shmget(mem.key, mem.groesse,IPC_PRIVATE);
+  mem.err=shmget(IPC_PRIVATE, mem.groesse,0);
 
   return mem.err;
 }
