@@ -20,29 +20,34 @@
 
 int main(int argc, char * argv[])
 {
+
+  //struct für Gamedaten
+  typedef struct {
+  char gameID[13];
+  int spielernummer;
+  int anzahl_spieler;
+  int pid_connector;
+  int pid_thinker;
+}  gds;
+
+
     //Test für Shared Memory
-    int shm_addr = SHmem();
+    int shm_addr = SHmem(sizeof(gds));
      printf("%i \n",shm_addr);
 
     //SHM anbinden
-    void *shm_mem_addr;
-    shm_mem_addr = shmat(shm_addr,NULL,0);
+    /*void *shm_mem_addr;
+    shm_mem_addr = shmat(shm_addr,NULL,0);*/
+    gds *game_data_struct = shmat(shm_addr,NULL,0);
     printf("Shared Memory angebunden an %i \n",shm_addr);
 
-    //struct für Gamedaten
-    struct game_data_struct{
-    char gameID[13];
-    int spielernummer;
-    int anzahl_spieler;
-    int pid_connector;
-    int pid_thinker;
-   } game_data ;
+
    // Struct in SHM speichern
 
    //memmove(shm_mem_addr,&game_data,sizeof(game_data));
 
    //SHM lösen
-   shmdt(shm_mem_addr);
+   shmdt(game_data_struct);
    printf("SharedMemory gelöst \n");
 
 
