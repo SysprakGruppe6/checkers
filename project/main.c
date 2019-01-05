@@ -24,31 +24,27 @@ int main(int argc, char * argv[])
   //struct für Gamedaten
   typedef struct {
   char gameID[13];
-  int spielernummer;
+  char spielernummer;
   int anzahl_spieler;
   int pid_connector;
   int pid_thinker;
 }  gds;
 
+//Test für Shared Memory
+int shm_addr = SHmem(sizeof(gds));
+printf("Shared Memory angebunden an %i \n",shm_addr);
 
-    //Test für Shared Memory
-    int shm_addr = SHmem(sizeof(gds));
-     printf("%i \n",shm_addr);
+// Struct in SHM speichern
+gds *game_data_struct = shmat(shm_addr,NULL,0);
 
-    //SHM anbinden
-    /*void *shm_mem_addr;
-    shm_mem_addr = shmat(shm_addr,NULL,0);*/
-    gds *game_data_struct = shmat(shm_addr,NULL,0);
-    printf("Shared Memory angebunden an %i \n",shm_addr);
+//Daten im Struct speichern
+//game_data_struct.spielernummer = 1;
 
 
-   // Struct in SHM speichern
+//SHM lösen
+shmdt(game_data_struct);
+printf("SharedMemory gelöst \n");
 
-   //memmove(shm_mem_addr,&game_data,sizeof(game_data));
-
-   //SHM lösen
-   shmdt(game_data_struct);
-   printf("SharedMemory gelöst \n");
 
 
     if (fork()==0){					//beginn connector
@@ -127,6 +123,8 @@ int main(int argc, char * argv[])
     printf("\n");
     printf(cfg.gameType);
     printf("\n\n\n TEST\n\n\n");
+
+
 
     //gethostbyname
     int l;  //Schleifenvariable für die IP-Liste
