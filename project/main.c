@@ -38,7 +38,7 @@ printf("Shared Memory angebunden an %i \n",shm_addr);
 gds *game_data_struct = shmat(shm_addr,NULL,0);
 
 //Daten im Struct speichern
-game_data_struct.spielernummer = 1;
+//game_data_struct.spielernummer = 1;
 
 
 //SHM lösen
