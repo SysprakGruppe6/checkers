@@ -62,9 +62,9 @@ void sendServer(int SocketFD, char *nachricht, int laenge){
   int err;
 } mem ;
 
-int SHmem(){
+int SHmem(int size){
 
-  mem.groesse = 64;
+  mem.groesse = size;
 
 
   mem.err=shmget(IPC_PRIVATE, mem.groesse,0);
