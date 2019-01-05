@@ -14,6 +14,7 @@
 #include "ai.h"
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
+#include <sys/stat.h> // include für Shared Memory
 #define ERR "Fehler!\n"
 #define MSG "Kommandozeilenparameter bitte in folgender Form angeben:\n./sysprak-client -g <GAME-ID> -p <{1,2}>\n"
 
@@ -57,7 +58,7 @@ int main(int argc, char * argv[])
     char *c = "client.conf";
 
     char spanset[] = " ";
-    
+
     int test = 1;
 
     //Schleife für Kommandozeilenparameter
@@ -68,7 +69,7 @@ int main(int argc, char * argv[])
     }
     int opt;
     while ((opt=getopt(argc, argv, "g:p:c"))!=-1) {
-        
+
         switch(opt){
             case 'g':
                 if (strcspn(optarg, spanset) != 13) {            //prüft die länge der game-id
@@ -76,12 +77,12 @@ int main(int argc, char * argv[])
                     printf("Die Game-ID muss 13-stellig sein!\n");
                     return -1;
                 }
-                
+
                 g=optarg;
-                
+
                 break;
-                
-            case 'p': 
+
+            case 'p':
                 if ((strcmp(optarg,"1")!=0) && (strcmp(optarg,"2")!=0)) {   //Werteprüfer SN
                     printf(ERR);
                     printf(MSG);
@@ -89,26 +90,26 @@ int main(int argc, char * argv[])
                 }
                 p=optarg;
                 break;
-            
+
             case 'c':
                 if(access(optarg, F_OK) == -1){ //Check ob File existiert
                     printf(ERR);
                     printf("Bitte vergewisser dich, das die angegebene Config-Datei existiert\n");
                     return -1;
                 }
-                
+
                 c=optarg;
                 break;
-            
+
             case '?':                           //hinterer Existenzprüfer
                 printf(ERR);
                 printf(MSG);
                 break;
-            
+
             default:
                 break;
         }
-        
+
     }
 
     //config parameters

@@ -1,6 +1,7 @@
 #ifndef performConnection
 #include <sys/shm.h> // include für Shared Memory
-#include <sys/ipc.h> // include für Shared Memory
+#include <sys/ipc.h> // include für Shared Memor
+#include <sys/stat.h> // include für Shared Memory
 //#define performConnection
 //struct
 //Functions
