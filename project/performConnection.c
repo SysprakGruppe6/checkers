@@ -20,6 +20,7 @@ void bufferClear(char buffer[128]){
 }
 
 //Funktion zum Ausgeben der erhaltenen Servernachrichten
+// todo: letzte recievte nachricht inm shm abspeichern
 void recvServer(int SocketFD){
     //recv
     int n = 0;
@@ -75,33 +76,31 @@ int SHmem(int size){
 
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD, char* gId, char* pId){
-    //bufferClear(buffer);      //Cleared den Buffer
-
     recvServer(SocketFD);   //gibt erste Nachricht des Servers aus
-    //bufferClear(buffer);      //Cleared den Buffer
-
     sendServer(SocketFD, "VERSION 2.1\n", 12);    //sendet die Versionsnummer
-    //bufferClear(buffer);      //Cleared den Buffer
-
     recvServer(SocketFD);   //gibt zweite Nachricht des Servers aus
-    //bufferClear(buffer);      //Cleared den Buffer
     char* gameId = malloc(sizeof(char)*17);
     strcpy(gameId, "ID ");
     strcat(gameId, gId);
     strcat(gameId, "\n");
     sendServer(SocketFD, gameId , 17);    //sendet die ID
-    //bufferClear(buffer);      //Cleared den Buffer
-
     recvServer(SocketFD);   //gibt dritte Nachricht des Servers aus
-    //bufferClear(buffer);      //Cleared den Buffer
     recvServer(SocketFD);
-    //Protokollphase
     sendServer(SocketFD, "PLAYER 1\n", 9); //send player number
     recvServer(SocketFD);
     recvServer(SocketFD);
     sendServer(SocketFD, "THINKING\n", 9);
     recvServer(SocketFD);
-    recvServer(SocketFD);
+
+    while(//irgendwas im shm != -, gameover
+    ){
+        recvServer(SocketFD);
+        kill(SIGUSR1);
+        //evtl wait
+        read(pipe);
+        sendServer(SocketFD, "ZUg im shm", länge spielzug);
+    }
+
 
 }
 

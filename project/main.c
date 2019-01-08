@@ -183,9 +183,9 @@ printf("SharedMemory gelöst \n");
     }//ende connector
     else {//beginn thinker
         printf("i bims eins thinker\n");
-        waitpid(-1, NULL, 0);		//Parent wartet auf ende des Kindprozesses
 	think();
-	printf("parent out");
+  waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
+  printf("thinker out");
     }//end thinker
     return EXIT_SUCCESS;
 }
