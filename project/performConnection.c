@@ -92,14 +92,14 @@ void performConnection(int SocketFD, char* gId, char* pId){
     sendServer(SocketFD, "THINKING\n", 9);
     recvServer(SocketFD);
 
-    while(//irgendwas im shm != -, gameover
+  /*  while(//irgendwas im shm != -, gameover
     ){
         recvServer(SocketFD);
         kill(SIGUSR1);
         //evtl wait
         read(pipe);
         sendServer(SocketFD, "ZUg im shm", länge spielzug);
-    }
+    }*/
 
 
 }

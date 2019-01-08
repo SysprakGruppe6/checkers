@@ -30,20 +30,29 @@ int main(int argc, char * argv[])
   int pid_thinker;
 }  gds;
 
+//Struct erstellen
+printf("Versuche Struct zu erstellen");
+gds game_data_struct_V2;
+printf("Struct erstellt");
 //Test für Shared Memory
 int shm_addr = SHmem(sizeof(gds));
 printf("Shared Memory angebunden an %i \n",shm_addr);
 
 // Struct in SHM speichern
-gds *game_data_struct = shmat(shm_addr,NULL,0);
+//gds *game_data_struct = shmat(shm_addr,NULL,0);
 
 //Daten im Struct speichern
-//game_data_struct.spielernummer = 1;
+//game_data_struct.anzahl_spieler = 0;
 
+
+//verschiben in SHM
+int moved = 0;
+//moved = memmove(shmat(shm_addr,NULL,0),&game_data_struct_V2,sizeof(gds));
+printf("Struct verschoben nach %i \n",moved);
 
 //SHM lösen
-shmdt(game_data_struct);
-printf("SharedMemory gelöst \n");
+//shmdt(game_data_struct);
+printf("SharedMemory nicht gelöst \n");
 
 
 
