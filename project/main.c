@@ -33,7 +33,8 @@ int main(int argc, char * argv[])
 //Struct erstellen
 printf("Versuche Struct zu erstellen");
 gds game_data_struct_V2;
-printf("Struct erstellt");
+game_data_struct_V2.anzahl_spieler = 0;
+printf("Struct erstellt, Spieleranzahl: %i \n",game_data_struct_V2.anzahl_spieler);
 //Test für Shared Memory
 int shm_addr = SHmem(sizeof(gds));
 printf("Shared Memory angebunden an %i \n",shm_addr);
