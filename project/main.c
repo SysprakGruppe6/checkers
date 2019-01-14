@@ -25,25 +25,21 @@ int main(int argc, char * argv[])
   typedef struct {
   char gameID[13];
   char spielernummer;
+  char spielfeld [8][8];
   int anzahl_spieler;
-  int pid_connector;
-  int pid_thinker;
+  pid_t pid_connector;
+  pid_t pid_thinker;
 }  gds;
 
 //Struct erstellen
-printf("Versuche Struct zu erstellen");
+printf("Versuche Struct zu erstellen\n");
 gds game_data_struct_V2;
 game_data_struct_V2.anzahl_spieler = 0;
 printf("Struct erstellt, Spieleranzahl: %i \n",game_data_struct_V2.anzahl_spieler);
 //Test für Shared Memory
 int shm_addr = SHmem(sizeof(gds));
 printf("Shared Memory angebunden an %i \n",shm_addr);
-
-// Struct in SHM speichern
-//gds *game_data_struct = shmat(shm_addr,NULL,0);
-
-//Daten im Struct speichern
-//game_data_struct.anzahl_spieler = 0;
+int *SHM = shmat(shm_addr,NULL,0);
 
 
 //verschiben in SHM
@@ -52,8 +48,8 @@ int moved = 0;
 printf("Struct verschoben nach %i \n",moved);
 
 //SHM lösen
-//shmdt(game_data_struct);
-printf("SharedMemory nicht gelöst \n");
+shmdt(SHM);
+printf("SharedMemory gelöst \n");
 
 
 
