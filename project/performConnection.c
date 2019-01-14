@@ -77,6 +77,7 @@ void performConnection(int SocketFD, char* gId, char* pId){
     sendServer(SocketFD, "THINKING\n", 9);
     recvServer(SocketFD);
 
+/*
     while(//irgendwas im shm != -, gameover
     ){
         recvServer(SocketFD); //empfangt Spieldaten vom Server
@@ -85,6 +86,6 @@ void performConnection(int SocketFD, char* gId, char* pId){
         sendServer(SocketFD, "ZUg im shm", länge spielzug); //sendet Spielzug an Server
         //ausgabe des Spielfeldes
     }
-
+*/
 
 }
