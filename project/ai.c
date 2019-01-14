@@ -11,12 +11,13 @@
 #include <netdb.h>
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
+
 void think(){
 	printf("Am denken ...\n");
 
-	//while(){
+	//while(Spiel läuft==wahr){
 		pause();		//wartet auf Signal vom Connector
-		//berechnen
+		//berechnen des Spielzuges (MS04)
 		//send(Spielzug, pipe);
 		printf("test");
 	//}

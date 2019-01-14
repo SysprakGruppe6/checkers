@@ -12,30 +12,15 @@
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
 #include <sys/stat.h> // include für Shared Memory
-//noch zu ueberpruefen welche noetig sind
-
-//Funktion zum Clearen des Buffers
-void bufferClear(char buffer[128]){
-    memset(&buffer, ' ',sizeof(buffer[128]));
-}
 
 //Funktion zum Ausgeben der erhaltenen Servernachrichten
 // todo: letzte recievte nachricht inm shm abspeichern
 void recvServer(int SocketFD){
-    //recv
     int n = 0;
     char buffer[2048];
     memset(buffer, '0',sizeof(buffer));
     n = read(SocketFD, buffer, sizeof(buffer));
     printf("Server: ");
-        //if(fputs(buffer, stdout) == EOF)
-        //{
-        //    printf("\n Error : Fputs error\n");
-        //}
-        //if(n < 0)
-        //{
-        //    printf("\n Recv error \n");
-        //}
         for(int i =  0; i<n; i++){
           printf("%c", buffer[i]);
         }
@@ -92,20 +77,14 @@ void performConnection(int SocketFD, char* gId, char* pId){
     sendServer(SocketFD, "THINKING\n", 9);
     recvServer(SocketFD);
 
-  /*  while(//irgendwas im shm != -, gameover
+    while(//irgendwas im shm != -, gameover
     ){
-        recvServer(SocketFD);
-        kill(SIGUSR1);
-        //evtl wait
-        read(pipe);
-        sendServer(SocketFD, "ZUg im shm", länge spielzug);
-    }*/
+        recvServer(SocketFD); //empfangt Spieldaten vom Server
+        kill(SIGUSR1);        //Signal/Denkanstoß für thinker
+        read(pipe);           //ließt ergegnis vom thinker
+        sendServer(SocketFD, "ZUg im shm", länge spielzug); //sendet Spielzug an Server
+        //ausgabe des Spielfeldes
+    }
 
-
-}
-
-//Testfunktion
-void pCTest(){
-printf("Ich bin ein test für die Perform Connection\n");
 
 }
