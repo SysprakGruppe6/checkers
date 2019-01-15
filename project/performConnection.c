@@ -58,6 +58,28 @@ int SHmem(int size){
   return mem.err;
 }
 
+//Funktion um Spielfeld in SHM übertragen
+void spielfeldSchreiben(char buffer[2048]){
+int i = 0;
+while(i<2048){
+if (buffer[i] == 1|2|3|4|5|6|7|8){
+i = Spielfeldreihe(buffer[i],i);
+
+
+}
+}
+}
+
+//Linie de Spielfeld in SHmem
+int Spielfeldreihe(int reihe,int array){
+for (int i=0; i<8; i++) {
+//game_data_struct_V2->spielfeld[reihe-1][i];
+}
+return array+8;
+}
+
+
+
 
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD, char* gId, char* pId){
