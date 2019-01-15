@@ -59,7 +59,7 @@ printf("SharedMemory gelöst \n");
 	pid_t child_id = getpid();			//ID des Kindprozesses
         game_data_struct_V2->pid_child = child_id;
 	printf("Prozess IDS:\n");			//testprint
-    	printf("child : %d parent: %d\n",child_id,parent_id);
+    	printf("child : %d parent: %d\n",game_data_struct_V2->pid_child,game_data_struct_V2->pid_parent);
 
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
