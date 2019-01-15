@@ -49,9 +49,6 @@ SHM = malloc(sizeof(game_data_struct_V2));
 memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 printf("Struct verschoben\n");
 
-//SHM lösen
-shmdt(SHM);
-printf("SharedMemory gelöst \n");
 
 
 
@@ -188,7 +185,7 @@ printf("SharedMemory gelöst \n");
 
 
     /* perform read write operations ... */
-    performConnection(SocketFD, g, p);      //Protokollphase
+    performConnection(SocketFD, g, p,shm_addr);      //Protokollphase
 
     shutdown(SocketFD, SHUT_RDWR);
 
@@ -201,5 +198,10 @@ printf("SharedMemory gelöst \n");
   waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
   printf("thinker out");
     }//end thinker
+
+    //SHM lösen
+    shmdt(SHM);
+    printf("SharedMemory gelöst \n");
+
     return EXIT_SUCCESS;
 }

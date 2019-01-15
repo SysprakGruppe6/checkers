@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "performConnection.h"
+#include "SHM.h"
 //benoetigt mehr includes
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -51,8 +52,6 @@ void sendServer(int SocketFD, char *nachricht, int laenge){
 int SHmem(int size){
 
   mem.groesse = size;
-
-
   mem.err=shmget(IPC_PRIVATE, mem.groesse,0);
 
   return mem.err;
@@ -81,7 +80,21 @@ return array+8;
 
 
 //Funktion welche die Protokollphase ausführt
-void performConnection(int SocketFD, char* gId, char* pId){
+void performConnection(int SocketFD, char* gId, char* pId, int shmid){
+//SHM anbinden
+
+struct gds *game_data_struct_V2 = shmat(shmid,NULL,0);
+game_data_struct_V2=malloc(sizeof(game_data_struct_V2));
+//game_data_struct_V2 = shmat(shmid,NULL,0);
+
+
+//SHM testen
+game_data_struct_V2->anzahl_spieler=1;
+//shmdt(game_data_struct_V2);
+printf("SHM Test in PerformConnection - Child PID:%d \n",game_data_struct_V2->pid_child);
+
+
+//Serverkommunikation
     recvServer(SocketFD);   //gibt erste Nachricht des Servers aus
     sendServer(SocketFD, "VERSION 2.1\n", 12);    //sendet die Versionsnummer
     recvServer(SocketFD);   //gibt zweite Nachricht des Servers aus
@@ -108,5 +121,8 @@ void performConnection(int SocketFD, char* gId, char* pId){
         //ausgabe des Spielfeldes
     }
 */
+//SHM lösen
+shmdt(game_data_struct_V2);
+
 
 }
