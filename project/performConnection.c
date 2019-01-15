@@ -65,7 +65,6 @@ while(i<2048){
 if (buffer[i] == 1|2|3|4|5|6|7|8){
 i = Spielfeldreihe(buffer[i],i);
 
-
 }
 }
 }

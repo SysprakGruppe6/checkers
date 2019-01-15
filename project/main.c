@@ -12,6 +12,8 @@
 #include "performConnection.h"
 #include "configParser.h"
 #include "ai.h"
+#include "SHM.h"
+
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
 #include <sys/stat.h> // include für Shared Memory
@@ -22,29 +24,29 @@ int main(int argc, char * argv[])
 {
 
   //struct für Gamedaten
-  typedef struct {
+/*  typedef struct {
   char gameID[13];
   char spielernummer;
   char spielfeld [8][8];
   int anzahl_spieler;
   pid_t pid_child;
   pid_t pid_parent;
-}  gds;
+}  gds; */
 
 //Struct erstellen
 printf("Versuche Struct zu erstellen\n");
-gds *game_data_struct_V2 = malloc(sizeof(gds));
+struct gds *game_data_struct_V2 = malloc(sizeof(game_data_struct_V2));
 game_data_struct_V2->anzahl_spieler = 0;
 printf("Struct erstellt, Spieleranzahl: %i \n",game_data_struct_V2->anzahl_spieler);
 //Test für Shared Memory
-int shm_addr = SHmem(sizeof(gds));
+int shm_addr = SHmem(sizeof(game_data_struct_V2));
 printf("Shared Memory angebunden an %i \n",shm_addr);
 int *SHM = shmat(shm_addr,NULL,0);
-SHM = malloc(sizeof(gds));
+SHM = malloc(sizeof(game_data_struct_V2));
 
 
 //verschieben in SHM
-memmove(SHM,&game_data_struct_V2,sizeof(gds));
+memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 printf("Struct verschoben\n");
 
 //SHM lösen
