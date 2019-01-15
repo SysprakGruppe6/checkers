@@ -33,19 +33,19 @@ int main(int argc, char * argv[])
 
 //Struct erstellen
 printf("Versuche Struct zu erstellen\n");
-gds game_data_struct_V2;
-game_data_struct_V2.anzahl_spieler = 0;
-printf("Struct erstellt, Spieleranzahl: %i \n",game_data_struct_V2.anzahl_spieler);
+gds *game_data_struct_V2 = malloc(sizeof(gds));
+game_data_struct_V2->anzahl_spieler = 0;
+printf("Struct erstellt, Spieleranzahl: %i \n",game_data_struct_V2->anzahl_spieler);
 //Test für Shared Memory
 int shm_addr = SHmem(sizeof(gds));
 printf("Shared Memory angebunden an %i \n",shm_addr);
 int *SHM = shmat(shm_addr,NULL,0);
+SHM = malloc(sizeof(gds));
 
 
 //verschieben in SHM
-int moved = 0;
-//moved = memmove(shmat(shm_addr,NULL,0),&game_data_struct_V2,sizeof(gds));
-printf("Struct verschoben nach %i \n",moved);
+memmove(SHM,&game_data_struct_V2,sizeof(gds));
+printf("Struct verschoben\n");
 
 //SHM lösen
 shmdt(SHM);
@@ -55,11 +55,11 @@ printf("SharedMemory gelöst \n");
 
     if (fork()==0){					//beginn connector
         pid_t parent_id = getppid();			//ID des Elternprozesses
-        game_data_struct_V2.pid_parent = parent_id;
+        game_data_struct_V2->pid_parent = parent_id;
 	pid_t child_id = getpid();			//ID des Kindprozesses
-        game_data_struct_V2.pid_child = child_id;
+        game_data_struct_V2->pid_child = child_id;
 	printf("Prozess IDS:\n");			//testprint
-    	printf("child : %d parent: %d\n",game_data_struct_V2.pid_child,game_data_struct_V2.pid_parent);
+    	printf("child : %d parent: %d\n",child_id,parent_id);
 
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
@@ -67,8 +67,8 @@ printf("SharedMemory gelöst \n");
     char *c = "client.conf";
 
     //daten in struct
-    /*game_data_struct_V2.spielernummer = p;
-    game_data_struct_V2.gameID = g;*/
+    /*game_data_struct_V2->spielernummer = p;
+    game_data_struct_V2->gameID = g;*/
 
     char spanset[] = " ";
 
