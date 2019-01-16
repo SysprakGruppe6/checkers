@@ -10,6 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <netdb.h>
+#include <signal.h>
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
 #include <sys/stat.h> // include für Shared Memory
@@ -112,13 +113,14 @@ printf("SHM Test in PerformConnection - Child PID:%d \n",game_data_struct_V2->pi
     recvServer(SocketFD);
 
 /*
-    while(//irgendwas im shm != -, gameover
+    while(//gamedatastructv2->gameover==0
     ){
         recvServer(SocketFD); //empfangt Spieldaten vom Server
-        kill(SIGUSR1);        //Signal/Denkanstoß für thinker
+        kill(parent_id, SIGUSR1);        //Signal/Denkanstoß für thinker
         read(pipe);           //ließt ergegnis vom thinker
         sendServer(SocketFD, "ZUg im shm", länge spielzug); //sendet Spielzug an Server
         //ausgabe des Spielfeldes
+        recvServer(SocketFD); //empfangt Antwort vom Server
     }
 */
 //SHM lösen

@@ -11,6 +11,7 @@ struct gds {
  int anzahl_spieler;
  pid_t pid_child;
  pid_t pid_parent;
+ int gameover;
 };
 
 

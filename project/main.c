@@ -13,7 +13,7 @@
 #include "configParser.h"
 #include "ai.h"
 #include "SHM.h"
-
+#include <signal.h>
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
 #include <sys/stat.h> // include für Shared Memory
@@ -137,7 +137,7 @@ printf("Struct verschoben\n");
 
 
 
-    //gethostbyname
+    //////////GETHOSTBYNAME//////////
     int l;  //Schleifenvariable für die IP-Liste
     struct hostent *he;
     struct in_addr **addr_list;
@@ -156,12 +156,10 @@ printf("Struct verschoben\n");
     printf("\n");
 
 
-    //Socketvariablen
+    //////////SOCKET//////////
     struct sockaddr_in sa;
     int res;
     int SocketFD;
-
-    //Socket
     SocketFD = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (SocketFD == -1) {
         perror("cannot create socket");
@@ -176,7 +174,7 @@ printf("Struct verschoben\n");
     sa.sin_port = htons(cfg.portNr);
     res = inet_pton(AF_INET, inet_ntoa(*addr_list[0]), &sa.sin_addr);   //konvertiert die ip und speichert sie in &sa.sin_addr
 
-    //connect
+    //////////CONNECT//////////
     if (connect(SocketFD, (struct sockaddr *)&sa, sizeof sa) == -1) {
         perror("connect failed");
         close(SocketFD);
@@ -184,19 +182,28 @@ printf("Struct verschoben\n");
     }
 
 
-    /* perform read write operations ... */
-    performConnection(SocketFD, g, p,shm_addr);      //Protokollphase
+    //////////PROTOKOLLPHASE//////////
+    performConnection(SocketFD, g, p,shm_addr);
 
     shutdown(SocketFD, SHUT_RDWR);
 
     close(SocketFD);
 
     }//ende connector
-    else {//beginn thinker
+    
+    //////////THINKER//////////
+    else {
         printf("i bims eins thinker\n");
-	think();
-  waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
-  printf("thinker out");
+        
+        //SCHLEIFE, DIE SOLANGE DAS SPIEL LAEUFT AUF DEM SIGNAL THINK() AUFRUFT
+        while(game_data_struct_V2->gameover==0){
+            signal(SIGUSR1, my_handler);
+            pause();
+            think();
+        }
+
+        waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
+        printf("thinker out");
     }//end thinker
 
     //SHM lösen

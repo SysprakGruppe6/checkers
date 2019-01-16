@@ -4,6 +4,7 @@
 //#define ai.c
 //struct
 //Functions
+void my_handler (int signum);
 void think();
 
 #endif

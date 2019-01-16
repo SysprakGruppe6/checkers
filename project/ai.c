@@ -11,15 +11,18 @@
 #include <netdb.h>
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
+#include <signal.h>
+
+void my_handler (int signum){
+    if(signum==SIGUSR1){
+        printf("Signal angekommen\n");
+    }
+}
 
 void think(){
 	printf("Am denken ...\n");
-
-	//while(Spiel läuft==wahr){
-		pause();		//wartet auf Signal vom Connector
 		//berechnen des Spielzuges (MS04)
 		//send(Spielzug, pipe);
 		printf("test");
-	//}
 
 }
