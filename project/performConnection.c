@@ -17,7 +17,7 @@
 
 //Funktion zum Ausgeben der erhaltenen Servernachrichten
 // todo: letzte recievte nachricht inm shm abspeichern
-void recvServer(int SocketFD){
+void recvServer(int SocketFD, char* buf){
     int n = 0;
     char buffer[2048];
     memset(buffer, '0',sizeof(buffer));
@@ -27,6 +27,9 @@ void recvServer(int SocketFD){
           printf("%c", buffer[i]);
         }
     printf("\n");
+    for(int i=0; i<2048; i++){
+      buf[i]=buffer[i];
+    }
     memset(buffer, '0',sizeof(buffer));
 }
 
@@ -94,7 +97,37 @@ game_data_struct_V2->anzahl_spieler=1;
 //shmdt(game_data_struct_V2);
 printf("SHM Test in PerformConnection - Child PID:%d \n",game_data_struct_V2->pid_child);
 
-
+//Serverkommunikation
+    char* erhalten;
+    while (1) {
+        recvServer(SocketFD, erhalten);       //empfaengt im jeden durchlauf die Servernachricht
+        if (strncmp(erhalten, "+ MNM Gameserver", 16)==0) {
+            sendServer(SocketFD, "VERSION 2.1\n", 12);    //sendet die Versionsnummer
+        }else
+        if (strncmp(erhalten, "+ Client version accepted", 25)==0) {
+            char* gameId = malloc(sizeof(char)*17);
+            strcpy(gameId, "ID ");
+            strcat(gameId, gId);
+            strcat(gameId, "\n");
+            sendServer(SocketFD, gameId , 17);          //sendet die Game-ID
+        }else
+        if (strncmp(erhalten, "+ PLAYING", 9)==0) {
+        }else
+        if (strncmp(erhalten, "+ Game from", 11)==0) {
+            sendServer(SocketFD, "PLAYER 1\n", 9);      //send player number
+        }else
+        if (strncmp(erhalten, "+ YOU", 5)==0) {
+        }else
+        if (strncmp(erhalten, "+ TOTAL", 7)==0) {
+            sendServer(SocketFD, "THINKING\n", 9);      //sendet thinking
+        }
+        //TO BE CONTINUED
+        if (strncmp(erhalten, "- ", 2)==0) {
+            printf("Fehler bei der Serverkommunikation\n");
+            return;      //sendet thinking
+        }
+    }
+/*
 //Serverkommunikation
     recvServer(SocketFD);   //gibt erste Nachricht des Servers aus
     sendServer(SocketFD, "VERSION 2.1\n", 12);    //sendet die Versionsnummer
@@ -111,7 +144,7 @@ printf("SHM Test in PerformConnection - Child PID:%d \n",game_data_struct_V2->pi
     recvServer(SocketFD);
     sendServer(SocketFD, "THINKING\n", 9);
     recvServer(SocketFD);
-
+*/
 /*
     while(//gamedatastructv2->gameover==0
     ){

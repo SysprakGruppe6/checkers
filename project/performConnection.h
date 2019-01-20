@@ -11,6 +11,6 @@ int SHmem(int size);
 void spielfeldSchreiben(char buffer[2048]);
 int Spielfeldreihe(int reihe,int array);
 void sendServer(int SocketFD, char *nachricht, int laenge);
-void recvServer(int SocketFD);
+void recvServer(int SocketFD, char* buf);
 
 #endif
