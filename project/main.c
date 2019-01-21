@@ -12,7 +12,6 @@
 #include "performConnection.h"
 #include "configParser.h"
 #include "ai.h"
-#include "SHM.h"
 #include <signal.h>
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
@@ -183,18 +182,18 @@ printf("Struct verschoben\n");
 
 
     //////////PROTOKOLLPHASE//////////
-    performConnection(SocketFD, g, p,shm_addr);
-
+    performConnection(SocketFD, g, p,shm_addr,game_data_struct_V2);
+    printf("Testprint in der Main %d",game_data_struct_V2->gameover);
     shutdown(SocketFD, SHUT_RDWR);
 
     close(SocketFD);
 
     }//ende connector
-    
+
     //////////THINKER//////////
     else {
         printf("i bims eins thinker\n");
-        
+
         //SCHLEIFE, DIE SOLANGE DAS SPIEL LAEUFT AUF DEM SIGNAL THINK() AUFRUFT
         while(game_data_struct_V2->gameover==0){
             signal(SIGUSR1, my_handler);
@@ -209,6 +208,7 @@ printf("Struct verschoben\n");
     //SHM lösen
     shmdt(SHM);
     printf("SharedMemory gelöst \n");
+
 
     return EXIT_SUCCESS;
 }

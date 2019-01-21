@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "performConnection.h"
-#include "SHM.h"
+//#include "SHM.h"
 //benoetigt mehr includes
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -84,9 +84,11 @@ return array+8;
 
 
 //Funktion welche die Protokollphase ausführt
-void performConnection(int SocketFD, char* gId, char* pId, int shmid){
+void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2){
+game_data_struct_V2->gameover=2;
+printf("Test für Struct-Übergabe %d \n",game_data_struct_V2->gameover);
+/*
 //SHM anbinden
-
 struct gds *game_data_struct_V2 = shmat(shmid,NULL,0);
 game_data_struct_V2=malloc(sizeof(game_data_struct_V2));
 //game_data_struct_V2 = shmat(shmid,NULL,0);
@@ -95,11 +97,11 @@ game_data_struct_V2=malloc(sizeof(game_data_struct_V2));
 //SHM testen
 game_data_struct_V2->anzahl_spieler=1;
 //shmdt(game_data_struct_V2);
-printf("SHM Test in PerformConnection - Child PID:%d \n",game_data_struct_V2->pid_child);
+printf("SHM Test in PerformConnection - Child PID:%d \n",game_data_struct_V2->pid_child);*/
 
 //Serverkommunikation
     char* erhalten;
-    while (1) {
+  /*  while (1) {
         recvServer(SocketFD, erhalten);       //empfaengt im jeden durchlauf die Servernachricht
         if (strncmp(erhalten, "+ MNM Gameserver", 16)==0) {
             sendServer(SocketFD, "VERSION 2.1\n", 12);    //sendet die Versionsnummer
@@ -126,7 +128,7 @@ printf("SHM Test in PerformConnection - Child PID:%d \n",game_data_struct_V2->pi
             printf("Fehler bei der Serverkommunikation\n");
             return;      //sendet thinking
         }
-    }
+    }*/
 /*
 //Serverkommunikation
     recvServer(SocketFD);   //gibt erste Nachricht des Servers aus
@@ -157,7 +159,7 @@ printf("SHM Test in PerformConnection - Child PID:%d \n",game_data_struct_V2->pi
     }
 */
 //SHM lösen
-shmdt(game_data_struct_V2);
+//shmdt(game_data_struct_V2);
 
 
 }
