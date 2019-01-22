@@ -9,7 +9,6 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <getopt.h>
-#include "performConnection.h"
 #include "configParser.h"
 #include "ai.h"
 #include <signal.h>
@@ -186,8 +185,8 @@ printf("Struct verschoben\n");
         while(game_data_struct_V2->gameover==0){
             signal(SIGUSR1, my_handler);
             pause();
-            think();
-//             write(pfd[1], , );//Schreibt Testmove in die pipe
+            think(game_data_struct_V2);
+            write(pfd[1], game_data_struct_V2->currentMove, sizeof(game_data_struct_V2->currentMove));//Schreibt Testmove in die pipe
         }
 
         waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
