@@ -38,11 +38,13 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 printf("Struct verschoben\n");
 
 
-
+    int pfd[2];
+    pipe(pfd);
 
     if (fork()==0){					//beginn connector
         pid_t parent_id = getppid();			//ID des Elternprozesses
         game_data_struct_V2->pid_parent = parent_id;
+        close(pfd[1]);           //Schliessen der Schreibseite der pipe
 	pid_t child_id = getpid();			//ID des Kindprozesses
         game_data_struct_V2->pid_child = child_id;
 	printf("Prozess IDS:\n");			//testprint
@@ -178,12 +180,14 @@ printf("Struct verschoben\n");
     //////////THINKER//////////
     else {
         printf("i bims eins thinker\n");
+        close(pfd[0]);// Schliessen der Leseseite
 
         //SCHLEIFE, DIE SOLANGE DAS SPIEL LAEUFT AUF DEM SIGNAL THINK() AUFRUFT
         while(game_data_struct_V2->gameover==0){
             signal(SIGUSR1, my_handler);
             pause();
             think();
+//             write(pfd[1], , );//Schreibt Testmove in die pipe
         }
 
         waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
