@@ -80,24 +80,10 @@ for (int i=0; i<8; i++) {
 return array+8;
 }
 
-
-
-
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2){
 game_data_struct_V2->gameover=2;
 printf("Test für Struct-Übergabe %d \n",game_data_struct_V2->gameover);
-/*
-//SHM anbinden
-struct gds *game_data_struct_V2 = shmat(shmid,NULL,0);
-game_data_struct_V2=malloc(sizeof(game_data_struct_V2));
-//game_data_struct_V2 = shmat(shmid,NULL,0);
-
-
-//SHM testen
-game_data_struct_V2->anzahl_spieler=1;
-//shmdt(game_data_struct_V2);
-printf("SHM Test in PerformConnection - Child PID:%d \n",game_data_struct_V2->pid_child);*/
 
 //Serverkommunikation
     char* erhalten;

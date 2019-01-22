@@ -21,17 +21,6 @@
 
 int main(int argc, char * argv[])
 {
-
-  //struct für Gamedaten
-/*  typedef struct {
-  char gameID[13];
-  char spielernummer;
-  char spielfeld [8][8];
-  int anzahl_spieler;
-  pid_t pid_child;
-  pid_t pid_parent;
-}  gds; */
-
 //Struct erstellen
 printf("Versuche Struct zu erstellen\n");
 struct gds *game_data_struct_V2 = malloc(sizeof(game_data_struct_V2));
@@ -63,10 +52,6 @@ printf("Struct verschoben\n");
     char *g;        //Variable für die Game-ID
     char *p;        //Variable für die Spielernummer
     char *c = "client.conf";
-
-    //daten in struct
-    /*game_data_struct_V2->spielernummer = p;
-    game_data_struct_V2->gameID = g;*/
 
     char spanset[] = " ";
 
