@@ -86,7 +86,7 @@ game_data_struct_V2->gameover=2;
 printf("Test für Struct-Übergabe %d \n",game_data_struct_V2->gameover);
 
 //Serverkommunikation
-    char* erhalten;
+    char* erhalten=malloc(sizeof(char[2048]));
     while (1) {
         recvServer(SocketFD, erhalten);       //empfaengt im jeden durchlauf die Servernachricht
         if (strncmp(erhalten, "+ MNM Gameserver", 16)==0) {
