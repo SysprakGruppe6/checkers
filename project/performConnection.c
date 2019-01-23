@@ -64,26 +64,27 @@ int SHmem(int size){
 //Funktion um Spielfeld in SHM übertragen
 void spielfeldSchreiben(char buffer[2048],struct gds *game_data_struct_V2){
 for(int i=0;i<2048;i++){
-if (buffer[i] == '7'){
-  int reihe = buffer[i] - '0';
-  printf("Wir sind in der Schleife %d",reihe);
+if (
+(buffer[i] == '1'||buffer[i] == '2'||buffer[i] == '3'||buffer[i] == '4'||buffer[i] == '5'||buffer[i] == '6'||buffer[i] == '7'||buffer[i] == '8' )
+&&
+(buffer[i+2] == '*'||buffer[i+2] == 'b'||buffer[i+2] == 'w')
+){
 
+  int reihe = buffer[i] - '0';
   for (int j=0; j<16; j=j+1) {
     int k = 2;
   game_data_struct_V2->spielfeld[j][reihe-1]=buffer[i+j+k];
-  printf("%c",game_data_struct_V2->spielfeld[reihe-1][j]);
   k=k+1;
   }
-
 }
 }
 }
 
 //Print Spielfeld
 void Spielfeldausgabe (char feld[15][8]){
-  printf("Spielfeld Anfang\n");
-  for (int i = 0; i<8; i++){
-          printf("%d",i+1);
+  printf("Spielfeld Clientside\n");
+  for (int i = 7; i>=0; i--){
+          printf("%d ",i+1);
     for (int j = 0; j<15; j++){
       printf("%c",feld[j][i]);
     }
@@ -94,14 +95,14 @@ printf("Spielfeld Ende\n");
 
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2){
-printf("TEZZT %d",game_data_struct_V2->gameover);
+//printf("TEZZT %d",game_data_struct_V2->gameover);
 game_data_struct_V2->gameover = 1;
    for (int i = 0; i<15; i++){
      for (int j = 0; j<8; j++){
-         game_data_struct_V2->spielfeld[j][i]='*';
+         game_data_struct_V2->spielfeld[i][j]='*';
      }
    }
- Spielfeldausgabe(game_data_struct_V2->spielfeld);
+ //Spielfeldausgabe(game_data_struct_V2->spielfeld);
 //Serverkommunikation
     char* erhalten=malloc(sizeof(char[2048]));
     while (game_data_struct_V2->gameover==1) {
