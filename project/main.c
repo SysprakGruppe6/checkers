@@ -35,14 +35,16 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
     int pfd[2];
     pipe(pfd);
 
+    game_data_struct_V2->gameover=1;
+
     if (fork()==0){					//beginn connector
-        pid_t parent_id = getppid();			//ID des Elternprozesses
-        game_data_struct_V2->pid_parent = parent_id;
-        close(pfd[1]);           //Schliessen der Schreibseite der pipe
-	pid_t child_id = getpid();			//ID des Kindprozesses
-        game_data_struct_V2->pid_child = child_id;
-	printf("Prozess IDS:\n");			//testprint
-    	printf("child : %d parent: %d\n",game_data_struct_V2->pid_child,game_data_struct_V2->pid_parent);
+         pid_t parent_id = getppid();			//ID des Elternprozesses
+         game_data_struct_V2->pid_parent = parent_id;
+         close(pfd[1]);           //Schliessen der Schreibseite der pipe
+	       pid_t child_id = getpid();			//ID des Kindprozesses
+         game_data_struct_V2->pid_child = child_id;
+	       printf("Prozess IDS:\n");			//testprint
+    	   printf("child : %d parent: %d\n",game_data_struct_V2->pid_child,game_data_struct_V2->pid_parent);
 
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
@@ -161,7 +163,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
     //////////PROTOKOLLPHASE//////////
     game_data_struct_V2->gameover = 1;
-    performConnection(SocketFD, g, p,shm_addr,game_data_struct_V2);
+    performConnection(SocketFD, g, p,shm_addr,game_data_struct_V2, pfd[0]);
     printf("Testprint in der Main %d",game_data_struct_V2->gameover);
     shutdown(SocketFD, SHUT_RDWR);
 
@@ -174,12 +176,14 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
         printf("i bims eins thinker\n");
         close(pfd[0]);// Schliessen der Leseseite
 
+        char test[9]="PiPeTeSt\n";
         //SCHLEIFE, DIE SOLANGE DAS SPIEL LAEUFT AUF DEM SIGNAL THINK() AUFRUFT
-        while(game_data_struct_V2->gameover==0){
+        while(game_data_struct_V2->gameover==1){
             signal(SIGUSR1, my_handler);
             pause();
             think(game_data_struct_V2);
-            write(pfd[1], game_data_struct_V2->currentMove, sizeof(game_data_struct_V2->currentMove));//Schreibt Testmove in die pipe
+            write(pfd[1], test, sizeof(test));
+//            write(pfd[1], game_data_struct_V2->currentMove, sizeof(game_data_struct_V2->currentMove));//Schreibt Testmove in die pipe
         }
 
         waitpid(-1, NULL, 0); //Wartet auf ende des Connectors

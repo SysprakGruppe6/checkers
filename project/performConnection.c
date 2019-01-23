@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "performConnection.h"
-//#include "SHM.h"
+#include <wait.h>
 //benoetigt mehr includes
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -93,91 +93,86 @@ void Spielfeldausgabe (char feld[15][8]){
 printf("Spielfeld Ende\n");
 }
 
-//Funktion welche die Protokollphase ausführt
-void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2){
-//printf("TEZZT %d",game_data_struct_V2->gameover);
-game_data_struct_V2->gameover = 1;
+
+ //Funktion welche die Protokollphase ausführt
+ void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2, int pipe){
+
    for (int i = 0; i<15; i++){
      for (int j = 0; j<8; j++){
          game_data_struct_V2->spielfeld[i][j]='*';
      }
-   }
- //Spielfeldausgabe(game_data_struct_V2->spielfeld);
-//Serverkommunikation
-    char* erhalten=malloc(sizeof(char[2048]));
-    while (game_data_struct_V2->gameover==1) {
-        recvServer(SocketFD, erhalten);       //empfaengt im jeden durchlauf die Servernachricht
-        /////PROTOKOLLPHASE-PROLOG/////
-        if (strncmp(erhalten, "+ MNM Gameserver", 16)==0) {
-            sendServer(SocketFD, "VERSION 2.1\n", 12);
-        }else
-        if (strncmp(erhalten, "+ Client version accepted", 25)==0) {
-            char* gameId = malloc(sizeof(char)*17);
-            strcpy(gameId, "ID ");
-            strcat(gameId, gId);
-            strcat(gameId, "\n");
-            sendServer(SocketFD, gameId , 17);
-        }else
-        if (strncmp(erhalten, "+ PLAYING", 9)==0) {
-        }else
-        if (strncmp(erhalten, "+ Game from", 11)==0) {
-            sendServer(SocketFD, "PLAYER 1\n", 9);
-        }else
-        if (strncmp(erhalten, "+ YOU", 5)==0) {
-            //SPIELERNUMMER AUSLESEN
-        }else
-        if (strncmp(erhalten, "+ TOTAL", 7)==0) {
-            sendServer(SocketFD, "THINKING\n", 9);
-            spielfeldSchreiben(erhalten,game_data_struct_V2);
-            Spielfeldausgabe(game_data_struct_V2->spielfeld);
-            //1.Zug HARDCODE
-        }
+}
+
+ //Serverkommunikation
+     char* erhalten=malloc(sizeof(char[2048]));//BUFFER fuer erhaltene Nachrichten
+     char* pipebuffer=malloc(sizeof(char[64]));//BUFFER für die PIPE
+     strcpy(pipebuffer, "");
+     while (game_data_struct_V2->gameover==1) {
+         recvServer(SocketFD, erhalten);       //empfaengt im jeden durchlauf die Servernachricht
+         /////PROTOKOLLPHASE-PROLOG/////
+         if (strncmp(erhalten, "+ MNM Gameserver", 16)==0) {
+             sendServer(SocketFD, "VERSION 2.1\n", 12);
+         }else
+         if (strncmp(erhalten, "+ Client version accepted", 25)==0) {
+             char* gameId = malloc(sizeof(char)*17);
+             strcpy(gameId, "ID ");
+             strcat(gameId, gId);
+             strcat(gameId, "\n");
+             sendServer(SocketFD, gameId , 17);
+         }else
+         if (strncmp(erhalten, "+ PLAYING", 9)==0) {
+         }else
+         if (strncmp(erhalten, "+ Game from", 11)==0) {
+             sendServer(SocketFD, "PLAYER 1\n", 9);
+             //Wunschpiuelernummer aus shm senden
+         }else
+         if (strncmp(erhalten, "+ YOU", 5)==0) {
+             //SPIELERNUMMER AUSLESEN
+         }else
+         if (strncmp(erhalten, "+ TOTAL", 7)==0) {
+           spielfeldSchreiben(erhalten,game_data_struct_V2);
+           Spielfeldausgabe(game_data_struct_V2->spielfeld);
+             sendServer(SocketFD, "THINKING\n", 9);
+             //Spielfeld in shm stopfen
+         }else
+         if(strncmp(erhalten, "+ OKTHINK", 9)==0){
+
+             kill(getppid(), SIGUSR1);       //Signal/Denkanstoß für thinker
+             read(pipe, pipebuffer, 64);
+             //laenge des Spielzuges berechnen
+             //sendServer();
+             //1.Zug Hell -> HARDCODE C3:D4
+             // sonstiger ZUG -> KI
+         }
 
 
-        /////IDLE-BEFEHLSSEQUENZ/////
-        else if (strncmp(erhalten, "+ WAIT", 6)==0){
-            sendServer(SocketFD, "OKWAIT\n", 6);
-        }
-        /////MOVE-BEFEHLSSEQUENZ/////
-        else if (strncmp(erhalten, "+ MOVE", 6)==0){
-            //SPIELFELD LESEN UND SIGNAL AN THINKER
-        }
+         /////IDLE-BEFEHLSSEQUENZ/////
+         else if (strncmp(erhalten, "+ WAIT", 6)==0){
+             sendServer(SocketFD, "OKWAIT\n", 6);
+         }
 
-        /////GAMEOVER-BEFEHLSSEQUENZ/////
-        else if (strncmp(erhalten, "+ GAMEOVER", 10)==0){
-            printf("Spiel vorbei!\n");
-            game_data_struct_V2->gameover=0;
+         /*/////MOVE-BEFEHLSSEQUENZ/////
+         else if (strncmp(erhalten, "+ MOVE", 6)==0){
 
-        }
+             //SPIELFELD LESEN UND SIGNAL AN THINKER
+         }
+         */
+         /////GAMEOVER-BEFEHLSSEQUENZ/////
+         else if (strncmp(erhalten, "+ GAMEOVER", 10)==0){
+             printf("Spiel vorbei!\n");
+             game_data_struct_V2->gameover=0;
+         }
 
-        /////REAKTION AUF SERVER-FEHLERMELDUNG/////
-        else if (strncmp(erhalten, "- ", 2)==0) {
-            printf("Fehler bei der Serverkommunikation\n");
-            printf("Spiel automatisch verloren!\n");
-            game_data_struct_V2->gameover=0;
-        }
-        //CASE FUER LEERE NACHRICHT VOM Server
-        //EVTL MIT LOOP COUNTER
-        //UM DAUERSCHLEIFE ZU VERHINDERN
-    }
-/*
-//Serverkommunikation
-    recvServer(SocketFD);   //gibt erste Nachricht des Servers aus
-    sendServer(SocketFD, "VERSION 2.1\n", 12);    //sendet die Versionsnummer
-    recvServer(SocketFD);   //gibt zweite Nachricht des Servers aus
-    char* gameId = malloc(sizeof(char)*17);
-    strcpy(gameId, "ID ");
-    strcat(gameId, gId);
-    strcat(gameId, "\n");
-    sendServer(SocketFD, gameId , 17);    //sendet die ID
-    recvServer(SocketFD);   //gibt dritte Nachricht des Servers aus
-    recvServer(SocketFD);
-    sendServer(SocketFD, "PLAYER 1\n", 9); //send player number
-    recvServer(SocketFD);
-    recvServer(SocketFD);
-    sendServer(SocketFD, "THINKING\n", 9);
-    recvServer(SocketFD);
-*/
+         /////REAKTION AUF SERVER-FEHLERMELDUNG/////
+         else if (strncmp(erhalten, "- ", 2)==0) {
+             printf("Fehler bei der Serverkommunikation\n");
+             printf("Spiel automatisch verloren!\n");
+             game_data_struct_V2->gameover=0;
+         }
+         //CASE FUER LEERE NACHRICHT VOM Server
+         //EVTL MIT LOOP COUNTER
+         //UM DAUERSCHLEIFE ZU VERHINDERN
+     }
 /*
     while(//gamedatastructv2->gameover==0
     ){
@@ -189,8 +184,5 @@ game_data_struct_V2->gameover = 1;
         recvServer(SocketFD); //empfangt Antwort vom Server
     }
 */
-//SHM lösen
-//shmdt(game_data_struct_V2);
-
 
 }

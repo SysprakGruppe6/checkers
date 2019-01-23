@@ -24,10 +24,10 @@ void think(struct gds *game_data_struct_V2){
     //Test-Spielzug
     char testMoveW[64];
     strcpy(testMoveW, "A3:B4\n");
-        
+
     char testMoveB[64];
     strcpy(testMoveW, "B6:A5\n");
-    
+
     if(game_data_struct_V2->spielernummer=='1'){
         strcpy(game_data_struct_V2->currentMove, testMoveW);
         memset(testMoveW, 0, 64);
@@ -37,6 +37,6 @@ void think(struct gds *game_data_struct_V2){
         memset(testMoveB, 0, 64);
     }
 
-    printf("test");
+    printf("test\n");
 
 }
