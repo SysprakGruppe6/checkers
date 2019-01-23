@@ -15,6 +15,9 @@ sysprak-client: $(OBJ)
 tmp/%.o: project/%.c
 	$(CC) $(FLAGS) -c -o $@ $<
 
+play:	sysprak-client
+	./sysprak-client -g $(GAME_ID) -p $(PLAYER)
+	
 .PHONY : clean
 clean:
 	-rm sysprak-client tmp/*
