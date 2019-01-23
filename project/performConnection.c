@@ -82,38 +82,62 @@ return array+8;
 
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2){
-game_data_struct_V2->gameover=2;
-printf("Test für Struct-Übergabe %d \n",game_data_struct_V2->gameover);
+game_data_struct_V2->gameover=1;
 
 //Serverkommunikation
     char* erhalten=malloc(sizeof(char[2048]));
-    while (1) {
+    while (game_data_struct_V2->gameover==1) {
         recvServer(SocketFD, erhalten);       //empfaengt im jeden durchlauf die Servernachricht
+        /////PROTOKOLLPHASE-PROLOG/////
         if (strncmp(erhalten, "+ MNM Gameserver", 16)==0) {
-            sendServer(SocketFD, "VERSION 2.1\n", 12);    //sendet die Versionsnummer
+            sendServer(SocketFD, "VERSION 2.1\n", 12);
         }else
         if (strncmp(erhalten, "+ Client version accepted", 25)==0) {
             char* gameId = malloc(sizeof(char)*17);
             strcpy(gameId, "ID ");
             strcat(gameId, gId);
             strcat(gameId, "\n");
-            sendServer(SocketFD, gameId , 17);          //sendet die Game-ID
+            sendServer(SocketFD, gameId , 17);
         }else
         if (strncmp(erhalten, "+ PLAYING", 9)==0) {
         }else
         if (strncmp(erhalten, "+ Game from", 11)==0) {
-            sendServer(SocketFD, "PLAYER 1\n", 9);      //send player number
+            sendServer(SocketFD, "PLAYER 1\n", 9);
         }else
         if (strncmp(erhalten, "+ YOU", 5)==0) {
+            //SPIELERNUMMER AUSLESEN
         }else
         if (strncmp(erhalten, "+ TOTAL", 7)==0) {
-            sendServer(SocketFD, "THINKING\n", 9);      //sendet thinking
+            sendServer(SocketFD, "THINKING\n", 9);
+            //1.Zug HARDCODE
         }
-        //TO BE CONTINUED
-        if (strncmp(erhalten, "- ", 2)==0) {
+
+
+        /////IDLE-BEFEHLSSEQUENZ/////
+        else if (strncmp(erhalten, "+ WAIT", 6)==0){
+            sendServer(SocketFD, "OKWAIT\n", 6);
+        }
+        /////MOVE-BEFEHLSSEQUENZ/////
+        else if (strncmp(erhalten, "+ MOVE", 6)==0){
+            //SPIELFELD LESEN UND SIGNAL AN THINKER
+        }
+
+        /////GAMEOVER-BEFEHLSSEQUENZ/////
+        else if (strncmp(erhalten, "+ GAMEOVER", 10)==0){
+            printf("Spiel vorbei!\n");
+            game_data_struct_V2->gameover=0;
+
+        }
+
+        /////REAKTION AUF SERVER-FEHLERMELDUNG/////
+        else if (strncmp(erhalten, "- ", 2)==0) {
             printf("Fehler bei der Serverkommunikation\n");
-            return;      //sendet thinking
+            printf("Spiel automatisch verloren!\n");
+            game_data_struct_V2->gameover=0;
         }
+        //CASE FUER LEERE NACHRICHT VOM Server
+        //EVTL MIT LOOP COUNTER
+        //UM DAUERSCHLEIFE ZU VERHINDERN
     }
 /*
 //Serverkommunikation
