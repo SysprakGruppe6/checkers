@@ -94,6 +94,7 @@ printf("Spielfeld Ende\n");
 
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2){
+printf("TEZZT %d",game_data_struct_V2->gameover);
 game_data_struct_V2->gameover = 1;
    for (int i = 0; i<8; i++){
      for (int j = 0; j<8; j++){

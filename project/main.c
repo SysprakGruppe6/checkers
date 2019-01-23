@@ -161,6 +161,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
 
     //////////PROTOKOLLPHASE//////////
+    game_data_struct_V2->gameover = 1;
     performConnection(SocketFD, g, p,shm_addr,game_data_struct_V2);
     printf("Testprint in der Main %d",game_data_struct_V2->gameover);
     shutdown(SocketFD, SHUT_RDWR);
