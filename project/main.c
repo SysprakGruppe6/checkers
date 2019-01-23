@@ -21,21 +21,17 @@
 int main(int argc, char * argv[])
 {
 //Struct erstellen
-printf("Versuche Struct zu erstellen\n");
+printf("\n"); //ACHTUNG NICHT LÖSCHEN
 struct gds *game_data_struct_V2 = malloc(sizeof(game_data_struct_V2));
 game_data_struct_V2->anzahl_spieler = 0;
-printf("Struct erstellt, Spieleranzahl: %i \n",game_data_struct_V2->anzahl_spieler);
 //Test für Shared Memory
 int shm_addr = SHmem(sizeof(game_data_struct_V2));
 printf("Shared Memory angebunden an %i \n",shm_addr);
 int *SHM = shmat(shm_addr,NULL,0);
 SHM = malloc(sizeof(game_data_struct_V2));
 
-
 //verschieben in SHM
 memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
-printf("Struct verschoben\n");
-
 
     int pfd[2];
     pipe(pfd);
@@ -111,14 +107,11 @@ printf("Struct verschoben\n");
 
     //config parameters
     struct parameters cfg = read_cfg(c);
-
-    printf("\n\n\n TEST\n\n\n");
     printf(cfg.hostName);
     printf("\n");
     printf("%d", cfg.portNr);
     printf("\n");
     printf(cfg.gameType);
-    printf("\n\n\n TEST\n\n\n");
 
 
 
