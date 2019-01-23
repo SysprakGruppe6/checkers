@@ -79,11 +79,32 @@ for (int i=0; i<8; i++) {
 }
 return array+8;
 }
+//Print Spielfeld
+void Spielfeldausgabe (char feld[8][8]){
+  printf("Spielfeld Anfang\n");
+  for (int i = 0; i<8; i++){
+          printf("%d",i);
+    for (int j = 0; j<8; j++){
+      char stein = feld[j][i];
+      printf(" %c ",stein);
+    }
+    printf("\n");
+  }
+printf("Spielfeld Ende\n");
+}
 
 //Funktion welche die Protokollphase ausführt
 void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2){
-game_data_struct_V2->gameover=1;
-
+game_data_struct_V2->gameover = 1;
+  printf("Spielfeldreset gestartet\n");
+   for (int i = 0; i<8; i++){
+     for (int j = 0; j<8; j++){
+         game_data_struct_V2->spielfeld[j][i]='*';
+     }
+   }
+ printf("Spielfeldreset Ende\n");
+ printf("Test für Spielfeld-Übergabe\n");
+ Spielfeldausgabe(game_data_struct_V2->spielfeld);
 //Serverkommunikation
     char* erhalten=malloc(sizeof(char[2048]));
     while (game_data_struct_V2->gameover==1) {

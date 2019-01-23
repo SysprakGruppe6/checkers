@@ -11,6 +11,7 @@ void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds 
 int SHmem(int size);
 void spielfeldSchreiben(char buffer[2048]);
 int Spielfeldreihe(int reihe,int array);
+void Spielfeldausgabe (char feld[8][8]);
 void sendServer(int SocketFD, char *nachricht, int laenge);
 void recvServer(int SocketFD, char* buf);
 
