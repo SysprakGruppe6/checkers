@@ -26,7 +26,6 @@ struct gds *game_data_struct_V2 = malloc(sizeof(game_data_struct_V2));
 game_data_struct_V2->anzahl_spieler = 0;
 //Test für Shared Memory
 int shm_addr = SHmem(sizeof(game_data_struct_V2));
-printf("Shared Memory angebunden an %i \n",shm_addr);
 int *SHM = shmat(shm_addr,NULL,0);
 SHM = malloc(sizeof(game_data_struct_V2));
 

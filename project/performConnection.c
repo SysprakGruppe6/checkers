@@ -62,30 +62,30 @@ int SHmem(int size){
 }
 
 //Funktion um Spielfeld in SHM übertragen
-void spielfeldSchreiben(char buffer[2048]){
-int i = 0;
-while(i<2048){
-if (buffer[i] == 1|2|3|4|5|6|7|8){
-i = Spielfeldreihe(buffer[i],i);
+void spielfeldSchreiben(char buffer[2048],struct gds *game_data_struct_V2){
+for(int i=0;i<2048;i++){
+if (buffer[i] == '7'){
+  int reihe = buffer[i] - '0';
+  printf("Wir sind in der Schleife %d",reihe);
+
+  for (int j=0; j<16; j=j+1) {
+    int k = 2;
+  game_data_struct_V2->spielfeld[j][reihe-1]=buffer[i+j+k];
+  printf("%c",game_data_struct_V2->spielfeld[reihe-1][j]);
+  k=k+1;
+  }
 
 }
 }
 }
 
-//Linie de Spielfeld in SHmem
-int Spielfeldreihe(int reihe,int array){
-for (int i=0; i<8; i++) {
-//game_data_struct_V2->spielfeld[reihe-1][i];
-}
-return array+8;
-}
 //Print Spielfeld
-void Spielfeldausgabe (char feld[8][8]){
+void Spielfeldausgabe (char feld[15][8]){
   printf("Spielfeld Anfang\n");
   for (int i = 0; i<8; i++){
-          printf("%d",i);
-    for (int j = 0; j<8; j++){
-      printf(" %c ",feld[j][i]);
+          printf("%d",i+1);
+    for (int j = 0; j<15; j++){
+      printf("%c",feld[j][i]);
     }
     printf("\n");
   }
@@ -96,7 +96,7 @@ printf("Spielfeld Ende\n");
 void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2){
 printf("TEZZT %d",game_data_struct_V2->gameover);
 game_data_struct_V2->gameover = 1;
-   for (int i = 0; i<8; i++){
+   for (int i = 0; i<15; i++){
      for (int j = 0; j<8; j++){
          game_data_struct_V2->spielfeld[j][i]='*';
      }
@@ -127,6 +127,8 @@ game_data_struct_V2->gameover = 1;
         }else
         if (strncmp(erhalten, "+ TOTAL", 7)==0) {
             sendServer(SocketFD, "THINKING\n", 9);
+            spielfeldSchreiben(erhalten,game_data_struct_V2);
+            Spielfeldausgabe(game_data_struct_V2->spielfeld);
             //1.Zug HARDCODE
         }
 
