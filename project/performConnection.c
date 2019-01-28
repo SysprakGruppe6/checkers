@@ -132,7 +132,7 @@ return i;
 }
 
  //Funktion welche die Protokollphase ausführt
- void performConnection(int SocketFD, char* gId, char pId, int shmid,struct gds *game_data_struct_V2, int pipe){
+ void performConnection(int SocketFD, struct gds *game_data_struct_V2, int pipe){
 
    for (int i = 0; i<15; i++){
         for (int j = 0; j<8; j++){
@@ -154,7 +154,7 @@ return i;
             if (strncmp(erhalten, "+ Client version accepted", 25)==0) {
                 char* gameId = malloc(sizeof(char)*17);
                 strcpy(gameId, "ID ");
-                strcat(gameId, gId);
+                strncat(gameId, game_data_struct_V2->gameID, 13);
                 strcat(gameId, "\n");
                 sendServer(SocketFD, gameId , 17);
             }else
@@ -197,7 +197,7 @@ return i;
                  protokollphasenendenchecker=0;
                }
 
-                kill(getppid(), SIGUSR1);       //Signal/Denkanstoß für thinker
+                kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
                 read(pipe, pipebuffer, 64);
                 //laenge des Spielzuges berechnen
                 //sendServer(); Spielzug
