@@ -18,9 +18,9 @@ void my_handler (int signum){
         printf("Signal angekommen\n");
     }
 }
-
+/*
  //Gibt den "Inhalt" einer Position aus
- char getSpielstein(int pos, struct gds *game_data_struct_V2){
+/* char getSpielstein(int pos, struct gds *game_data_struct_V2){
    return game_data_struct_V2->spielfeld[pos][1];
  }
 
@@ -109,7 +109,7 @@ int compare(int pos1, int pos2, struct gds *game_data_struct_V2){
 //       return 0;
 //   }
 // }
-
+*/
 void think(struct gds *game_data_struct_V2){
 	printf("Am denken ...\n");
     //Test-Spielzug

@@ -100,20 +100,29 @@ game_data_struct_V2->spielfeld[(SpielfeldUmwandeln(Zug[i-1]))][(Zug[i])]='X';//H
 
 //Spielfeldausgabe?
 }
-
+*/
 //Print Spielfeld
-void Spielfeldausgabe (char feld[15][8]){
+void Spielfeldausgabe (char feld[32]){
   printf("Spielfeld Clientside\n");
-  for (int i = 7; i>=0; i--){
+  int x = 0;
+  for (int i = 0; i<8; i++){
           printf("%d ",i+1);
-    for (int j = 0; j<15; j++){
-      printf("%c",feld[j][i]);
+    for (int j = 1; j<5; j++){
+      if((i%2)==0){
+          printf(" %c  ~ ",feld[i+j]);
+      }
+      else{
+        printf(" ~  %c ",feld[i+j]);
+
+      }
     }
     printf("\n");
   }
 printf("Spielfeld Ende\n");
 }
 
+
+/*
 //Spielfeld Buchstaben Umwandeln
 int SpielfeldUmwandeln(char eingabe){
 int i = 0;
@@ -134,13 +143,11 @@ return i;
 */
  //Funktion welche die Protokollphase ausführt
  void performConnection(int SocketFD, struct gds *game_data_struct_V2, int pipe){
-/*
-   for (int i = 0; i<15; i++){
-        for (int j = 0; j<8; j++){
-         game_data_struct_V2->spielfeld[i][j]='*';
-        }
+    for (int i = 1; i<33; i++){
+      game_data_struct_V2->spielfeld[i]='*';
+
     }
-*/
+Spielfeldausgabe(game_data_struct_V2->spielfeld);
     //Serverkommunikation
         char* erhalten=malloc(sizeof(char[2048]));//BUFFER fuer erhaltene Nachrichten
         char* pipebuffer=malloc(sizeof(char[64]));//BUFFER für die PIPE
