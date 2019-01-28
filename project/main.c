@@ -48,7 +48,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
-    char *p;        //Variable für die Spielernummer
+    char p;        //Variable für die Spielernummer
     char *c = "client.conf";
 
     char spanset[] = " ";
@@ -82,7 +82,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
                     printf(MSG);
                     return -1;
                 }
-                p=optarg;
+                p=optarg[0]-1;
                 break;
 
             case 'c':
@@ -105,7 +105,11 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
         }
 
     }
-
+    
+    //Put command line parameters into SMH
+    game_data_struct_V2->spielernummer=p;
+    strcpy(game_data_struct_V2->gameID, g);
+    
     //config parameters
     struct parameters cfg = read_cfg(c);
     printf(cfg.hostName);

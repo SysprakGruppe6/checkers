@@ -95,13 +95,13 @@ printf("Spielfeld Ende\n");
 
 
  //Funktion welche die Protokollphase ausführt
- void performConnection(int SocketFD, char* gId, char* pId, int shmid,struct gds *game_data_struct_V2, int pipe){
+ void performConnection(int SocketFD, char* gId, char pId, int shmid,struct gds *game_data_struct_V2, int pipe){
 
    for (int i = 0; i<15; i++){
-     for (int j = 0; j<8; j++){
+        for (int j = 0; j<8; j++){
          game_data_struct_V2->spielfeld[i][j]='*';
-     }
-}
+        }
+    }
 
  //Serverkommunikation
      char* erhalten=malloc(sizeof(char[2048]));//BUFFER fuer erhaltene Nachrichten
