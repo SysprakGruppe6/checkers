@@ -22,7 +22,8 @@ int main(int argc, char * argv[])
 {
 //Struct erstellen
 printf("\n"); //ACHTUNG NICHT LÖSCHEN
-struct gds *game_data_struct_V2 = malloc(sizeof(game_data_struct_V2));
+struct gds *game_data_struct_V2;
+game_data_struct_V2 = malloc(sizeof(struct gds));
 game_data_struct_V2->anzahl_spieler = 0;
 //Test für Shared Memory
 int shm_addr = SHmem(sizeof(game_data_struct_V2));
@@ -166,7 +167,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
 
     //////////PROTOKOLLPHASE//////////
-    game_data_struct_V2->gameover = 1;
+    //game_data_struct_V2->gameover = 1;
     performConnection(SocketFD, g, p,shm_addr,game_data_struct_V2, pfd[0]);
     printf("Testprint in der Main %d",game_data_struct_V2->gameover);
     shutdown(SocketFD, SHUT_RDWR);
