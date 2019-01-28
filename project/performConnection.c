@@ -181,13 +181,13 @@ return i;
                 sendServer(SocketFD, "THINKING\n", 9);
 
               }
-            }
+            }else
             /////ENDE-PROTOKOLLPHASE/////
-
+            /*
             if(strncmp(erhalten, "+ BOARD", 7)==0){
               sendServer(SocketFD, "THINKING\n", 9);
             }else
-
+            */
 
 
             if(strncmp(erhalten, "+ OKTHINK", 9)==0){

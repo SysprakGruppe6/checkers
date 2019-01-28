@@ -107,7 +107,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
     }
 
     //Put command line parameters into SMH
-    game_data_struct_V2->spielernummer=p;
+
     strcpy(game_data_struct_V2->gameID, g);
 
     //config parameters
@@ -138,7 +138,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
     }
     printf("\n");
 
-
+    game_data_struct_V2->spielernummer=p;
     //////////SOCKET//////////
     struct sockaddr_in sa;
     int res;
