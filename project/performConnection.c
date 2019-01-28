@@ -61,6 +61,7 @@ int SHmem(int size){
   return mem.err;
 }
 
+/*
 //Funktion um Spielfeld in SHM übertragen
 void spielfeldSchreiben(char buffer[2048],struct gds *game_data_struct_V2){
 for(int i=0;i<2048;i++){
@@ -130,16 +131,16 @@ switch(eingabe) {
 
 return i;
 }
-
+*/
  //Funktion welche die Protokollphase ausführt
  void performConnection(int SocketFD, struct gds *game_data_struct_V2, int pipe){
-
+/*
    for (int i = 0; i<15; i++){
         for (int j = 0; j<8; j++){
          game_data_struct_V2->spielfeld[i][j]='*';
         }
     }
-
+*/
     //Serverkommunikation
         char* erhalten=malloc(sizeof(char[2048]));//BUFFER fuer erhaltene Nachrichten
         char* pipebuffer=malloc(sizeof(char[64]));//BUFFER für die PIPE
