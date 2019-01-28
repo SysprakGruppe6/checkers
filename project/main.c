@@ -105,11 +105,11 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
         }
 
     }
-    
+
     //Put command line parameters into SMH
     game_data_struct_V2->spielernummer=p;
     strcpy(game_data_struct_V2->gameID, g);
-    
+
     //config parameters
     struct parameters cfg = read_cfg(c);
     printf(cfg.hostName);

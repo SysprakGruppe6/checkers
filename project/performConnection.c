@@ -80,6 +80,26 @@ if (
 }
 }
 
+//Verarbeitet Zug im SHM-Spielfeld, zugtyp -> geschlagen oder nicht
+void SpielfeldZug(int zugtyp,char Zug[39],struct gds *game_data_struct_V2){
+
+//länge des Spielzugs herausfinden
+int i = 0;
+while(Zug[i]=!' '){
+i++;
+}
+//Spielfeld ändern im Falle Zug ohne Schlagen
+if (zugtyp == 1){
+game_data_struct_V2->spielfeld[(SpielfeldUmwandeln(Zug[0]))][(Zug[1])]='*';
+game_data_struct_V2->spielfeld[(SpielfeldUmwandeln(Zug[i-1]))][(Zug[i])]='X';//Hier noch überprüfung auf Spielerfarbe
+
+}
+
+
+
+//Spielfeldausgabe?
+}
+
 //Print Spielfeld
 void Spielfeldausgabe (char feld[15][8]){
   printf("Spielfeld Clientside\n");
@@ -93,6 +113,23 @@ void Spielfeldausgabe (char feld[15][8]){
 printf("Spielfeld Ende\n");
 }
 
+//Spielfeld Buchstaben Umwandeln
+int SpielfeldUmwandeln(char eingabe){
+int i = 0;
+switch(eingabe) {
+	case 'A':i=0 ; break;
+	case 'B': i=1; break;
+  case 'C': i=2; break;
+  case 'D': i=3; break;
+  case 'E': i=4; break;
+  case 'F': i=5; break;
+  case 'G': i=6; break;
+  case 'H': i=7; break;
+	default: i=0; break;
+}
+
+return i;
+}
 
  //Funktion welche die Protokollphase ausführt
  void performConnection(int SocketFD, char* gId, char pId, int shmid,struct gds *game_data_struct_V2, int pipe){
