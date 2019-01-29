@@ -147,7 +147,7 @@ return i;
       game_data_struct_V2->spielfeld[i]='*';
 
     }
-Spielfeldausgabe(game_data_struct_V2->spielfeld);
+
     //Serverkommunikation
         char* erhalten=malloc(sizeof(char[2048]));//BUFFER fuer erhaltene Nachrichten
         char* pipebuffer=malloc(sizeof(char[64]));//BUFFER für die PIPE
@@ -180,37 +180,40 @@ Spielfeldausgabe(game_data_struct_V2->spielfeld);
                 game_data_struct_V2->spielernummer=erhalten[6];
             }else
             if (strncmp(erhalten, "+ TOTAL", 7)==0) {
-
+              //SPIELFELD IN STRUCT SPEICHERN
                  if(game_data_struct_V2->spielernummer=='0'){
                    sendServer(SocketFD, "THINKING\n", 9);
-              //spielfeldSchreiben(erhalten,game_data_struct_V2);
-              //Spielfeldausgabe(game_data_struct_V2->spielfeld);
               }else{
                 sendServer(SocketFD, "THINKING\n", 9);
 
               }
             }else
             /////ENDE-PROTOKOLLPHASE/////
-            /*
-            if(strncmp(erhalten, "+ BOARD", 7)==0){
+
+            /////MOVE-BEFEHLSSEQUENZ/////
+            if(strncmp(erhalten, "+ MOVE ", 7)==0){
+              sleep(10);
               sendServer(SocketFD, "THINKING\n", 9);
+              //SPIELFELD IN STRUCT SPEICHERN
             }else
-            */
 
 
+            /////SPIELZUG/////
             if(strncmp(erhalten, "+ OKTHINK", 9)==0){
                if(game_data_struct_V2->spielernummer=='0' && protokollphasenendenchecker==1){
                  sendServer(SocketFD, "PLAY C3:D4\n", 11);
                  //Spielfeld ausgegeben werden
+                 Spielfeldausgabe(game_data_struct_V2->spielfeld);
                  protokollphasenendenchecker=0;
-               }
+               }else{
 
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
                 read(pipe, pipebuffer, 64);
                 //laenge des Spielzuges berechnen
                 //sendServer(); Spielzug
                 //Spielfeld ausgegeben werden
-
+                Spielfeldausgabe(game_data_struct_V2->spielfeld);
+              }
             }
 
 
@@ -219,12 +222,7 @@ Spielfeldausgabe(game_data_struct_V2->spielfeld);
                 sendServer(SocketFD, "OKWAIT\n", 6);
             }
 
-            /*/////MOVE-BEFEHLSSEQUENZ/////
-            else if (strncmp(erhalten, "+ MOVE", 6)==0){
 
-                //SPIELFELD LESEN UND SIGNAL AN THINKER
-            }
-            */
             /////GAMEOVER-BEFEHLSSEQUENZ/////
             else if (strncmp(erhalten, "+ GAMEOVER", 10)==0){
                 printf("Spiel vorbei!\n");
