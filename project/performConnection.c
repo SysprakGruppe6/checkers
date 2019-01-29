@@ -80,74 +80,79 @@ if (
 }
 }
 }
-
+*/
 //Verarbeitet Zug im SHM-Spielfeld, zugtyp -> geschlagen oder nicht
 void SpielfeldZug(int zugtyp,char Zug[39],struct gds *game_data_struct_V2){
-
+// Falls Zug = leer -> terminiert nicht
 //länge des Spielzugs herausfinden
-int i = 0;
-while(Zug[i]=!' '){
-i++;
-}
+int i = 4;
+//while(Zug[i]=!' '){
+//i++;
+//}
 //Spielfeld ändern im Falle Zug ohne Schlagen
-if (zugtyp == 1){
-game_data_struct_V2->spielfeld[(SpielfeldUmwandeln(Zug[0]))][(Zug[1])]='*';
-game_data_struct_V2->spielfeld[(SpielfeldUmwandeln(Zug[i-1]))][(Zug[i])]='X';//Hier noch überprüfung auf Spielerfarbe
-
-}
-
-
-
+int Stelle1 = ((8-(Zug[1]-'0'))*4)+(SpielfeldUmwandeln(Zug[0]));
+int Stelle2= ((8-(Zug[i]-'0'))*4)+(SpielfeldUmwandeln(Zug[i-1]));
+printf(" Text an stelle %d \n",Stelle1);
+printf(" Text an stelle %d  \n",Stelle2);
+char temp;
+temp = game_data_struct_V2->spielfeld[Stelle2];
+game_data_struct_V2->spielfeld[Stelle2]
+=
+game_data_struct_V2->spielfeld[Stelle1];
+game_data_struct_V2->spielfeld[Stelle1] = temp;
 //Spielfeldausgabe?
+
 }
-*/
+
+
+
 //Print Spielfeld
 void Spielfeldausgabe (char feld[32]){
   printf("Spielfeld Clientside\n");
-  int x = 0;
+  int x = 1;
   for (int i = 0; i<8; i++){
-          printf("%d ",i+1);
+          printf("%d ",(8-i));
     for (int j = 1; j<5; j++){
       if((i%2)==0){
-          printf(" %c  ~ ",feld[i+j]);
+        printf(" ~  %c ",feld[x]);
       }
       else{
-        printf(" ~  %c ",feld[i+j]);
+        printf(" %c  ~ ",feld[x]);
 
       }
+      x++;
     }
     printf("\n");
   }
 printf("Spielfeld Ende\n");
 }
 
-
-/*
 //Spielfeld Buchstaben Umwandeln
 int SpielfeldUmwandeln(char eingabe){
 int i = 0;
 switch(eingabe) {
-	case 'A':i=0 ; break;
+	case 'A': i=1; break;
 	case 'B': i=1; break;
   case 'C': i=2; break;
-  case 'D': i=3; break;
-  case 'E': i=4; break;
-  case 'F': i=5; break;
-  case 'G': i=6; break;
-  case 'H': i=7; break;
+  case 'D': i=2; break;
+  case 'E': i=3; break;
+  case 'F': i=3; break;
+  case 'G': i=4; break;
+  case 'H': i=4; break;
 	default: i=0; break;
 }
 
 return i;
 }
-*/
  //Funktion welche die Protokollphase ausführt
  void performConnection(int SocketFD, struct gds *game_data_struct_V2, int pipe){
     for (int i = 1; i<33; i++){
       game_data_struct_V2->spielfeld[i]='*';
-
     }
-
+    game_data_struct_V2->spielfeld[4] = 'w';
+    Spielfeldausgabe(game_data_struct_V2->spielfeld);
+    SpielfeldZug(1,"H8:G7",game_data_struct_V2);
+    Spielfeldausgabe(game_data_struct_V2->spielfeld);
     //Serverkommunikation
         char* erhalten=malloc(sizeof(char[2048]));//BUFFER fuer erhaltene Nachrichten
         char* pipebuffer=malloc(sizeof(char[64]));//BUFFER für die PIPE
