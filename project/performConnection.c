@@ -61,26 +61,60 @@ int SHmem(int size){
   return mem.err;
 }
 
-/*
+
 //Funktion um Spielfeld in SHM übertragen
 void spielfeldSchreiben(char buffer[2048],struct gds *game_data_struct_V2){
+int j = 1;
+printf("Spielfeld wird eingegeben\n");
+int line = 0;
 for(int i=0;i<2048;i++){
 if (
 (buffer[i] == '1'||buffer[i] == '2'||buffer[i] == '3'||buffer[i] == '4'||buffer[i] == '5'||buffer[i] == '6'||buffer[i] == '7'||buffer[i] == '8' )
 &&
 (buffer[i+2] == '*'||buffer[i+2] == 'b'||buffer[i+2] == 'w')
 ){
-
-  int reihe = buffer[i] - '0';
-  for (int j=0; j<16; j=j+1) {
-    int k = 2;
-  game_data_struct_V2->spielfeld[j][reihe-1]=buffer[i+j+k];
-  k=k+1;
+  line++;
+  i++;
+  for(int v=0;v<16;v=v+1){
+    if(v%4==1){
+        if(line%2==0){
+      printf("%c",buffer[i+v]);
+      game_data_struct_V2->spielfeld[j]=buffer[i+v];
+      j++;
+    }
+  }
+  if(v%4==3){
+    if(line%2==1){
+    printf("%c",buffer[i+v]);
+    game_data_struct_V2->spielfeld[j]=buffer[i+v];
+    j++;
   }
 }
 }
+
+  /*
+  for(int v = 1;v<64;v=v+3){
+  if((buffer[i+v]=='*'||buffer[i+v]=='w'||buffer[i+v]=='b')&&(1==1)){
+    printf("%c",buffer[i+v]);
+    game_data_struct_V2->spielfeld[j]=buffer[i+v];
+    j++;
+  }
 }
 */
+  printf("\n");
+}
+
+
+/*  int reihe = buffer[i] - '0';
+  for (int j=0; j<16; j=j+1) {
+    int k = 2;
+  game_data_struct_V2->spielfeld[]=buffer[i+j+k];
+  k=k+1;
+}*/
+}
+}
+
+
 //Verarbeitet Zug im SHM-Spielfeld, zugtyp -> geschlagen oder nicht
 void SpielfeldZug(int zugtyp,char Zug[39],struct gds *game_data_struct_V2){
 // Falls Zug = leer -> terminiert nicht
@@ -186,6 +220,8 @@ return i;
             }else
             if (strncmp(erhalten, "+ TOTAL", 7)==0) {
               //SPIELFELD IN STRUCT SPEICHERN
+              spielfeldSchreiben(erhalten,game_data_struct_V2);
+              Spielfeldausgabe(game_data_struct_V2->spielfeld);
                  if(game_data_struct_V2->spielernummer=='0'){
                    sendServer(SocketFD, "THINKING\n", 9);
               }else{
