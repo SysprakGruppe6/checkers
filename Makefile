@@ -1,5 +1,5 @@
 CC = gcc
-FLAGS= -std=c99
+FLAGS= -std=c99 -D_XOPEN_SOURCE=600
 CFLAGS= -Wall -Wextra -Werror
 DEPS = project/performConnection.h project/ai.h
 OBJ = tmp/performConnection.o tmp/ai.o tmp/main.o
