@@ -27,7 +27,7 @@ void my_handler (int signum){
 // char umwandel(int n){
 //   char *ergebnis;
 //   ergebnis = malloc(sizeof(char[2]));
-// 
+//
 //   switch (n) {
 //     case 1 : strcpy(ergebnis, "B8"); break;
 //     case 2 : strcpy(ergebnis, "D8"); break;
@@ -62,13 +62,13 @@ void my_handler (int signum){
 //     case 31: strcpy(ergebnis, "E1"); break;
 //     case 32: strcpy(ergebnis, "G1"); break;
 //   }
-// 
+//
 //   return *ergebnis;
 // }
 
 //Gibt den "Inhalt" einer Position aus
 // char getSpielstein(int pos){
-//     if(pos<1 || pos>32) 
+//     if(pos<1 || pos>32)
 //         return null;
 //     return spielfeld[pos];
 // }
@@ -93,7 +93,7 @@ void my_handler (int signum){
 //   else
 //     return 0; //0 = Leer oder Fehler
 // }
-// 
+//
 // //Gibt ein Array mit den möglichen gegnerische Steine aus
 // char * getRivals(char spielstein){
 //   char * result = malloc(sizeof(char)*2);
@@ -129,7 +129,7 @@ void my_handler (int signum){
 //                     result[i]=pos+4;
 //             }
 //         }
-//         
+//
 //     }
 //     if(modpos==5||modpos==6||modpos==7||modpos==0){
 //         for(int i =0; i<4;i++){
@@ -197,14 +197,14 @@ void my_handler (int signum){
 //                 case 0:
 //                     int * spielzuege = malloc(sizeof(int)*2);
 //                     if(compare)
-//                     
+//
 //             }
 //         case 'b':
-// 
+//
 //         case 'W':
-// 
+//
 //         case 'B':
-// 
+//
 //         case '*':
 //             return 0;
 //         default:
