@@ -64,33 +64,33 @@ int SHmem(int size){
 
 //Funktion um Spielfeld in SHM übertragen
 void spielfeldSchreiben(char buffer[2048],struct gds *game_data_struct_V2){
-int j = 1;
-printf("Spielfeld wird eingegeben\n");
-int line = 0;
-for(int i=0;i<2048;i++){
-if (
-(buffer[i] == '1'||buffer[i] == '2'||buffer[i] == '3'||buffer[i] == '4'||buffer[i] == '5'||buffer[i] == '6'||buffer[i] == '7'||buffer[i] == '8' )
-&&
-(buffer[i+2] == '*'||buffer[i+2] == 'b'||buffer[i+2] == 'w')
-){
-  line++;
-  i++;
-  for(int v=0;v<16;v=v+1){
-    if(v%4==1){
-        if(line%2==0){
-      game_data_struct_V2->spielfeld[j]=buffer[i+v];
-      j++;
-    }
+  int j = 1;
+  printf("Spielfeld wird eingegeben\n");
+  int line = 0;
+    for(int i=0;i<2048;i++){
+      if (
+      (buffer[i] == '1'||buffer[i] == '2'||buffer[i] == '3'||buffer[i] == '4'||buffer[i] == '5'||buffer[i] == '6'||buffer[i] == '7'||buffer[i] == '8' )
+      &&
+      (buffer[i+2] == '*'||buffer[i+2] == 'b'||buffer[i+2] == 'w')
+      ){
+          line++;
+          i++;
+            for(int v=0;v<16;v=v+1){
+                if(v%4==1){
+                  if(line%2==0){
+                    game_data_struct_V2->spielfeld[j]=buffer[i+v];
+                    j++;
+                }
+              }
+              if(v%4==3){
+                if(line%2==1){
+                  game_data_struct_V2->spielfeld[j]=buffer[i+v];
+                  j++;
+              }
+            }
+          }
+      }
   }
-  if(v%4==3){
-    if(line%2==1){
-    game_data_struct_V2->spielfeld[j]=buffer[i+v];
-    j++;
-  }
-}
-}
-}
-}
 }
 
 
