@@ -20,31 +20,45 @@ void my_handler (int signum){
 }
 
 char umwandel(int n){
-  char ergebnis[2];
-/*
-  switch(n){
-    case (1||2||3||4): ergebnis[1]='8';
-    case (5||6||7||8): ergebnis[1]='7';
-    case (9||10||11||12): ergebnis[1]='6';
-    case (13||14||15||16): ergebnis[1]='5';
-    case (17||18||19||20): ergebnis[1]='4';
-    case (21||22||23||24): ergebnis[1]='3';
-    case (25||26||27||28): ergebnis[1]='2';
-    case (29||30||31||32): ergebnis[1]='1';
+  char *ergebnis;
+  ergebnis = malloc(sizeof(char[2]));
+
+  switch (n) {
+    case 1: strcpy(ergebnis, "B8"); break;
+    case 2: strcpy(ergebnis, "D8"); break;
+    case 3: strcpy(ergebnis, "F8"); break;
+    case 4: strcpy(ergebnis, "H8"); break;
+    case 5: strcpy(ergebnis, "A7"); break;
+    case 6: strcpy(ergebnis, "C7"); break;
+    case 7: strcpy(ergebnis, "E7"); break;
+    case 8: strcpy(ergebnis, "G7"); break;
+    case 9: strcpy(ergebnis, "B6"); break;
+    case 10: strcpy(ergebnis, "D6"); break;
+    case 11: strcpy(ergebnis, "F6"); break;
+    case 12: strcpy(ergebnis, "H6"); break;
+    case 13: strcpy(ergebnis, "A5"); break;
+    case 14: strcpy(ergebnis, "C5"); break;
+    case 15: strcpy(ergebnis, "E5"); break;
+    case 16: strcpy(ergebnis, "G5"); break;
+    case 17: strcpy(ergebnis, "B4"); break;
+    case 18: strcpy(ergebnis, "D4"); break;
+    case 19: strcpy(ergebnis, "F4"); break;
+    case 20: strcpy(ergebnis, "H4"); break;
+    case 21: strcpy(ergebnis, "A3"); break;
+    case 22: strcpy(ergebnis, "C3"); break;
+    case 23: strcpy(ergebnis, "E3"); break;
+    case 24: strcpy(ergebnis, "G3"); break;
+    case 25: strcpy(ergebnis, "B2"); break;
+    case 26: strcpy(ergebnis, "D2"); break;
+    case 27: strcpy(ergebnis, "F2"); break;
+    case 28: strcpy(ergebnis, "H2"); break;
+    case 29: strcpy(ergebnis, "A1"); break;
+    case 30: strcpy(ergebnis, "C1"); break;
+    case 31: strcpy(ergebnis, "E1"); break;
+    case 32: strcpy(ergebnis, "G1"); break;
   }
 
-  switch(n){
-    case (5||13||21||29): ergebnis[0]='A';
-    case (1||9||17||25): ergebnis[0]='B';
-    case (6||14||22||30): ergebnis[0]='C';
-    case (2||10||18||26): ergebnis[0]='D';
-    case (7||15||23||31): ergebnis[0]='E';
-    case (3||11||19||27): ergebnis[0]='F';
-    case (8||16||24||32): ergebnis[0]='G';
-    case (4||12||20||28): ergebnis[0]='H';
-  }
-*/
-  return ergebnis;
+  return *ergebnis;
 }
 
 /*
