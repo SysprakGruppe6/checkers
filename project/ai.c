@@ -24,7 +24,7 @@ void my_handler (int signum){
     }
 }
 
-char umwandel(int n){
+char * umwandel(int n){
   char *ergebnis;
   ergebnis = malloc(sizeof(char[2]));
 
@@ -63,7 +63,7 @@ char umwandel(int n){
     case 32: strcpy(ergebnis, "G1"); break;
   }
 
-  return *ergebnis;
+  return ergebnis;
 }
 
 //Gibt den "Inhalt" einer Position aus
@@ -214,7 +214,7 @@ char umwandel(int n){
 
 void think(struct gds *game_data_struct_V2){
 	printf("Am denken ...\n");
-  printf("Feldtest:%s \n",umwandel(25));
+    printf("Feldtest:%s \n",umwandel(25));
     //Test-Spielzug
     char testMoveW[64];
     strcpy(testMoveW, "A3:B4\n");

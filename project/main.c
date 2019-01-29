@@ -178,7 +178,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
     //////////THINKER//////////
     else {
-        printf("i bims eins thinker\n");
+        printf("i bims eins thinker %i \n",game_data_struct_V2->gameover==1);
         close(pfd[0]);// Schliessen der Leseseite
 
         char test[9]="PiPeTeSt\n";

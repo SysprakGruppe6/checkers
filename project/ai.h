@@ -8,7 +8,7 @@
 //struct
 //Functions
 void my_handler (int signum);
-char umwandel(int n);
+char * umwandel(int n);
 void think(struct gds *);
 
 #endif
