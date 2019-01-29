@@ -18,7 +18,37 @@ void my_handler (int signum){
         printf("Signal angekommen\n");
     }
 }
+
+char umwandel(int n){
+  char ergebnis[2];
+
+  switch(n){
+    case (1||2||3||4): ergebnis[1]='8';
+    case (5||6||7||8): ergebnis[1]='7';
+    case (9||10||11||12): ergebnis[1]='6';
+    case (13||14||15||16): ergebnis[1]='5';
+    case (17||18||19||20): ergebnis[1]='4';
+    case (21||22||23||24): ergebnis[1]='3';
+    case (25||26||27||28): ergebnis[1]='2';
+    case (29||30||31||32): ergebnis[1]='1';
+  }
+
+  switch(n){
+    case (5||13||21||29): ergebnis[0]='A';
+    case (1||9||17||25): ergebnis[0]='B';
+    case (6||14||22||30): ergebnis[0]='C';
+    case (2||10||18||26): ergebnis[0]='D';
+    case (7||15||23||31): ergebnis[0]='E';
+    case (3||11||19||27): ergebnis[0]='F';
+    case (8||16||24||32): ergebnis[0]='G';
+    case (4||12||20||28): ergebnis[0]='H';
+  }
+
+  return ergebnis;
+}
+
 /*
+
  //Gibt den "Inhalt" einer Position aus
 /* char getSpielstein(int pos, struct gds *game_data_struct_V2){
    return game_data_struct_V2->spielfeld[pos][1];
