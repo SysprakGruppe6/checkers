@@ -24,47 +24,47 @@ void my_handler (int signum){
     }
 }
 
-// char umwandel(int n){
-//   char *ergebnis;
-//   ergebnis = malloc(sizeof(char[2]));
-//
-//   switch (n) {
-//     case 1 : strcpy(ergebnis, "B8"); break;
-//     case 2 : strcpy(ergebnis, "D8"); break;
-//     case 3 : strcpy(ergebnis, "F8"); break;
-//     case 4 : strcpy(ergebnis, "H8"); break;
-//     case 5 : strcpy(ergebnis, "A7"); break;
-//     case 6 : strcpy(ergebnis, "C7"); break;
-//     case 7 : strcpy(ergebnis, "E7"); break;
-//     case 8 : strcpy(ergebnis, "G7"); break;
-//     case 9 : strcpy(ergebnis, "B6"); break;
-//     case 10: strcpy(ergebnis, "D6"); break;
-//     case 11: strcpy(ergebnis, "F6"); break;
-//     case 12: strcpy(ergebnis, "H6"); break;
-//     case 13: strcpy(ergebnis, "A5"); break;
-//     case 14: strcpy(ergebnis, "C5"); break;
-//     case 15: strcpy(ergebnis, "E5"); break;
-//     case 16: strcpy(ergebnis, "G5"); break;
-//     case 17: strcpy(ergebnis, "B4"); break;
-//     case 18: strcpy(ergebnis, "D4"); break;
-//     case 19: strcpy(ergebnis, "F4"); break;
-//     case 20: strcpy(ergebnis, "H4"); break;
-//     case 21: strcpy(ergebnis, "A3"); break;
-//     case 22: strcpy(ergebnis, "C3"); break;
-//     case 23: strcpy(ergebnis, "E3"); break;
-//     case 24: strcpy(ergebnis, "G3"); break;
-//     case 25: strcpy(ergebnis, "B2"); break;
-//     case 26: strcpy(ergebnis, "D2"); break;
-//     case 27: strcpy(ergebnis, "F2"); break;
-//     case 28: strcpy(ergebnis, "H2"); break;
-//     case 29: strcpy(ergebnis, "A1"); break;
-//     case 30: strcpy(ergebnis, "C1"); break;
-//     case 31: strcpy(ergebnis, "E1"); break;
-//     case 32: strcpy(ergebnis, "G1"); break;
-//   }
-//
-//   return *ergebnis;
-// }
+char umwandel(int n){
+  char *ergebnis;
+  ergebnis = malloc(sizeof(char[2]));
+
+  switch (n) {
+    case 1 : strcpy(ergebnis, "B8"); break;
+    case 2 : strcpy(ergebnis, "D8"); break;
+    case 3 : strcpy(ergebnis, "F8"); break;
+    case 4 : strcpy(ergebnis, "H8"); break;
+    case 5 : strcpy(ergebnis, "A7"); break;
+    case 6 : strcpy(ergebnis, "C7"); break;
+    case 7 : strcpy(ergebnis, "E7"); break;
+    case 8 : strcpy(ergebnis, "G7"); break;
+    case 9 : strcpy(ergebnis, "B6"); break;
+    case 10: strcpy(ergebnis, "D6"); break;
+    case 11: strcpy(ergebnis, "F6"); break;
+    case 12: strcpy(ergebnis, "H6"); break;
+    case 13: strcpy(ergebnis, "A5"); break;
+    case 14: strcpy(ergebnis, "C5"); break;
+    case 15: strcpy(ergebnis, "E5"); break;
+    case 16: strcpy(ergebnis, "G5"); break;
+    case 17: strcpy(ergebnis, "B4"); break;
+    case 18: strcpy(ergebnis, "D4"); break;
+    case 19: strcpy(ergebnis, "F4"); break;
+    case 20: strcpy(ergebnis, "H4"); break;
+    case 21: strcpy(ergebnis, "A3"); break;
+    case 22: strcpy(ergebnis, "C3"); break;
+    case 23: strcpy(ergebnis, "E3"); break;
+    case 24: strcpy(ergebnis, "G3"); break;
+    case 25: strcpy(ergebnis, "B2"); break;
+    case 26: strcpy(ergebnis, "D2"); break;
+    case 27: strcpy(ergebnis, "F2"); break;
+    case 28: strcpy(ergebnis, "H2"); break;
+    case 29: strcpy(ergebnis, "A1"); break;
+    case 30: strcpy(ergebnis, "C1"); break;
+    case 31: strcpy(ergebnis, "E1"); break;
+    case 32: strcpy(ergebnis, "G1"); break;
+  }
+
+  return *ergebnis;
+}
 
 //Gibt den "Inhalt" einer Position aus
 // char getSpielstein(int pos){
@@ -214,6 +214,7 @@ void my_handler (int signum){
 
 void think(struct gds *game_data_struct_V2){
 	printf("Am denken ...\n");
+  printf("Feldtest:%s \n",umwandel(25));
     //Test-Spielzug
     char testMoveW[64];
     strcpy(testMoveW, "A3:B4\n");

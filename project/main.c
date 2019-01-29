@@ -184,8 +184,10 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
         char test[9]="PiPeTeSt\n";
         //SCHLEIFE, DIE SOLANGE DAS SPIEL LAEUFT AUF DEM SIGNAL THINK() AUFRUFT
         while(game_data_struct_V2->gameover==1){
+          printf("i bims eins thinker V2\n");
             signal(SIGUSR1, my_handler);
             pause();
+              printf("i bims eins thinker 3\n");
             think(game_data_struct_V2);
             write(pfd[1], test, sizeof(test));
 //            write(pfd[1], game_data_struct_V2->currentMove, sizeof(game_data_struct_V2->currentMove));//Schreibt Testmove in die pipe
