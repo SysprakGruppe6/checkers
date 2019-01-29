@@ -78,39 +78,18 @@ if (
   for(int v=0;v<16;v=v+1){
     if(v%4==1){
         if(line%2==0){
-      printf("%c",buffer[i+v]);
       game_data_struct_V2->spielfeld[j]=buffer[i+v];
       j++;
     }
   }
   if(v%4==3){
     if(line%2==1){
-    printf("%c",buffer[i+v]);
     game_data_struct_V2->spielfeld[j]=buffer[i+v];
     j++;
   }
 }
 }
-
-  /*
-  for(int v = 1;v<64;v=v+3){
-  if((buffer[i+v]=='*'||buffer[i+v]=='w'||buffer[i+v]=='b')&&(1==1)){
-    printf("%c",buffer[i+v]);
-    game_data_struct_V2->spielfeld[j]=buffer[i+v];
-    j++;
-  }
 }
-*/
-  printf("\n");
-}
-
-
-/*  int reihe = buffer[i] - '0';
-  for (int j=0; j<16; j=j+1) {
-    int k = 2;
-  game_data_struct_V2->spielfeld[]=buffer[i+j+k];
-  k=k+1;
-}*/
 }
 }
 

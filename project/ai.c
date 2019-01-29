@@ -21,7 +21,7 @@ void my_handler (int signum){
 
 char umwandel(int n){
   char ergebnis[2];
-
+/*
   switch(n){
     case (1||2||3||4): ergebnis[1]='8';
     case (5||6||7||8): ergebnis[1]='7';
@@ -43,7 +43,7 @@ char umwandel(int n){
     case (8||16||24||32): ergebnis[0]='G';
     case (4||12||20||28): ergebnis[0]='H';
   }
-
+*/
   return ergebnis;
 }
 
