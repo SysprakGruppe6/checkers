@@ -210,7 +210,7 @@ int shm_addr = SHmem(sizeof(struct gds));
     }//end thinker
 
     //SHM lösen
-    shmdt(shm_addr);
+    shmdt(&shm_addr);
     printf("SharedMemory gelöst \n");
 
 
