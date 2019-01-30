@@ -13,11 +13,6 @@
 #include <sys/ipc.h> // include für Shared Memory
 #include <signal.h>
 
-void globalVars(struct gds *game_data_struct_V2){
-    char *spielfeld = game_data_struct_V2->spielfeld;
-    char *spielzug = malloc(sizeof(char)*32);
-}
-
 void my_handler (int signum){
     if(signum==SIGUSR1){
         printf("Signal angekommen\n");
@@ -67,11 +62,11 @@ char * umwandel(int n){
 }
 
 //Gibt den "Inhalt" einer Position aus
-// char getSpielstein(int pos){
-//     if(pos<1 || pos>32)
-//         return null;
-//     return spielfeld[pos];
-// }
+char getSpielstein(int pos, char * spielfeld){
+    if(pos<1 || pos>32)
+        return '0';
+    return spielfeld[pos];
+}
 
 
 //Checkt ob wir auf eine von beiden Ränder sind
@@ -213,8 +208,20 @@ char * umwandel(int n){
 // }
 
 void think(struct gds *game_data_struct_V2){
-	printf("Am denken ...\n");
+
+  printf("THINKER: %c\n",game_data_struct_V2->spielfeld[5] );
+  printf("Am denken ...\n");
+    char *spielfeld = malloc(sizeof(char)*32);
+    printf("Test spielfeld1:%c \n", game_data_struct_V2->spielfeld[5]);
+    memcpy(spielfeld, game_data_struct_V2->spielfeld, sizeof(game_data_struct_V2->spielfeld));
+    char *spielzug = malloc(sizeof(char)*32);
+    printf("Test spielfeld2:%c \n", game_data_struct_V2->spielfeld[5]);
+    Spielfeldausgabe(game_data_struct_V2->spielfeld);
+    for(int i =0;i<32;i++){
+      printf("%c", spielfeld[i]);
+    }
     printf("Feldtest:%s \n",umwandel(25));
+    printf("Test getSpielstein:%c \n",getSpielstein(25, spielfeld));
     //Test-Spielzug
     char testMoveW[64];
     strcpy(testMoveW, "A3:B4\n");
