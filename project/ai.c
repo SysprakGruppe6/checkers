@@ -212,16 +212,8 @@ void think(struct gds *game_data_struct_V2){
   printf("THINKER: %c\n",game_data_struct_V2->spielfeld[5] );
   printf("Am denken ...\n");
     char *spielfeld = malloc(sizeof(char)*32);
-    printf("Test spielfeld1:%c \n", game_data_struct_V2->spielfeld[5]);
     memcpy(spielfeld, game_data_struct_V2->spielfeld, sizeof(game_data_struct_V2->spielfeld));
     char *spielzug = malloc(sizeof(char)*32);
-    printf("Test spielfeld2:%c \n", game_data_struct_V2->spielfeld[5]);
-    Spielfeldausgabe(game_data_struct_V2->spielfeld);
-    for(int i =0;i<32;i++){
-      printf("%c", spielfeld[i]);
-    }
-    printf("Feldtest:%s \n",umwandel(25));
-    printf("Test getSpielstein:%c \n",getSpielstein(25, spielfeld));
     //Test-Spielzug
     char testMoveW[64];
     strcpy(testMoveW, "A3:B4\n");
@@ -238,6 +230,6 @@ void think(struct gds *game_data_struct_V2){
         memset(testMoveB, 0, 64);
     }
 
-    printf("test\n");
+
 
 }

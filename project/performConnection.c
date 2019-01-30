@@ -103,8 +103,6 @@ int i = 6+(3*zugtyp);
 //printf("Stelle 6 %c",Zug[6]);
 int Stelle1 = ((8-(Zug[6]-'0'))*4)+(SpielfeldUmwandeln(Zug[5]));
 int Stelle2= ((8-(Zug[i]-'0'))*4)+(SpielfeldUmwandeln(Zug[i-1]));
-//printf(" Text an stelle %d \n",Stelle1);
-//printf(" Text an stelle %d  \n",Stelle2);
 game_data_struct_V2->spielfeld[Stelle2]
 =
 game_data_struct_V2->spielfeld[Stelle1];
@@ -193,13 +191,6 @@ return i;
               //SPIELFELD IN STRUCT SPEICHERN
               spielfeldSchreiben(erhalten,game_data_struct_V2);
               Spielfeldausgabe(game_data_struct_V2->spielfeld);
-
-                //TEST, BITTE FINAL LÖSCHEN
-
-                  //SpielfeldZug(2,"PLAY A3:B4:C5\n",game_data_struct_V2);
-                  //Spielfeldausgabe(game_data_struct_V2->spielfeld);
-
-                //TEST, BITTE FINAL LÖSCHEN
 
                  if(game_data_struct_V2->spielernummer=='0'){
                    sendServer(SocketFD, "THINKING\n", 9);

@@ -22,33 +22,21 @@ int main(int argc, char * argv[])
 {
 //Struct erstellen
 printf("\n"); //ACHTUNG NICHT LÖSCHEN
-//struct gds *game_data_struct_V2;
-//game_data_struct_V2 = malloc(sizeof(struct gds));
-//game_data_struct_V2->anzahl_spieler = 0;
-//Test für Shared Memory
 int shm_addr = SHmem(sizeof(struct gds));
-//int *SHM = shmat(shm_addr,NULL,0);
-//SHM = malloc(sizeof(game_data_struct_V2));
-
-//verschieben in SHM
-//memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
     int pfd[2];
     pipe(pfd);
 
-    //game_data_struct_V2->gameover=1;
+    if (fork()==0){
 
-    if (fork()==0){					//beginn connector
+      struct gds *gameData, *point;
 
-
-      struct gds *gameData, *ptr;
-
-        if((ptr = (struct gds*) shmat(shm_addr, NULL, 0)) == (struct gds*) -1){
-            perror("shmat child");
+        if((point = (struct gds*) shmat(shm_addr, NULL, 0)) == (struct gds*) -1){
+            perror("Kindprozess shmat");
             return -1;
         }
 
-        gameData = ptr;
+        gameData = point;
 
         gameData->gameover=1;
 
@@ -193,14 +181,14 @@ int shm_addr = SHmem(sizeof(struct gds));
     //////////THINKER//////////
     else {
 
-      struct gds *gameData, *ptr;
+      struct gds *gameData, *point;
 
-        if((ptr = (struct gds*) shmat(shm_addr, NULL, 0)) == (struct gds*) -1){
-            perror("shmat parent");
+        if((point = (struct gds*) shmat(shm_addr, NULL, 0)) == (struct gds*) -1){
+            perror("Thinker shmat");
             return -1;
         }
 
-        gameData = ptr;
+        gameData = point;
 
         gameData->gameover=1;
 
@@ -210,10 +198,8 @@ int shm_addr = SHmem(sizeof(struct gds));
         char test[9]="PiPeTeSt\n";
         //SCHLEIFE, DIE SOLANGE DAS SPIEL LAEUFT AUF DEM SIGNAL THINK() AUFRUFT
         while(gameData->gameover==1){
-          printf("i bims eins thinker V2\n");
             signal(SIGUSR1, my_handler);
             pause();
-              printf("i bims eins thinker 3\n");
             think(gameData);
             write(pfd[1], test, sizeof(test));
 //            write(pfd[1], game_data_struct_V2->currentMove, sizeof(game_data_struct_V2->currentMove));//Schreibt Testmove in die pipe
