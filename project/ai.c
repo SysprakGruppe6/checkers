@@ -171,7 +171,7 @@ int compare(int pos1, int pos2, char * spielfeld){
 }
 
 //Checkt ob Spielstein an pos1 schlagen kann. Falls ja, returnt es die neue Position von pos1 Stein, sonnst 0.
-int strike(int pos, char * spielfeld){
+int strike(int pos, char * spielfeld, char * currentMove){
     char * rivals     = getRivals(getSpielstein(pos, spielfeld));
     int  * neighbors  = getNeighbors(pos);
     int nowPos  = pos;
@@ -179,10 +179,10 @@ int strike(int pos, char * spielfeld){
         case 'w':
             for(int i=0;i<2;i++){
                 if(compare(pos, neighbors[i], spielfeld)==1 && getSpielstein(getNeighbors(neighbors[i])[i], spielfeld)=='*'){
-//                     if(spielzug="")
-//                         spielzug += umwandel(pos);
-//                     pielzug += ":";
-//                     spielzug += umwandel(getNeighbors(neighbors[i])[i]);
+                    if(strcmp(currentMove, ""))
+                        strcat(currentMove, umwandel(pos));
+                    strcat(currentMove, ":");
+                    strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='*';
                     spielfeld[getNeighbors(neighbors[i])[i]]='w';
@@ -193,10 +193,10 @@ int strike(int pos, char * spielfeld){
         case 'b':
             for(int i=2;i<4;i++){
                 if(compare(pos, neighbors[i], spielfeld)==1 && getSpielstein(getNeighbors(neighbors[i])[i], spielfeld)=='*'){
-//                     if(spielzug="")
-//                         spielzug += umwandel(pos);
-//                     pielzug += ":";
-//                     spielzug += umwandel(getNeighbors(neighbors[i])[i]);
+                    if(strcmp(currentMove, ""))
+                        strcat(currentMove, umwandel(pos));
+                    strcat(currentMove, ":");
+                    strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='*';
                     spielfeld[getNeighbors(neighbors[i])[i]]='b';
@@ -212,10 +212,10 @@ int strike(int pos, char * spielfeld){
                         return 0;
                     if(compare(pos, nowPos, spielfeld)==1){
                         if(getSpielstein(getNeighbors(nowPos)[i], spielfeld)=='*'){
-//                             if(spielzug="")
-//                                 spielzug += umwandel(pos);
-//                             pielzug += ":";
-//                             spielzug += umwandel(getNeighbors(nowPos)[i]);
+                            if(strcmp(currentMove, ""))
+                                strcat(currentMove, umwandel(pos));
+                            strcat(currentMove, ":");
+                            strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
                             spielfeld[pos]='*';
                             spielfeld[nowPos]='*';
                             spielfeld[getNeighbors(nowPos)[i]]='W';
@@ -234,10 +234,10 @@ int strike(int pos, char * spielfeld){
                         return 0;
                     if(compare(pos, nowPos, spielfeld)==1){
                         if(getSpielstein(getNeighbors(nowPos)[i], spielfeld)=='*'){
-//                             if(spielzug="")
-//                                 spielzug += umwandel(pos);
-//                             spielzug += ":";
-//                             spielzug += umwandel(getNeighbors(nowPos)[i]);
+                            if(strcmp(currentMove, ""))
+                                strcat(currentMove, umwandel(pos));
+                            strcat(currentMove, ":");
+                            strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
                             spielfeld[pos]='*';
                             spielfeld[nowPos]='*';
                             spielfeld[getNeighbors(nowPos)[i]]='B';
@@ -255,15 +255,15 @@ int strike(int pos, char * spielfeld){
     }
 }
 
-int move(int pos, char * spielfeld){
+int move(int pos, char * spielfeld, char * currentMove){
     int  * neighbors  = getNeighbors(pos);
     switch(getSpielstein(pos, spielfeld)){
         case 'w':
             for(int i=0;i<2;i++){
                 if(getSpielstein(neighbors[i], spielfeld)=='*'){
-//                     spielzug += umwandel(pos);
-//                     spielzug += ":";
-//                     spielzug += umwandel(neighbors[i]);
+                    strcat(currentMove, umwandel(pos));
+                    strcat(currentMove, ":");
+                    strcat(currentMove, umwandel(neighbors[i]));
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='w';
                     return spielfeld[neighbors[i]];
@@ -273,9 +273,9 @@ int move(int pos, char * spielfeld){
         case 'b':
             for(int i=2;i<4;i++){
                 if(getSpielstein(neighbors[i], spielfeld)=='*'){
-//                     spielzug += umwandel(pos);
-//                     spielzug += ":";
-//                     spielzug += umwandel(neighbors[i]);
+                    strcat(currentMove, umwandel(pos));
+                    strcat(currentMove, ":");
+                    strcat(currentMove, umwandel(neighbors[i]));
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='b';
                     return spielfeld[neighbors[i]];
@@ -285,9 +285,9 @@ int move(int pos, char * spielfeld){
         case 'W':
             for(int i=0;i<4;i++){
                 if(getSpielstein(neighbors[i], spielfeld)=='*'){
-//                     spielzug += umwandel(pos);
-//                     spielzug += ":";
-//                     spielzug += umwandel(neighbors[i]);
+                    strcat(currentMove, umwandel(pos));
+                    strcat(currentMove, ":");
+                    strcat(currentMove, umwandel(neighbors[i]));
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='W';
                     return spielfeld[neighbors[i]];
@@ -297,9 +297,9 @@ int move(int pos, char * spielfeld){
         case 'B':
             for(int i=0;i<4;i++){
                 if(getSpielstein(neighbors[i], spielfeld)=='*'){
-//                     spielzug += umwandel(pos);
-//                     spielzug += ":";
-//                     spielzug += umwandel(neighbors[i]);
+                    strcat(currentMove, umwandel(pos));
+                    strcat(currentMove, ":");
+                    strcat(currentMove, umwandel(neighbors[i]));
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='B';
                     return spielfeld[neighbors[i]];
