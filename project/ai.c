@@ -70,150 +70,259 @@ char getSpielstein(int pos, char * spielfeld){
 
 
 //Checkt ob wir auf eine von beiden Ränder sind
-// int checkBorder(int pos){
-//   if(pos%8-5==0)
-//     return -1; //Linker Rand
-//   if(pos%8-4==0)
-//     return 1; //Rechter Rand
-//   else
-//     return 0;
-// }
+int checkBorder(int pos){
+  if(pos%8-5==0)
+    return -1; //Linker Rand
+  if(pos%8-4==0)
+    return 1; //Rechter Rand
+  else
+    return 0;
+}
 
 //Checkt welcher spieler ein Spielstein gehört
-// int getColour (char spielstein){
-//   if (spielstein=='w'||spielstein=='W')//  1 = Weiss
-//     return 1;
-//   if (spielstein=='b'||spielstein=='B')// -1 = Schwarz
-//     return -1;
-//   else
-//     return 0; //0 = Leer oder Fehler
-// }
-//
-// //Gibt ein Array mit den möglichen gegnerische Steine aus
-// char * getRivals(char spielstein){
-//   char * result = malloc(sizeof(char)*2);
-//   if(getColour(spielstein)==1){
-//     result[0]='b';
-//     result[1]='B';
-//   }
-//   if(getColour(spielstein)==-1){
-//     result[0]='w';
-//     result[1]='W';
-//   }
-//   else{
-//     result[0]='*';
-//     result[1]='*';
-//   }
-//   return result;
-// }
+int getColour (char spielstein){
+  if (spielstein=='w'||spielstein=='W')//  1 = Weiss
+    return 1;
+  if (spielstein=='b'||spielstein=='B')// -1 = Schwarz
+    return -1;
+  else
+    return 0; //0 = Leer oder Fehler
+}
+
+//Gibt ein Array mit den möglichen gegnerische Steine aus
+char * getRivals(char spielstein){
+  char * result = malloc(sizeof(char)*2);
+  if(getColour(spielstein)==1){
+    result[0]='b';
+    result[1]='B';
+  }
+  if(getColour(spielstein)==-1){
+    result[0]='w';
+    result[1]='W';
+  }
+  else{
+    result[0]='*';
+    result[1]='*';
+  }
+  return result;
+}
 
 //Gibt ein Array mit den vier Nachbarpositionen aus
-// int * getNeighbors(int pos){
-//     int * result = malloc(sizeof(int)*4);
-//     int modpos = pos%8;
-//     if(modpos==1||modpos==2||modpos==3||modpos==4){
-//         for(int i =0; i<4;i++){
-//             switch(i){
-//                 case 1:
-//                     result[i]=pos-4;
-//                 case 2:
-//                     result[i]=pos-3;
-//                 case 3:
-//                     result[i]=pos+5;
-//                 case 4:
-//                     result[i]=pos+4;
-//             }
-//         }
-//
-//     }
-//     if(modpos==5||modpos==6||modpos==7||modpos==0){
-//         for(int i =0; i<4;i++){
-//             switch(i){
-//                 case 1:
-//                     result[i]=pos-5;
-//                 case 2:
-//                     result[i]=pos-4;
-//                 case 3:
-//                     result[i]=pos+4;
-//                 case 4:
-//                     result[i]=pos+3;
-//             }
-//         }
-//     }
-//     for(int i =0; i<4;i++){
-//         if (result[i]<1 || result[i]>32)
-//             result[i]=0;
-//     }
-//     if(checkBorder==-1){
-//         result[0]=0;
-//         result[3]=0;
-//     }
-//     if(checkBorder==1){
-//         result[1]=0;
-//         result[2]=0;
-//     }
-//     return result;
-// }
+int * getNeighbors(int pos){
+    int * result = malloc(sizeof(int)*4);
+    int modpos = pos%8;
+    if(modpos==1||modpos==2||modpos==3||modpos==4){
+        for(int i =0; i<4;i++){
+            switch(i){
+                case 1:
+                    result[i]=pos-4;
+                case 2:
+                    result[i]=pos-3;
+                case 3:
+                    result[i]=pos+5;
+                case 4:
+                    result[i]=pos+4;
+            }
+        }
+
+    }
+    if(modpos==5||modpos==6||modpos==7||modpos==0){
+        for(int i =0; i<4;i++){
+            switch(i){
+                case 1:
+                    result[i]=pos-5;
+                case 2:
+                    result[i]=pos-4;
+                case 3:
+                    result[i]=pos+4;
+                case 4:
+                    result[i]=pos+3;
+            }
+        }
+    }
+    for(int i =0; i<4;i++){
+        if (result[i]<1 || result[i]>32)
+            result[i]=0;
+    }
+    if(checkBorder(pos)==-1){
+        result[0]=0;
+        result[3]=0;
+    }
+    if(checkBorder(pos)==1){
+        result[1]=0;
+        result[2]=0;
+    }
+    return result;
+}
 
 //Checkt ob die Stelle pos2 von einen gegnerischen Stein von pos1 besetzt ist
-// int compare(int pos1, int pos2){
-//   char * rivals  = getRivals(getSpielstein(pos1));
-//   char * ourTeam = getRivals(rivals[0]);
-//   char spielstein2 = getSpielstein(pos2);
-//   if(getSpielstein(pos1)=='*'||getSpielstein(pos2)=='*')//Check ob einer von beiden * ist. Evtll ist dann zeile 76/77 überflüssig, kA
-//     return 0;
-//   if (spielstein2==rivals[0]||spielstein2==rivals[1])//falls gegner auf pos2
-//     return 1;
-//   if (spielstein2==ourTeam[0]||spielstein2==ourTeam[1])//falls teammate auf pos2
-//     return -1;
-//   else
-//     return 0;
-// }
+int compare(int pos1, int pos2, char * spielfeld){
+  char * rivals  = getRivals(getSpielstein(pos1, spielfeld));
+  char * ourTeam = getRivals(rivals[0]);
+  char spielstein2 = getSpielstein(pos2, spielfeld);
+  if(getSpielstein(pos1, spielfeld)=='*'||getSpielstein(pos2, spielfeld)=='*')//Check ob einer von beiden * ist. Evtll ist dann zeile 76/77 überflüssig, kA
+    return 0;
+  if (spielstein2==rivals[0]||spielstein2==rivals[1])//falls gegner auf pos2
+    return 1;
+  if (spielstein2==ourTeam[0]||spielstein2==ourTeam[1])//falls teammate auf pos2
+    return -1;
+  else
+    return 0;
+}
 
-//Checkt ob Spielstein an pos1 den Spielstein an pos2 schlagen kann. Falls ja, returnt es die neue Position von pos1 Stein, sonnst 0.
-// int strikeCheck(int pos1){
-//     char * rivals  = getRivals(getSpielstein(pos1));
-//     switch(getSpielstein(pos1))){
-//         case 'w':
-//             switch (checkBorder(pos1)) {
-//                 case -1:
-//                     if(compare((pos1-4), pos1)== 1 && getSpielstein(pos1-7)=='*')
-//                         if(spielzug="")
-//                             spielzug += umwandeln(pos1)
-//                         spielfeld[pos1]='
-//                         return pos1-7;
-//                     else
-//                         return 0;
-//                 case 1:
-//                     if(compare((pos1-4), pos1)==1&& getSpielstein(pos1-9)=='*')
-//                         return 1;
-//                     else
-//                         return 0;
-//                 case 0:
-//                     int * spielzuege = malloc(sizeof(int)*2);
-//                     if(compare)
-//
-//             }
-//         case 'b':
-//
-//         case 'W':
-//
-//         case 'B':
-//
-//         case '*':
-//             return 0;
-//         default:
-//             return 0;
-//     }
-// }
+//Checkt ob Spielstein an pos1 schlagen kann. Falls ja, returnt es die neue Position von pos1 Stein, sonnst 0.
+int strike(int pos, char * spielfeld){
+    char * rivals     = getRivals(getSpielstein(pos, spielfeld));
+    int  * neighbors  = getNeighbors(pos);
+    int nowPos  = pos;
+    switch(getSpielstein(pos, spielfeld)){
+        case 'w':
+            for(int i=0;i<2;i++){
+                if(compare(pos, neighbors[i], spielfeld)==1 && getSpielstein(getNeighbors(neighbors[i])[i], spielfeld)=='*'){
+//                     if(spielzug="")
+//                         spielzug += umwandel(pos);
+//                     pielzug += ":";
+//                     spielzug += umwandel(getNeighbors(neighbors[i])[i]);
+                    spielfeld[pos]='*';
+                    spielfeld[neighbors[i]]='*';
+                    spielfeld[getNeighbors(neighbors[i])[i]]='w';
+                    return spielfeld[getNeighbors(neighbors[i])[i]];
+                }
+            }
+            return 0;
+        case 'b':
+            for(int i=2;i<4;i++){
+                if(compare(pos, neighbors[i], spielfeld)==1 && getSpielstein(getNeighbors(neighbors[i])[i], spielfeld)=='*'){
+//                     if(spielzug="")
+//                         spielzug += umwandel(pos);
+//                     pielzug += ":";
+//                     spielzug += umwandel(getNeighbors(neighbors[i])[i]);
+                    spielfeld[pos]='*';
+                    spielfeld[neighbors[i]]='*';
+                    spielfeld[getNeighbors(neighbors[i])[i]]='b';
+                    return spielfeld[getNeighbors(neighbors[i])[i]];
+                }
+            }
+            return 0;
+        case 'W':
+            for(int i=0;i<4;i++){
+                for(int d=0;d<7;d++){
+                    nowPos=getNeighbors(nowPos)[i];
+                    if(compare(pos, nowPos, spielfeld)==-1 || getSpielstein(nowPos, spielfeld)=='0')
+                        return 0;
+                    if(compare(pos, nowPos, spielfeld)==1){
+                        if(getSpielstein(getNeighbors(nowPos)[i], spielfeld)=='*'){
+//                             if(spielzug="")
+//                                 spielzug += umwandel(pos);
+//                             pielzug += ":";
+//                             spielzug += umwandel(getNeighbors(nowPos)[i]);
+                            spielfeld[pos]='*';
+                            spielfeld[nowPos]='*';
+                            spielfeld[getNeighbors(nowPos)[i]]='W';
+                            return spielfeld[getNeighbors(nowPos)[i]];
+                        }
+                        return 0;
+                    }
+                }
+            }
+            return 0;
+        case 'B':
+            for(int i=0;i<4;i++){
+                for(int d=0;d<7;d++){
+                    nowPos=getNeighbors(nowPos)[i];
+                    if(compare(pos, nowPos, spielfeld)==-1 || getSpielstein(nowPos, spielfeld)=='0')
+                        return 0;
+                    if(compare(pos, nowPos, spielfeld)==1){
+                        if(getSpielstein(getNeighbors(nowPos)[i], spielfeld)=='*'){
+//                             if(spielzug="")
+//                                 spielzug += umwandel(pos);
+//                             spielzug += ":";
+//                             spielzug += umwandel(getNeighbors(nowPos)[i]);
+                            spielfeld[pos]='*';
+                            spielfeld[nowPos]='*';
+                            spielfeld[getNeighbors(nowPos)[i]]='B';
+                            return spielfeld[getNeighbors(nowPos)[i]];
+                        }
+                        return 0;
+                    }
+                }
+            }
+            return 0;
+        case '*':
+            return 0;
+        default:
+            return 0;
+    }
+}
+
+int move(int pos, char * spielfeld){
+    int  * neighbors  = getNeighbors(pos);
+    switch(getSpielstein(pos, spielfeld)){
+        case 'w':
+            for(int i=0;i<2;i++){
+                if(getSpielstein(neighbors[i], spielfeld)=='*'){
+//                     spielzug += umwandel(pos);
+//                     spielzug += ":";
+//                     spielzug += umwandel(neighbors[i]);
+                    spielfeld[pos]='*';
+                    spielfeld[neighbors[i]]='w';
+                    return spielfeld[neighbors[i]];
+                }
+            }
+            return 0;
+        case 'b':
+            for(int i=2;i<4;i++){
+                if(getSpielstein(neighbors[i], spielfeld)=='*'){
+//                     spielzug += umwandel(pos);
+//                     spielzug += ":";
+//                     spielzug += umwandel(neighbors[i]);
+                    spielfeld[pos]='*';
+                    spielfeld[neighbors[i]]='b';
+                    return spielfeld[neighbors[i]];
+                }
+            }
+            return 0;
+        case 'W':
+            for(int i=0;i<4;i++){
+                if(getSpielstein(neighbors[i], spielfeld)=='*'){
+//                     spielzug += umwandel(pos);
+//                     spielzug += ":";
+//                     spielzug += umwandel(neighbors[i]);
+                    spielfeld[pos]='*';
+                    spielfeld[neighbors[i]]='W';
+                    return spielfeld[neighbors[i]];
+                }
+            }
+            return 0;
+        case 'B':
+            for(int i=0;i<4;i++){
+                if(getSpielstein(neighbors[i], spielfeld)=='*'){
+//                     spielzug += umwandel(pos);
+//                     spielzug += ":";
+//                     spielzug += umwandel(neighbors[i]);
+                    spielfeld[pos]='*';
+                    spielfeld[neighbors[i]]='B';
+                    return spielfeld[neighbors[i]];
+                }
+            }
+            return 0;
+        case '*':
+            return 0;
+        default:
+            return 0;
+    }
+}
 
 void think(struct gds *game_data_struct_V2){
 
-  printf("THINKER: %c\n",game_data_struct_V2->spielfeld[5] );
-  printf("Am denken ...\n");
+    printf("THINKER: %c\n",game_data_struct_V2->spielfeld[5] );
+    printf("Am denken ...\n");
+    
     char *spielfeld = malloc(sizeof(char)*32);
     memcpy(spielfeld, game_data_struct_V2->spielfeld, sizeof(game_data_struct_V2->spielfeld));
+    
     char *spielzug = malloc(sizeof(char)*32);
+
     //Test-Spielzug
     char testMoveW[64];
     strcpy(testMoveW, "A3:B4\n");
@@ -229,7 +338,5 @@ void think(struct gds *game_data_struct_V2){
         strcpy(game_data_struct_V2->currentMove, testMoveB);
         memset(testMoveB, 0, 64);
     }
-
-
 
 }

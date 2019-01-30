@@ -12,7 +12,7 @@ struct gds {
  pid_t pid_child;
  pid_t pid_parent;
  int gameover;
- char currentMove[64];
+ char currentMove[32];
 };
 
 
