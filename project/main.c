@@ -22,30 +22,44 @@ int main(int argc, char * argv[])
 {
 //Struct erstellen
 printf("\n"); //ACHTUNG NICHT LÖSCHEN
-struct gds *game_data_struct_V2;
-game_data_struct_V2 = malloc(sizeof(struct gds));
-game_data_struct_V2->anzahl_spieler = 0;
+//struct gds *game_data_struct_V2;
+//game_data_struct_V2 = malloc(sizeof(struct gds));
+//game_data_struct_V2->anzahl_spieler = 0;
 //Test für Shared Memory
-int shm_addr = SHmem(sizeof(game_data_struct_V2));
-int *SHM = shmat(shm_addr,NULL,0);
-SHM = malloc(sizeof(game_data_struct_V2));
+int shm_addr = SHmem(sizeof(struct gds));
+//int *SHM = shmat(shm_addr,NULL,0);
+//SHM = malloc(sizeof(game_data_struct_V2));
 
 //verschieben in SHM
-memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
+//memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
     int pfd[2];
     pipe(pfd);
 
-    game_data_struct_V2->gameover=1;
+    //game_data_struct_V2->gameover=1;
 
     if (fork()==0){					//beginn connector
+
+
+      struct gds *gameData, *ptr;
+
+        if((ptr = (struct gds*) shmat(shm_addr, NULL, 0)) == (struct gds*) -1){
+            perror("shmat child");
+            return -1;
+        }
+
+        gameData = ptr;
+
+        gameData->gameover=1;
+
+
          pid_t parent_id = getppid();			//ID des Elternprozesses
-         game_data_struct_V2->pid_parent = parent_id;
+         gameData->pid_parent = parent_id;
          close(pfd[1]);           //Schliessen der Schreibseite der pipe
 	       pid_t child_id = getpid();			//ID des Kindprozesses
-         game_data_struct_V2->pid_child = child_id;
+         gameData->pid_child = child_id;
 	       printf("Prozess IDS:\n");			//testprint
-    	   printf("child : %d parent: %d\n",game_data_struct_V2->pid_child,game_data_struct_V2->pid_parent);
+    	   printf("child : %d parent: %d\n",gameData->pid_child,gameData->pid_parent);
 
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
@@ -109,7 +123,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
     //Put command line parameters into SMH
 
-    strcpy(game_data_struct_V2->gameID, g);
+    strcpy(gameData->gameID, g);
 
     //config parameters
     struct parameters cfg = read_cfg(c);
@@ -139,7 +153,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
     }
     printf("\n");
 
-    game_data_struct_V2->spielernummer=p;
+    gameData->spielernummer=p;
     //////////SOCKET//////////
     struct sockaddr_in sa;
     int res;
@@ -168,7 +182,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
     //////////PROTOKOLLPHASE//////////
     //game_data_struct_V2->gameover = 1;
-    performConnection(SocketFD, game_data_struct_V2, pfd[0]);
+    performConnection(SocketFD, gameData, pfd[0]);
 
     shutdown(SocketFD, SHUT_RDWR);
 
@@ -178,17 +192,29 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
     //////////THINKER//////////
     else {
-        printf("i bims eins thinker %i \n",game_data_struct_V2->gameover==1);
+
+      struct gds *gameData, *ptr;
+
+        if((ptr = (struct gds*) shmat(shm_addr, NULL, 0)) == (struct gds*) -1){
+            perror("shmat parent");
+            return -1;
+        }
+
+        gameData = ptr;
+
+        gameData->gameover=1;
+
+        printf("i bims eins thinker %i \n",gameData->gameover==1);
         close(pfd[0]);// Schliessen der Leseseite
 
         char test[9]="PiPeTeSt\n";
         //SCHLEIFE, DIE SOLANGE DAS SPIEL LAEUFT AUF DEM SIGNAL THINK() AUFRUFT
-        while(game_data_struct_V2->gameover==1){
+        while(gameData->gameover==1){
           printf("i bims eins thinker V2\n");
             signal(SIGUSR1, my_handler);
             pause();
               printf("i bims eins thinker 3\n");
-            think(game_data_struct_V2);
+            think(gameData);
             write(pfd[1], test, sizeof(test));
 //            write(pfd[1], game_data_struct_V2->currentMove, sizeof(game_data_struct_V2->currentMove));//Schreibt Testmove in die pipe
         }
@@ -198,7 +224,7 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
     }//end thinker
 
     //SHM lösen
-    shmdt(SHM);
+    shmdt(shm_addr);
     printf("SharedMemory gelöst \n");
 
 

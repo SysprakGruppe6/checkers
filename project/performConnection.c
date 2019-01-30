@@ -56,7 +56,7 @@ void sendServer(int SocketFD, char *nachricht, int laenge){
 int SHmem(int size){
 
   mem.groesse = size;
-  mem.err=shmget(IPC_PRIVATE, mem.groesse,0);
+  mem.err=shmget(IPC_PRIVATE, mem.groesse,IPC_CREAT | 0666);
 
   return mem.err;
 }
