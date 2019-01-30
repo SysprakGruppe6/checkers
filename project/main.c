@@ -113,11 +113,11 @@ memmove(SHM,&game_data_struct_V2,sizeof(game_data_struct_V2));
 
     //config parameters
     struct parameters cfg = read_cfg(c);
-    printf(cfg.hostName);
+    printf("%s \n",cfg.hostName);
     printf("\n");
     printf("%d", cfg.portNr);
     printf("\n");
-    printf(cfg.gameType);
+    printf("%s \n",cfg.gameType);
 
 
 

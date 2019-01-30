@@ -1,7 +1,7 @@
 CC = gcc
 FLAGS= -std=c99 -D_XOPEN_SOURCE=600
 CFLAGS= -Wall -Wextra -Werror
-DEPS = project/performConnection.h project/ai.h
+DEPS = project/performConnection.h project/ai.h project/SHM.h project/configParser.h
 OBJ = tmp/performConnection.o tmp/ai.o tmp/main.o
 
 all: sysprak-client
@@ -17,7 +17,7 @@ tmp/%.o: project/%.c
 
 play:	sysprak-client
 	./sysprak-client -g $(GAME_ID) -p $(PLAYER)
-	
+
 .PHONY : clean
 clean:
 	-rm sysprak-client tmp/*
