@@ -69,6 +69,28 @@ char getSpielstein(int pos, char * spielfeld){
 }
 
 
+int * getTeam(int playerNr, char * spielfeld){
+    int * result = malloc(sizeof(int)*12);
+    int counter = 0;
+    switch(playerNr){
+        case 0://Weiss
+            for(int i=1;i<33;i++){
+                if(getSpielstein(i, spielfeld)=='w'||getSpielstein(i, spielfeld)=='W'){
+                    result[counter]=i;
+                    counter++;
+                }
+            }
+        case 1://Schwarz
+            for(int i=1;i<33;i++){
+                if(getSpielstein(i, spielfeld)=='b'||getSpielstein(i, spielfeld)=='B'){
+                    result[counter]=i;
+                    counter++;
+                }
+            }
+    }
+    return result;
+}
+
 //Checkt ob wir auf eine von beiden Ränder sind
 int checkBorder(int pos){
   if(pos%8-5==0)
@@ -322,6 +344,8 @@ void think(struct gds *game_data_struct_V2){
     memcpy(spielfeld, game_data_struct_V2->spielfeld, sizeof(game_data_struct_V2->spielfeld));
     
     char *spielzug = malloc(sizeof(char)*32);
+    
+    int *meinTeam = getTeam(game_data_struct_V2->spielernummer, spielfeld);
 
     //Test-Spielzug
     char testMoveW[64];
