@@ -337,14 +337,13 @@ int move(int pos, char * spielfeld, char * currentMove){
 
 void think(struct gds *game_data_struct_V2){
 
-    printf("THINKER: %c\n",game_data_struct_V2->spielfeld[5] );
-    printf("Am denken ...\n");
-    
+    printf("Thinker Am denken ...\n");
+
     char *spielfeld = malloc(sizeof(char)*32);
     memcpy(spielfeld, game_data_struct_V2->spielfeld, sizeof(game_data_struct_V2->spielfeld));
-    
+
     char *spielzug = malloc(sizeof(char)*32);
-    
+
     int *meinTeam = getTeam(game_data_struct_V2->spielernummer, spielfeld);
 
     //Test-Spielzug
@@ -362,5 +361,5 @@ void think(struct gds *game_data_struct_V2){
         strcpy(game_data_struct_V2->currentMove, testMoveB);
         memset(testMoveB, 0, 64);
     }
-
+	return;
 }

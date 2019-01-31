@@ -201,11 +201,12 @@ int shm_addr = SHmem(sizeof(struct gds));
             signal(SIGUSR1, my_handler);
             pause();
             think(gameData);
-            write(pfd[1], test, sizeof(test));
+            printf("aus dem thinker zurueck\n");
+	    write(pfd[1], test, sizeof(test));
 //            write(pfd[1], game_data_struct_V2->currentMove, sizeof(game_data_struct_V2->currentMove));//Schreibt Testmove in die pipe
         }
 
-        waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
+       //waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
         printf("thinker out");
     }//end thinker
 
@@ -214,5 +215,5 @@ int shm_addr = SHmem(sizeof(struct gds));
     printf("SharedMemory gelöst \n");
 
 
-    return EXIT_SUCCESS;
+    return 0;
 }
