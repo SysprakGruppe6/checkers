@@ -195,7 +195,7 @@ return i;
               spielfeldSchreiben(erhalten,game_data_struct_V2);
               Spielfeldausgabe(game_data_struct_V2->spielfeld);
 
-                 if(game_data_struct_V2->spielernummer=='0'){
+                 if(game_data_struct_V2->spielernummer==0){
                    sendServer(SocketFD, "THINKING\n", 9);
               }else{
                 sendServer(SocketFD, "THINKING\n", 9);
@@ -206,15 +206,23 @@ return i;
 
             /////MOVE-BEFEHLSSEQUENZ/////
             if(strncmp(erhalten, "+ MOVE ", 7)==0){
-              sleep(10);
+              //sendServer(SocketFD, "THINKING\n", 9);
+              //SPIELFELD IN STRUCT SPEICHERN
+            }
+
+            if(strncmp(erhalten, "+ BOARD", 7)==0){
+              sleep(1);
+              printf("+BOARD-Case\n");
+              spielfeldSchreiben(erhalten,game_data_struct_V2);
               sendServer(SocketFD, "THINKING\n", 9);
+              //Spielfeldausgabe(game_data_struct_V2->spielfeld);
               //SPIELFELD IN STRUCT SPEICHERN
             }else
 
 
             /////SPIELZUG/////
             if(strncmp(erhalten, "+ OKTHINK", 9)==0){
-               if(game_data_struct_V2->spielernummer=='0' && protokollphasenendenchecker==1){
+               if(game_data_struct_V2->spielernummer==0 && protokollphasenendenchecker==1){
                  sendServer(SocketFD, "PLAY C3:D4\n", 11);
                  //Spielfeld ausgegeben werden
                  Spielfeldausgabe(game_data_struct_V2->spielfeld);
