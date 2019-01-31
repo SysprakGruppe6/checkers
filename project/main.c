@@ -175,7 +175,7 @@ int shm_addr = SHmem(sizeof(struct gds));
     shutdown(SocketFD, SHUT_RDWR);
 
     close(SocketFD);
-
+    printf("connector out\n");
     }//ende connector
 
     //////////THINKER//////////
@@ -207,7 +207,7 @@ int shm_addr = SHmem(sizeof(struct gds));
         }
 
        //waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
-        printf("thinker out");
+        printf("thinker out\n");
     }//end thinker
 
     //SHM lösen

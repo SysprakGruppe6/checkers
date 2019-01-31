@@ -167,6 +167,103 @@ return i;
         while (game_data_struct_V2->gameover==1) {
             recvServer(SocketFD, erhalten);       //empfaengt im jeden durchlauf die Servernachricht
             /////PROTOKOLLPHASE-PROLOG/////
+
+            if (strncmp(erhalten, "+ TOTAL", 7)==0) {
+              //SPIELFELD IN STRUCT SPEICHERN
+              spielfeldSchreiben(erhalten,game_data_struct_V2);
+              Spielfeldausgabe(game_data_struct_V2->spielfeld);
+
+                 if(game_data_struct_V2->spielernummer==0){
+                   sendServer(SocketFD, "THINKING\n", 9);
+
+                   kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
+                   read(pipe, pipebuffer, 64);
+                   printf("PYPE%s \n",pipebuffer);
+
+                   char* zug = malloc(sizeof(pipebuffer));
+                   strcpy(zug, "PLAY ");
+                   strncat(zug, pipebuffer, strlen(pipebuffer));
+                   strcat(zug, "\n");
+                   sendServer(SocketFD, zug , strlen(zug));
+
+              }else{
+                sendServer(SocketFD, "THINKING\n", 9);
+
+                kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
+                read(pipe, pipebuffer, 64);
+                printf("PYPE%s \n",pipebuffer);
+
+                char* zug = malloc(sizeof(pipebuffer));
+                strcpy(zug, "PLAY ");
+                strncat(zug, pipebuffer, strlen(pipebuffer));
+                strcat(zug, "\n");
+                sendServer(SocketFD, zug , strlen(zug));
+
+              }
+            }
+            /////ENDE-PROTOKOLLPHASE/////
+
+            /////MOVE-BEFEHLSSEQUENZ/////
+            if(strncmp(erhalten, "+ MOVE ", 7)==0){
+              //endServer(SocketFD, "THINKING\n", 9);
+              //SPIELFELD IN STRUCT SPEICHERN
+            }
+
+            if(strncmp(erhalten, "+ BOARD", 7)==0){
+              sleep(2);
+              spielfeldSchreiben(erhalten,game_data_struct_V2);
+              sendServer(SocketFD, "THINKING\n", 9);
+              //printf("+BOARD-Case\n");
+/*
+              if(game_data_struct_V2->spielernummer==0 && protokollphasenendenchecker==1){
+                sendServer(SocketFD, "PLAY C3:D4\n", 11);
+                //Spielfeld ausgegeben werden
+                Spielfeldausgabe(game_data_struct_V2->spielfeld);
+                protokollphasenendenchecker=0;
+              }else{
+*/
+               kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
+               read(pipe, pipebuffer, 64);
+               printf("PYPE%s \n",pipebuffer);
+
+               char* zug = malloc(sizeof(pipebuffer));
+               strcpy(zug, "PLAY ");
+               strncat(zug, pipebuffer, strlen(pipebuffer));
+               strcat(zug, "\n");
+               sendServer(SocketFD, zug , strlen(zug));
+
+               //sendServer(SocketFD, "PLAY C3:D4\n", 11);//Mein 'Test'
+               //laenge des Spielzuges berechnen
+               //sendServer(); Spielzug
+               //Spielfeld ausgegeben werden
+               //Spielfeldausgabe(game_data_struct_V2->spielfeld);
+             //}
+
+
+              //Spielfeldausgabe(game_data_struct_V2->spielfeld);
+              //SPIELFELD IN STRUCT SPEICHERN
+            }
+
+
+        /*     if (strncmp(erhalten, "+ ENDBOARD", 10)==0){
+                sendServer(SocketFD, "THINKING\n", 9);
+            }
+*/
+
+            /////SPIELZUG/////
+            if(strncmp(erhalten, "+ OKTHINK", 9)==0){
+
+                Spielfeldausgabe(game_data_struct_V2->spielfeld);
+
+            }
+
+
+            /////IDLE-BEFEHLSSEQUENZ/////
+             if (strncmp(erhalten, "+ WAIT", 6)==0){
+                sendServer(SocketFD, "OKWAIT\n", 6);
+            }
+
+
             if (strncmp(erhalten, "+ MNM Gameserver", 16)==0) {
                 sendServer(SocketFD, "VERSION 2.1\n", 12);
             }
@@ -192,74 +289,6 @@ return i;
                 printf("PLAYERID im PC 1:%d\n", erhalten[6]);
                 game_data_struct_V2->spielernummer=erhalten[6]-'0';
                 printf("PLAYERID im PC 2:%d\n", game_data_struct_V2->spielernummer);
-            }
-            if (strncmp(erhalten, "+ TOTAL", 7)==0) {
-              //SPIELFELD IN STRUCT SPEICHERN
-              spielfeldSchreiben(erhalten,game_data_struct_V2);
-              Spielfeldausgabe(game_data_struct_V2->spielfeld);
-
-                 if(game_data_struct_V2->spielernummer==0){
-                   sendServer(SocketFD, "THINKING\n", 9);
-              }else{
-                sendServer(SocketFD, "THINKING\n", 9);
-
-              }
-            }
-            /////ENDE-PROTOKOLLPHASE/////
-
-            /////MOVE-BEFEHLSSEQUENZ/////
-            if(strncmp(erhalten, "+ MOVE ", 7)==0){
-              //endServer(SocketFD, "THINKING\n", 9);
-              //SPIELFELD IN STRUCT SPEICHERN
-            }
-
-            if(strncmp(erhalten, "+ BOARD", 7)==0){
-              sleep(1);
-              sendServer(SocketFD, "THINKING\n", 9);
-              //printf("+BOARD-Case\n");
-              spielfeldSchreiben(erhalten,game_data_struct_V2);
-
-              //Spielfeldausgabe(game_data_struct_V2->spielfeld);
-              //SPIELFELD IN STRUCT SPEICHERN
-            }
-
-
-        /*     if (strncmp(erhalten, "+ ENDBOARD", 10)==0){
-                sendServer(SocketFD, "THINKING\n", 9);
-            }
-*/
-
-            /////SPIELZUG/////
-            if(strncmp(erhalten, "+ OKTHINK", 9)==0){
-               if(game_data_struct_V2->spielernummer==0 && protokollphasenendenchecker==1){
-                 sendServer(SocketFD, "PLAY C3:D4\n", 11);
-                 //Spielfeld ausgegeben werden
-                 Spielfeldausgabe(game_data_struct_V2->spielfeld);
-                 protokollphasenendenchecker=0;
-               }else{
-
-                kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
-                read(pipe, pipebuffer, 64);
-                printf("PYPE%s \n",pipebuffer);
-
-                char* zug = malloc(sizeof(pipebuffer));
-                strcpy(zug, "PLAY ");
-                strncat(zug, pipebuffer, strlen(pipebuffer));
-                strcat(zug, "\n");
-                sendServer(SocketFD, zug , strlen(zug));
-
-                //sendServer(SocketFD, "PLAY C3:D4\n", 11);//Mein 'Test'
-                //laenge des Spielzuges berechnen
-                //sendServer(); Spielzug
-                //Spielfeld ausgegeben werden
-                Spielfeldausgabe(game_data_struct_V2->spielfeld);
-              }
-            }
-
-
-            /////IDLE-BEFEHLSSEQUENZ/////
-             if (strncmp(erhalten, "+ WAIT", 6)==0){
-                sendServer(SocketFD, "OKWAIT\n", 6);
             }
 
 

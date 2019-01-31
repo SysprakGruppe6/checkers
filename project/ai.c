@@ -347,14 +347,9 @@ int move(int pos, char * spielfeld, char * currentMove){
 
 void think(struct gds *game_data_struct_V2){
 
-    Spielfeldausgabe(game_data_struct_V2->spielfeld);
-
-    printf("Thinker Am denken ...\n");
-
     char *spielfeld = malloc(sizeof(char)*32);
     memcpy(spielfeld, game_data_struct_V2->spielfeld, sizeof(game_data_struct_V2->spielfeld));
 
-    Spielfeldausgabe(spielfeld);
     int *meinTeam = getTeam(game_data_struct_V2->spielernummer, spielfeld);
 
     int tmpPos = 0;
