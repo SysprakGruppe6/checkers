@@ -66,7 +66,7 @@ int SHmem(int size){
 //Funktion um Spielfeld in SHM übertragen
 void spielfeldSchreiben(char buffer[256],struct gds *game_data_struct_V2){
   int j = 1;
-  printf("Spielfeld wird eingegeben\n");
+
   int line = 0;
     for(int i=0;i<256;i++){
       if (
@@ -95,6 +95,7 @@ void spielfeldSchreiben(char buffer[256],struct gds *game_data_struct_V2){
           i = 500;
       }
   }
+  printf("Spielfeld wird eingegeben\n");
 }
 
 
@@ -167,6 +168,7 @@ return i;
         int protokollphasenendenchecker =1;
         while (game_data_struct_V2->gameover==1) {
             recvServer(SocketFD, erhalten);       //empfaengt im jeden durchlauf die Servernachricht
+            sleep(1);
             /////PROTOKOLLPHASE-PROLOG/////
 
             if (strncmp(erhalten, "+ TOTAL", 7)==0) {
@@ -216,9 +218,10 @@ return i;
 
             if(strncmp(erhalten, "+ BOARD", 7)==0){
 
-              sleep(2);
-              sendServer(SocketFD, "THINKING\n", 9);
+              //sleep(2);
               spielfeldSchreiben(erhalten,game_data_struct_V2);
+
+              sendServer(SocketFD, "THINKING\n", 9);
 
               //printf("+BOARD-Case\n");
 /*
