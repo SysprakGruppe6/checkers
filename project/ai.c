@@ -248,7 +248,6 @@ int strike(int pos, char * spielfeld, char * currentMove){
                             spielfeld[getNeighbors(nowPos)[i]]='W';
                             return getNeighbors(nowPos)[i];
                         }
-                        return 0;
                     }
                 }
             }
@@ -271,7 +270,6 @@ int strike(int pos, char * spielfeld, char * currentMove){
                             spielfeld[getNeighbors(nowPos)[i]]='B';
                             return getNeighbors(nowPos)[i];
                         }
-                        return 0;
                     }
                 }
             }
