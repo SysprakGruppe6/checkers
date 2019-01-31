@@ -211,10 +211,11 @@ return i;
             }
 
             if(strncmp(erhalten, "+ BOARD", 7)==0){
-              sleep(1);
+              sleep(4);
+              sendServer(SocketFD, "THINKING\n", 9);
               printf("+BOARD-Case\n");
               spielfeldSchreiben(erhalten,game_data_struct_V2);
-              sendServer(SocketFD, "THINKING\n", 9);
+
               //Spielfeldausgabe(game_data_struct_V2->spielfeld);
               //SPIELFELD IN STRUCT SPEICHERN
             }else
@@ -231,6 +232,7 @@ return i;
 
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
                 read(pipe, pipebuffer, 64);
+                printf("PYPE%s \n",pipebuffer);
                 //laenge des Spielzuges berechnen
                 //sendServer(); Spielzug
                 //Spielfeld ausgegeben werden

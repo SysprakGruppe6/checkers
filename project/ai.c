@@ -80,6 +80,7 @@ int * getTeam(int playerNr, char * spielfeld){
                     counter++;
                 }
             }
+            break;
         case 1://Schwarz
             for(int i=1;i<33;i++){
                 if(getSpielstein(i, spielfeld)=='b'||getSpielstein(i, spielfeld)=='B'){
@@ -87,6 +88,7 @@ int * getTeam(int playerNr, char * spielfeld){
                     counter++;
                 }
             }
+            break;
     }
     return result;
 }
@@ -101,24 +103,16 @@ int checkBorder(int pos){
     return 0;
 }
 
-//Checkt welcher spieler ein Spielstein gehört
-int getColour (char spielstein){
-  if (spielstein=='w'||spielstein=='W')//  1 = Weiss
-    return 1;
-  if (spielstein=='b'||spielstein=='B')// -1 = Schwarz
-    return -1;
-  else
-    return 0; //0 = Leer oder Fehler
-}
 
 //Gibt ein Array mit den möglichen gegnerische Steine aus
 char * getRivals(char spielstein){
   char * result = malloc(sizeof(char)*2);
-  if(getColour(spielstein)==1){
+  if(spielstein=='w'||spielstein=='W'){
     result[0]='b';
     result[1]='B';
   }
-  if(getColour(spielstein)==-1){
+  else
+  if(spielstein=='b'||spielstein=='B'){
     result[0]='w';
     result[1]='W';
   }
@@ -136,14 +130,18 @@ int * getNeighbors(int pos){
     if(modpos==1||modpos==2||modpos==3||modpos==4){
         for(int i =0; i<4;i++){
             switch(i){
-                case 1:
+                case 0:
                     result[i]=pos-4;
-                case 2:
+                    break;
+                case 1:
                     result[i]=pos-3;
-                case 3:
+                    break;
+                case 2:
                     result[i]=pos+5;
-                case 4:
+                    break;
+                case 3:
                     result[i]=pos+4;
+                    break;
             }
         }
 
@@ -151,14 +149,18 @@ int * getNeighbors(int pos){
     if(modpos==5||modpos==6||modpos==7||modpos==0){
         for(int i =0; i<4;i++){
             switch(i){
-                case 1:
+                case 0:
                     result[i]=pos-5;
-                case 2:
+                    break;
+                case 1:
                     result[i]=pos-4;
-                case 3:
+                    break;
+                case 2:
                     result[i]=pos+4;
-                case 4:
+                    break;
+                case 3:
                     result[i]=pos+3;
+                    break;
             }
         }
     }
@@ -201,11 +203,11 @@ int strike(int pos, char * spielfeld, char * currentMove){
         case 'w':
             for(int i=0;i<2;i++){
                 if(compare(pos, neighbors[i], spielfeld)==1 && getSpielstein(getNeighbors(neighbors[i])[i], spielfeld)=='*'){
-                    if(strcmp(currentMove, ""))
+                    if(strcmp(currentMove, "")==0)
                         strcat(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
-                    printf("MOVETESTSTRIKE:%s\n", currentMove);
+                    printf("MOVETESTSTRIKEw:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='*';
                     spielfeld[getNeighbors(neighbors[i])[i]]='w';
@@ -216,11 +218,11 @@ int strike(int pos, char * spielfeld, char * currentMove){
         case 'b':
             for(int i=2;i<4;i++){
                 if(compare(pos, neighbors[i], spielfeld)==1 && getSpielstein(getNeighbors(neighbors[i])[i], spielfeld)=='*'){
-                    if(strcmp(currentMove, ""))
+                    if(strcmp(currentMove, "")==0)
                         strcat(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
-                    printf("MOVETESTSTRIKE:%s\n", currentMove);
+                    printf("MOVETESTSTRIKEb:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='*';
                     spielfeld[getNeighbors(neighbors[i])[i]]='b';
@@ -236,11 +238,11 @@ int strike(int pos, char * spielfeld, char * currentMove){
                         return 0;
                     if(compare(pos, nowPos, spielfeld)==1){
                         if(getSpielstein(getNeighbors(nowPos)[i], spielfeld)=='*'){
-                            if(strcmp(currentMove, ""))
+                            if(strcmp(currentMove, "")==0)
                                 strcat(currentMove, umwandel(pos));
                             strcat(currentMove, ":");
                             strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
-                            printf("MOVETESTSTRIKE:%s\n", currentMove);
+                            printf("MOVETESTSTRIKEW:%s\n", currentMove);
                             spielfeld[pos]='*';
                             spielfeld[nowPos]='*';
                             spielfeld[getNeighbors(nowPos)[i]]='W';
@@ -259,11 +261,11 @@ int strike(int pos, char * spielfeld, char * currentMove){
                         return 0;
                     if(compare(pos, nowPos, spielfeld)==1){
                         if(getSpielstein(getNeighbors(nowPos)[i], spielfeld)=='*'){
-                            if(strcmp(currentMove, ""))
+                            if(strcmp(currentMove, "")==0)
                                 strcat(currentMove, umwandel(pos));
                             strcat(currentMove, ":");
                             strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
-                            printf("MOVETESTSTRIKE:%s\n", currentMove);
+                            printf("MOVETESTSTRIKEB:%s\n", currentMove);
                             spielfeld[pos]='*';
                             spielfeld[nowPos]='*';
                             spielfeld[getNeighbors(nowPos)[i]]='B';
@@ -290,7 +292,7 @@ int move(int pos, char * spielfeld, char * currentMove){
                     strcpy(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(neighbors[i]));
-                    printf("MOVETESTMOV:%s\n", currentMove);
+                    printf("MOVETESTMOVw:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='w';
                     return spielfeld[neighbors[i]];
@@ -303,7 +305,7 @@ int move(int pos, char * spielfeld, char * currentMove){
                     strcpy(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(neighbors[i]));
-                    printf("MOVETESTMOV:%s\n", currentMove);
+                    printf("MOVETESTMOVb:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='b';
                     return spielfeld[neighbors[i]];
@@ -316,7 +318,7 @@ int move(int pos, char * spielfeld, char * currentMove){
                     strcpy(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(neighbors[i]));
-                    printf("MOVETESTMOV:%s\n", currentMove);
+                    printf("MOVETESTMOVW:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='W';
                     return spielfeld[neighbors[i]];
@@ -329,7 +331,7 @@ int move(int pos, char * spielfeld, char * currentMove){
                     strcat(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(neighbors[i]));
-                    printf("MOVETESTMOV:%s\n", currentMove);
+                    printf("MOVETESTMOVB:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='B';
                     return spielfeld[neighbors[i]];
@@ -345,20 +347,25 @@ int move(int pos, char * spielfeld, char * currentMove){
 
 void think(struct gds *game_data_struct_V2){
 
+    Spielfeldausgabe(game_data_struct_V2->spielfeld);
+
     printf("Thinker Am denken ...\n");
 
     char *spielfeld = malloc(sizeof(char)*32);
     memcpy(spielfeld, game_data_struct_V2->spielfeld, sizeof(game_data_struct_V2->spielfeld));
 
+    Spielfeldausgabe(spielfeld);
     char *spielzug = malloc(sizeof(char)*32);
 
+    printf("SPIELERNUMMER: %d\n",game_data_struct_V2->spielernummer);
 
     int *meinTeam = getTeam(game_data_struct_V2->spielernummer, spielfeld);
 
+    int tmpPos = 0;
     for(int i=0; i<12; i++){//Check ob irgendein Spielstein Schlagen kann
-      int tmpPos=meinTeam[i];
+      tmpPos=meinTeam[i];
       while(tmpPos!=0){
-        tmpPos=strike(meinTeam[i], spielfeld, game_data_struct_V2->currentMove);
+        tmpPos=strike(tmpPos, spielfeld, game_data_struct_V2->currentMove);
       }
       if(strcmp(game_data_struct_V2->currentMove, "")!=0){
         break;

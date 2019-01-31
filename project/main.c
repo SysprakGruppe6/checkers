@@ -203,6 +203,7 @@ int shm_addr = SHmem(sizeof(struct gds));
             think(gameData);
             printf("MOVETEST MAIN:%s\n", gameData->currentMove);
 	          write(pfd[1], gameData->currentMove, sizeof(gameData->currentMove));
+            memset(gameData->currentMove,0,sizeof(gameData->currentMove));
         }
 
        //waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
