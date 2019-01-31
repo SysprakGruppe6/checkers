@@ -180,12 +180,15 @@ return i;
 
               char* spielid = malloc(sizeof(char)*9);
               strcpy(spielid, "PLAYER ");
-              spielid[7]=game_data_struct_V2->spielernummer;
+              spielid[7]=(game_data_struct_V2->spielernummer)+'0';
               strcat(spielid, "\n");
               sendServer(SocketFD, spielid , 9);
             }else
             if (strncmp(erhalten, "+ YOU", 5)==0) {
-                game_data_struct_V2->spielernummer=erhalten[6];
+                printf("PLAYERID im PC 1:%d\n", game_data_struct_V2->spielernummer);
+                printf("PLAYERID im PC 1:%d\n", erhalten[6]);
+                game_data_struct_V2->spielernummer=erhalten[6]-'0';
+                printf("PLAYERID im PC 2:%d\n", game_data_struct_V2->spielernummer);
             }else
             if (strncmp(erhalten, "+ TOTAL", 7)==0) {
               //SPIELFELD IN STRUCT SPEICHERN
@@ -238,7 +241,7 @@ return i;
             else if (strncmp(erhalten, "+ GAMEOVER", 10)==0){
                 printf("Spiel vorbei!\n");
                 game_data_struct_V2->gameover=0;
-                kill(game_data_struct_V2->pid_parent, SIGUSR1); 
+                kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
 
             /////REAKTION AUF SERVER-FEHLERMELDUNG/////
@@ -246,7 +249,7 @@ return i;
                 printf("Fehler bei der Serverkommunikation\n");
                 //printf("Spiel automatisch verloren!\n");
                 game_data_struct_V2->gameover=0;
-                kill(game_data_struct_V2->pid_parent, SIGUSR1); 
+                kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
             //CASE FUER LEERE NACHRICHT VOM Server
             //EVTL MIT LOOP COUNTER

@@ -85,7 +85,7 @@ int shm_addr = SHmem(sizeof(struct gds));
                     printf(MSG);
                     return -1;
                 }
-                p=optarg[0]-1;
+                p=optarg[0];
                 break;
 
             case 'c':
@@ -141,7 +141,7 @@ int shm_addr = SHmem(sizeof(struct gds));
     }
     printf("\n");
 
-    gameData->spielernummer=p;
+    gameData->spielernummer=p-'0'-1;
     //////////SOCKET//////////
     struct sockaddr_in sa;
     int res;
@@ -201,9 +201,8 @@ int shm_addr = SHmem(sizeof(struct gds));
             signal(SIGUSR1, my_handler);
             pause();
             think(gameData);
-            printf("aus dem thinker zurueck\n");
-	    write(pfd[1], test, sizeof(test));
-//            write(pfd[1], game_data_struct_V2->currentMove, sizeof(game_data_struct_V2->currentMove));//Schreibt Testmove in die pipe
+            printf("MOVETEST MAIN:%s\n", gameData->currentMove);
+	          write(pfd[1], gameData->currentMove, sizeof(gameData->currentMove));
         }
 
        //waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
