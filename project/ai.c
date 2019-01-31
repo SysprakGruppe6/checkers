@@ -196,7 +196,6 @@ int compare(int pos1, int pos2, char * spielfeld){
 
 //Checkt ob Spielstein an pos1 schlagen kann. Falls ja, returnt es die neue Position von pos1 Stein, sonnst 0.
 int strike(int pos, char * spielfeld, char * currentMove){
-    char * rivals     = getRivals(getSpielstein(pos, spielfeld));
     int  * neighbors  = getNeighbors(pos);
     int nowPos  = pos;
     switch(getSpielstein(pos, spielfeld)){
@@ -356,7 +355,6 @@ void think(struct gds *game_data_struct_V2){
     memcpy(spielfeld, game_data_struct_V2->spielfeld, sizeof(game_data_struct_V2->spielfeld));
 
     Spielfeldausgabe(spielfeld);
-    char *spielzug = malloc(sizeof(char)*32);
     int *meinTeam = getTeam(game_data_struct_V2->spielernummer, spielfeld);
 
     int tmpPos = 0;

@@ -90,6 +90,9 @@ void spielfeldSchreiben(char buffer[256],struct gds *game_data_struct_V2){
             }
           }
       }
+      if(line>7){
+          i = 500;
+      }
   }
 }
 
@@ -166,16 +169,16 @@ return i;
             /////PROTOKOLLPHASE-PROLOG/////
             if (strncmp(erhalten, "+ MNM Gameserver", 16)==0) {
                 sendServer(SocketFD, "VERSION 2.1\n", 12);
-            }else
+            }
             if (strncmp(erhalten, "+ Client version accepted", 25)==0) {
                 char* gameId = malloc(sizeof(char)*17);
                 strcpy(gameId, "ID ");
                 strncat(gameId, game_data_struct_V2->gameID, 13);
                 strcat(gameId, "\n");
                 sendServer(SocketFD, gameId , 17);
-            }else
+            }
             if (strncmp(erhalten, "+ PLAYING", 9)==0) {
-            }else
+            }
             if (strncmp(erhalten, "+ Game from", 11)==0) {
 
               char* spielid = malloc(sizeof(char)*9);
@@ -183,13 +186,13 @@ return i;
               spielid[7]=(game_data_struct_V2->spielernummer)+'0';
               strcat(spielid, "\n");
               sendServer(SocketFD, spielid , 9);
-            }else
+            }
             if (strncmp(erhalten, "+ YOU", 5)==0) {
                 printf("PLAYERID im PC 1:%d\n", game_data_struct_V2->spielernummer);
                 printf("PLAYERID im PC 1:%d\n", erhalten[6]);
                 game_data_struct_V2->spielernummer=erhalten[6]-'0';
                 printf("PLAYERID im PC 2:%d\n", game_data_struct_V2->spielernummer);
-            }else
+            }
             if (strncmp(erhalten, "+ TOTAL", 7)==0) {
               //SPIELFELD IN STRUCT SPEICHERN
               spielfeldSchreiben(erhalten,game_data_struct_V2);
@@ -201,25 +204,30 @@ return i;
                 sendServer(SocketFD, "THINKING\n", 9);
 
               }
-            }else
+            }
             /////ENDE-PROTOKOLLPHASE/////
 
             /////MOVE-BEFEHLSSEQUENZ/////
             if(strncmp(erhalten, "+ MOVE ", 7)==0){
-              sendServer(SocketFD, "THINKING\n", 9);
+              //endServer(SocketFD, "THINKING\n", 9);
               //SPIELFELD IN STRUCT SPEICHERN
             }
 
             if(strncmp(erhalten, "+ BOARD", 7)==0){
-              sleep(2);
-              //sendServer(SocketFD, "THINKING\n", 9);
+              sleep(1);
+              sendServer(SocketFD, "THINKING\n", 9);
               //printf("+BOARD-Case\n");
               spielfeldSchreiben(erhalten,game_data_struct_V2);
 
               //Spielfeldausgabe(game_data_struct_V2->spielfeld);
               //SPIELFELD IN STRUCT SPEICHERN
-            }else
+            }
 
+
+        /*     if (strncmp(erhalten, "+ ENDBOARD", 10)==0){
+                sendServer(SocketFD, "THINKING\n", 9);
+            }
+*/
 
             /////SPIELZUG/////
             if(strncmp(erhalten, "+ OKTHINK", 9)==0){
@@ -250,27 +258,27 @@ return i;
 
 
             /////IDLE-BEFEHLSSEQUENZ/////
-            else if (strncmp(erhalten, "+ WAIT", 6)==0){
+             if (strncmp(erhalten, "+ WAIT", 6)==0){
                 sendServer(SocketFD, "OKWAIT\n", 6);
             }
 
 
             /////GAMEOVER-BEFEHLSSEQUENZ/////
-            else if (strncmp(erhalten, "+ GAMEOVER", 10)==0){
+             if (strncmp(erhalten, "+ GAMEOVER", 10)==0){
                 printf("Spiel vorbei!\n");
                 game_data_struct_V2->gameover=0;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
 
             /////REAKTION AUF SERVER-FEHLERMELDUNG/////
-            else if (strncmp(erhalten, "- ", 2)==0) {
+             if (strncmp(erhalten, "- ", 2)==0) {
                 printf("Fehler bei der Serverkommunikation\n");
                 //printf("Spiel automatisch verloren!\n");
                 game_data_struct_V2->gameover=0;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
             //CASE FUER LEERE NACHRICHT VOM Server
-            else if (strncmp(erhalten, "  ", 2)==0) {
+             if (strncmp(erhalten, "  ", 2)==0) {
                 printf("Fehler bei der Serverkommunikation\n");
                 //printf("Spiel automatisch verloren!\n");
                 game_data_struct_V2->gameover=0;
