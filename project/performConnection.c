@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "performConnection.h"
 #include <wait.h>
-//benoetigt mehr includes
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -16,7 +15,6 @@
 #include <sys/stat.h> // include für Shared Memory
 
 //Funktion zum Ausgeben der erhaltenen Servernachrichten
-// todo: letzte recievte nachricht inm shm abspeichern
 void recvServer(int SocketFD, char* buf){
     int n = 0;
     char buffer[256];
@@ -30,8 +28,6 @@ void recvServer(int SocketFD, char* buf){
           printf("%c", buffer[i]);
         }
     printf("\n");
-
-    //memset(buffer, '0',sizeof(buffer));
 }
 
 //Funktion zum Senden von Nachrichten an den Server
@@ -95,7 +91,6 @@ void spielfeldSchreiben(char buffer[256],struct gds *game_data_struct_V2){
           i = 500;
       }
   }
-  printf("Spielfeld wird eingegeben\n");
 }
 
 
@@ -105,14 +100,13 @@ void SpielfeldZug(int zugtyp,char Zug[39],struct gds *game_data_struct_V2){
 //länge des Spielzugs herausfinden
 int i = 6+(3*zugtyp);
 //Spielfeld ändern im Falle Zug ohne Schlagen
-//printf("Stelle 6 %c",Zug[6]);
 int Stelle1 = ((8-(Zug[6]-'0'))*4)+(SpielfeldUmwandeln(Zug[5]));
 int Stelle2= ((8-(Zug[i]-'0'))*4)+(SpielfeldUmwandeln(Zug[i-1]));
 game_data_struct_V2->spielfeld[Stelle2]
 =
 game_data_struct_V2->spielfeld[Stelle1];
 game_data_struct_V2->spielfeld[Stelle1] = '*';
-//Spielfeldausgabe?
+//Spielfeldausgabe
 
 }
 
@@ -158,6 +152,7 @@ return i;
 }
  //Funktion welche die Protokollphase ausführt
  void performConnection(int SocketFD, struct gds *game_data_struct_V2, int pipe){
+
     for (int i = 1; i<33; i++){
       game_data_struct_V2->spielfeld[i]='*';
     }
@@ -170,91 +165,27 @@ return i;
             recvServer(SocketFD, erhalten);       //empfaengt im jeden durchlauf die Servernachricht
             sleep(1);
             /////PROTOKOLLPHASE-PROLOG/////
+            if (strncmp(erhalten, "+ TOTAL", 7)==0 ) {
 
-            if (strncmp(erhalten, "+ TOTAL", 7)==0) {
-              //sendServer(SocketFD, "THINKING\n", 9);
-              //SPIELFELD IN STRUCT SPEICHERN
+
               spielfeldSchreiben(erhalten,game_data_struct_V2);
               Spielfeldausgabe(game_data_struct_V2->spielfeld);
               sendServer(SocketFD, "THINKING\n", 9);
-              /*recvServer(SocketFD, erhalten);
-                 if(game_data_struct_V2->spielernummer==0){
-                   //sendServer(SocketFD, "THINKING\n", 9);
-                   kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
-                   read(pipe, pipebuffer, 64);
-                   printf("PYPE%s \n",pipebuffer);
-
-                   char* zug = malloc(sizeof(pipebuffer));
-                   strcpy(zug, "PLAY ");
-                   strncat(zug, pipebuffer, strlen(pipebuffer));
-                   strcat(zug, "\n");
-                   sleep(2);
-                   sendServer(SocketFD, zug , strlen(zug));
-
-              }else{
-                //sendServer(SocketFD, "THINKING\n", 9);
-
-                kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
-                read(pipe, pipebuffer, 64);
-                printf("PYPE%s \n",pipebuffer);
-
-                char* zug = malloc(sizeof(pipebuffer));
-                strcpy(zug, "PLAY ");
-                strncat(zug, pipebuffer, strlen(pipebuffer));
-                strcat(zug, "\n");
-               sleep(2);
-                sendServer(SocketFD, zug , strlen(zug));
-
-              }*/
-            //  protokollphasenendenchecker=0;
             }
             /////ENDE-PROTOKOLLPHASE/////
 
             /////MOVE-BEFEHLSSEQUENZ/////
             if(strncmp(erhalten, "+ MOVE ", 7)==0){
-              //endServer(SocketFD, "THINKING\n", 9);
-              //SPIELFELD IN STRUCT SPEICHERN
             }
 
             if(strncmp(erhalten, "+ BOARD", 7)==0){
 
-
-              //sleep(1);
               sendServer(SocketFD, "THINKING\n", 9);
               spielfeldSchreiben(erhalten,game_data_struct_V2);
               kill(game_data_struct_V2->pid_parent, SIGUSR1);
 
-
-
-              //printf("+BOARD-Case\n");
-/*
-              if(game_data_struct_V2->spielernummer==0 && protokollphasenendenchecker==1){
-                sendServer(SocketFD, "PLAY C3:D4\n", 11);
-                //Spielfeld ausgegeben werden
-                Spielfeldausgabe(game_data_struct_V2->spielfeld);
-                protokollphasenendenchecker=0;
-              }else{
-*/
-                      //Signal/Denkanstoß für thinker
-
-
-               //sendServer(SocketFD, "PLAY C3:D4\n", 11);//Mein 'Test'
-               //laenge des Spielzuges berechnen
-               //sendServer(); Spielzug
-               //Spielfeld ausgegeben werden
-               //Spielfeldausgabe(game_data_struct_V2->spielfeld);
-             //}
-
-
-              //Spielfeldausgabe(game_data_struct_V2->spielfeld);
-              //SPIELFELD IN STRUCT SPEICHERN
             }
 
-
-        /*     if (strncmp(erhalten, "+ ENDBOARD", 10)==0){
-                sendServer(SocketFD, "THINKING\n", 9);
-            }
-*/
 
             /////SPIELZUG/////
             if(strncmp(erhalten, "+ OKTHINK", 9)==0){
@@ -263,13 +194,11 @@ return i;
               }
 
               read(pipe, pipebuffer, 64);
-              printf("PYPE%s \n",pipebuffer);
 
               char* zug = malloc(sizeof(pipebuffer));
               strcpy(zug, "PLAY ");
               strncat(zug, pipebuffer, strlen(pipebuffer));
               strcat(zug, "\n");
-              //sleep(1);
               sendServer(SocketFD, zug , strlen(zug));
                 Spielfeldausgabe(game_data_struct_V2->spielfeld);
                 protokollphasenendenchecker=0;
@@ -319,7 +248,6 @@ return i;
 
       if (strncmp(erhalten, "- TIMEOUT", 9)==0) {
          printf("Timeout - Bitte neu verbinden\n");
-         //printf("Spiel automatisch verloren!\n");
          game_data_struct_V2->gameover=0;
          kill(game_data_struct_V2->pid_parent, SIGUSR1);
        }else
@@ -327,23 +255,16 @@ return i;
             /////REAKTION AUF SERVER-FEHLERMELDUNG/////
              if (strncmp(erhalten, "- ", 2)==0) {
                 printf("Fehler bei der Serverkommunikation\n");
-                //printf("Spiel automatisch verloren!\n");
                 game_data_struct_V2->gameover=0;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
 
+        //case fuer leere nachricht
         if (strncmp(erhalten, "0", 1)==0){
           printf("Server antwortet nicht mehr!\n");
           game_data_struct_V2->gameover=0;
           kill(game_data_struct_V2->pid_parent, SIGUSR1);
         }
-            //CASE FUER LEERE NACHRICHT VOM Server
-        /*     if (strncmp(erhalten, "  ", 2)==0) {
-                printf("Fehler bei der Serverkommunikation\n");
-                //printf("Spiel automatisch verloren!\n");
-                game_data_struct_V2->gameover=0;
-                kill(game_data_struct_V2->pid_parent, SIGUSR1);
-      }*/
     }
 	return;
    }

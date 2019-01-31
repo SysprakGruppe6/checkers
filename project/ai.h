@@ -4,7 +4,6 @@
 #include <sys/stat.h> // include für Shared Memory
 #include <sys/types.h>
 #include "performConnection.h"
-//#define ai.c
 //struct
 //Functions
 void my_handler (int signum);

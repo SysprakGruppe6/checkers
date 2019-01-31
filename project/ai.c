@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ai.h"
-//benoetigt mehr includes
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -15,7 +14,6 @@
 
 void my_handler (int signum){
     if(signum==SIGUSR1){
-        printf("Signal angekommen\n");
     }
 }
 
@@ -206,11 +204,9 @@ int strike(int pos, char * spielfeld, char * currentMove){
                         strcat(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
-                    printf("MOVETESTSTRIKEw:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='*';
                     spielfeld[getNeighbors(neighbors[i])[i]]='w';
-                    printf("return strike w:%s\n", currentMove);
                     return getNeighbors(neighbors[i])[i];
                 }
             }
@@ -222,7 +218,6 @@ int strike(int pos, char * spielfeld, char * currentMove){
                         strcat(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
-                    printf("MOVETESTSTRIKEb:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='*';
                     spielfeld[getNeighbors(neighbors[i])[i]]='b';
@@ -242,7 +237,6 @@ int strike(int pos, char * spielfeld, char * currentMove){
                                 strcat(currentMove, umwandel(pos));
                             strcat(currentMove, ":");
                             strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
-                            printf("MOVETESTSTRIKEW:%s\n", currentMove);
                             spielfeld[pos]='*';
                             spielfeld[nowPos]='*';
                             spielfeld[getNeighbors(nowPos)[i]]='W';
@@ -264,7 +258,6 @@ int strike(int pos, char * spielfeld, char * currentMove){
                                 strcat(currentMove, umwandel(pos));
                             strcat(currentMove, ":");
                             strcat(currentMove, umwandel(getNeighbors(neighbors[i])[i]));
-                            printf("MOVETESTSTRIKEB:%s\n", currentMove);
                             spielfeld[pos]='*';
                             spielfeld[nowPos]='*';
                             spielfeld[getNeighbors(nowPos)[i]]='B';
@@ -290,7 +283,6 @@ int move(int pos, char * spielfeld, char * currentMove){
                     strcpy(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(neighbors[i]));
-                    printf("MOVETESTMOVw:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='w';
                     return neighbors[i];
@@ -303,7 +295,6 @@ int move(int pos, char * spielfeld, char * currentMove){
                     strcpy(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(neighbors[i]));
-                    printf("MOVETESTMOVb:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='b';
                     return neighbors[i];
@@ -316,7 +307,6 @@ int move(int pos, char * spielfeld, char * currentMove){
                     strcpy(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(neighbors[i]));
-                    printf("MOVETESTMOVW:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='W';
                     return neighbors[i];
@@ -329,7 +319,6 @@ int move(int pos, char * spielfeld, char * currentMove){
                     strcat(currentMove, umwandel(pos));
                     strcat(currentMove, ":");
                     strcat(currentMove, umwandel(neighbors[i]));
-                    printf("MOVETESTMOVB:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='B';
                     return neighbors[i];

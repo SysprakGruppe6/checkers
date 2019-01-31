@@ -21,7 +21,6 @@
 int main(int argc, char * argv[])
 {
 //Struct erstellen
-printf("\n"); //ACHTUNG NICHT LÖSCHEN
 int shm_addr = SHmem(sizeof(struct gds));
 
     int pfd[2];
@@ -46,8 +45,8 @@ int shm_addr = SHmem(sizeof(struct gds));
          close(pfd[1]);           //Schliessen der Schreibseite der pipe
 	       pid_t child_id = getpid();			//ID des Kindprozesses
          gameData->pid_child = child_id;
-	       printf("Prozess IDS:\n");			//testprint
-    	   printf("child : %d parent: %d\n",gameData->pid_child,gameData->pid_parent);
+	       // printf("Prozess IDS:\n");			//testprint
+    	   // printf("child : %d parent: %d\n",gameData->pid_child,gameData->pid_parent);
 
     //Game-id und Spielernummer
     char *g;        //Variable für die Game-ID
@@ -113,13 +112,6 @@ int shm_addr = SHmem(sizeof(struct gds));
 
     //config parameters
     struct parameters cfg = read_cfg(c);
-    printf("%s \n",cfg.hostName);
-    printf("\n");
-    printf("%d", cfg.portNr);
-    printf("\n");
-    printf("%s \n",cfg.gameType);
-
-
 
     //////////GETHOSTBYNAME//////////
     int l;  //Schleifenvariable für die IP-Liste
@@ -166,13 +158,11 @@ int shm_addr = SHmem(sizeof(struct gds));
 
 
     //////////PROTOKOLLPHASE//////////
-    //game_data_struct_V2->gameover = 1;
     performConnection(SocketFD, gameData, pfd[0]);
 
     shutdown(SocketFD, SHUT_RDWR);
 
     close(SocketFD);
-    printf("connector out\n");
     }//ende connector
 
     //////////THINKER//////////
@@ -189,7 +179,6 @@ int shm_addr = SHmem(sizeof(struct gds));
 
         gameData->gameover=1;
 
-        printf("i bims eins thinker %i \n",gameData->gameover==1);
         close(pfd[0]);// Schliessen der Leseseite
 
         //SCHLEIFE, DIE SOLANGE DAS SPIEL LAEUFT AUF DEM SIGNAL THINK() AUFRUFT
@@ -197,18 +186,14 @@ int shm_addr = SHmem(sizeof(struct gds));
             signal(SIGUSR1, my_handler);
             pause();
             think(gameData);
-            printf("MOVETEST MAIN:%s\n", gameData->currentMove);
 	          write(pfd[1], gameData->currentMove, sizeof(gameData->currentMove));
             memset(gameData->currentMove,0,sizeof(gameData->currentMove));
         }
 
-       //waitpid(-1, NULL, 0); //Wartet auf ende des Connectors
-        printf("thinker out\n");
     }//end thinker
 
     //SHM lösen
     shmdt(&shm_addr);
-    printf("SharedMemory gelöst \n");
 
 
     return 0;

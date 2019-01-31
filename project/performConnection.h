@@ -4,12 +4,10 @@
 #include <sys/stat.h> // include für Shared Memory
 #include <sys/types.h>
 #include "SHM.h"
-//#define performConnection
 //struct
 //Functions
 void performConnection(int SocketFD, struct gds *, int pfd);
 int SHmem(int size);
-//void spielfeldSchreiben(char buffer[2048],struct gds *game_data_struct_V2);
 void SpielfeldZug(int zugtyp,char Zug[39],struct gds *game_data_struct_V2);
 void Spielfeldausgabe (char feld[33]);
 int SpielfeldUmwandeln(char eingabe);
