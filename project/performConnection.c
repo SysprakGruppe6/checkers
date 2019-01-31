@@ -270,8 +270,12 @@ return i;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
             //CASE FUER LEERE NACHRICHT VOM Server
-            //EVTL MIT LOOP COUNTER
-            //UM DAUERSCHLEIFE ZU VERHINDERN
+            else if (strncmp(erhalten, "  ", 2)==0) {
+                printf("Fehler bei der Serverkommunikation\n");
+                //printf("Spiel automatisch verloren!\n");
+                game_data_struct_V2->gameover=0;
+                kill(game_data_struct_V2->pid_parent, SIGUSR1);
+      }
         }
 	return;
    }

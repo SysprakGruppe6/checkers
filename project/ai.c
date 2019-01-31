@@ -211,7 +211,8 @@ int strike(int pos, char * spielfeld, char * currentMove){
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='*';
                     spielfeld[getNeighbors(neighbors[i])[i]]='w';
-                    return spielfeld[getNeighbors(neighbors[i])[i]];
+                    printf("return strike w:%s\n", currentMove);
+                    return getNeighbors(neighbors[i])[i];
                 }
             }
             return 0;
@@ -226,7 +227,7 @@ int strike(int pos, char * spielfeld, char * currentMove){
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='*';
                     spielfeld[getNeighbors(neighbors[i])[i]]='b';
-                    return spielfeld[getNeighbors(neighbors[i])[i]];
+                    return getNeighbors(neighbors[i])[i];
                 }
             }
             return 0;
@@ -246,7 +247,7 @@ int strike(int pos, char * spielfeld, char * currentMove){
                             spielfeld[pos]='*';
                             spielfeld[nowPos]='*';
                             spielfeld[getNeighbors(nowPos)[i]]='W';
-                            return spielfeld[getNeighbors(nowPos)[i]];
+                            return getNeighbors(nowPos)[i];
                         }
                         return 0;
                     }
@@ -269,7 +270,7 @@ int strike(int pos, char * spielfeld, char * currentMove){
                             spielfeld[pos]='*';
                             spielfeld[nowPos]='*';
                             spielfeld[getNeighbors(nowPos)[i]]='B';
-                            return spielfeld[getNeighbors(nowPos)[i]];
+                            return getNeighbors(nowPos)[i];
                         }
                         return 0;
                     }
@@ -295,7 +296,7 @@ int move(int pos, char * spielfeld, char * currentMove){
                     printf("MOVETESTMOVw:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='w';
-                    return spielfeld[neighbors[i]];
+                    return neighbors[i];
                 }
             }
             return 0;
@@ -308,7 +309,7 @@ int move(int pos, char * spielfeld, char * currentMove){
                     printf("MOVETESTMOVb:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='b';
-                    return spielfeld[neighbors[i]];
+                    return neighbors[i];
                 }
             }
             return 0;
@@ -321,7 +322,7 @@ int move(int pos, char * spielfeld, char * currentMove){
                     printf("MOVETESTMOVW:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='W';
-                    return spielfeld[neighbors[i]];
+                    return neighbors[i];
                 }
             }
             return 0;
@@ -334,7 +335,7 @@ int move(int pos, char * spielfeld, char * currentMove){
                     printf("MOVETESTMOVB:%s\n", currentMove);
                     spielfeld[pos]='*';
                     spielfeld[neighbors[i]]='B';
-                    return spielfeld[neighbors[i]];
+                    return neighbors[i];
                 }
             }
             return 0;
@@ -356,9 +357,6 @@ void think(struct gds *game_data_struct_V2){
 
     Spielfeldausgabe(spielfeld);
     char *spielzug = malloc(sizeof(char)*32);
-
-    printf("SPIELERNUMMER: %d\n",game_data_struct_V2->spielernummer);
-
     int *meinTeam = getTeam(game_data_struct_V2->spielernummer, spielfeld);
 
     int tmpPos = 0;
