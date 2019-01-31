@@ -170,14 +170,14 @@ return i;
             /////PROTOKOLLPHASE-PROLOG/////
 
             if (strncmp(erhalten, "+ TOTAL", 7)==0) {
-              sendServer(SocketFD, "THINKING\n", 9);
+              //sendServer(SocketFD, "THINKING\n", 9);
               //SPIELFELD IN STRUCT SPEICHERN
               spielfeldSchreiben(erhalten,game_data_struct_V2);
               Spielfeldausgabe(game_data_struct_V2->spielfeld);
-
+              sendServer(SocketFD, "THINKING\n", 9);
+              /*recvServer(SocketFD, erhalten);
                  if(game_data_struct_V2->spielernummer==0){
                    //sendServer(SocketFD, "THINKING\n", 9);
-
                    kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
                    read(pipe, pipebuffer, 64);
                    printf("PYPE%s \n",pipebuffer);
@@ -186,6 +186,7 @@ return i;
                    strcpy(zug, "PLAY ");
                    strncat(zug, pipebuffer, strlen(pipebuffer));
                    strcat(zug, "\n");
+                   sleep(2);
                    sendServer(SocketFD, zug , strlen(zug));
 
               }else{
@@ -199,9 +200,11 @@ return i;
                 strcpy(zug, "PLAY ");
                 strncat(zug, pipebuffer, strlen(pipebuffer));
                 strcat(zug, "\n");
+               sleep(2);
                 sendServer(SocketFD, zug , strlen(zug));
 
-              }
+              }*/
+            //  protokollphasenendenchecker=0;
             }
             /////ENDE-PROTOKOLLPHASE/////
 
@@ -212,22 +215,10 @@ return i;
             }
 
             if(strncmp(erhalten, "+ BOARD", 7)==0){
-              //
-              // int bedingung = 0;
-              // //
-              // // while(bedingung==0){
-              // //   if(strstr(erhalten, "+ ENDBOARD")!=NULL){
-              // //   bedingung=1;
-              // // }
-              // // }
-              sleep(2);
-              //while(){}
 
-              //sleep(2);
-              char * erhalten2;
-              erhalten2=erhalten;
+              sleep(2);
               sendServer(SocketFD, "THINKING\n", 9);
-              spielfeldSchreiben(erhalten2,game_data_struct_V2);
+              spielfeldSchreiben(erhalten,game_data_struct_V2);
 
               //printf("+BOARD-Case\n");
 /*
@@ -261,6 +252,10 @@ return i;
 
             /////SPIELZUG/////
             if(strncmp(erhalten, "+ OKTHINK", 9)==0){
+                if(protokollphasenendenchecker==1){
+              kill(game_data_struct_V2->pid_parent, SIGUSR1);
+              }
+
               read(pipe, pipebuffer, 64);
               printf("PYPE%s \n",pipebuffer);
 
@@ -271,6 +266,8 @@ return i;
               sleep(1);
               sendServer(SocketFD, zug , strlen(zug));
                 Spielfeldausgabe(game_data_struct_V2->spielfeld);
+                protokollphasenendenchecker=0;
+
 
             }
 
@@ -324,12 +321,12 @@ return i;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
             //CASE FUER LEERE NACHRICHT VOM Server
-             if (strncmp(erhalten, "  ", 2)==0) {
+        /*     if (strncmp(erhalten, "  ", 2)==0) {
                 printf("Fehler bei der Serverkommunikation\n");
                 //printf("Spiel automatisch verloren!\n");
                 game_data_struct_V2->gameover=0;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);
-      }
-        }
+      }*/
+    }
 	return;
    }
