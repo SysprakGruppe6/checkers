@@ -206,14 +206,14 @@ return i;
 
             /////MOVE-BEFEHLSSEQUENZ/////
             if(strncmp(erhalten, "+ MOVE ", 7)==0){
-              //sendServer(SocketFD, "THINKING\n", 9);
+              sendServer(SocketFD, "THINKING\n", 9);
               //SPIELFELD IN STRUCT SPEICHERN
             }
 
             if(strncmp(erhalten, "+ BOARD", 7)==0){
-              sleep(4);
-              sendServer(SocketFD, "THINKING\n", 9);
-              printf("+BOARD-Case\n");
+              sleep(2);
+              //sendServer(SocketFD, "THINKING\n", 9);
+              //printf("+BOARD-Case\n");
               spielfeldSchreiben(erhalten,game_data_struct_V2);
 
               //Spielfeldausgabe(game_data_struct_V2->spielfeld);
@@ -233,6 +233,14 @@ return i;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
                 read(pipe, pipebuffer, 64);
                 printf("PYPE%s \n",pipebuffer);
+
+                char* zug = malloc(sizeof(pipebuffer));
+                strcpy(zug, "PLAY ");
+                strncat(zug, pipebuffer, strlen(pipebuffer));
+                strcat(zug, "\n");
+                sendServer(SocketFD, zug , strlen(zug));
+
+                //sendServer(SocketFD, "PLAY C3:D4\n", 11);//Mein 'Test'
                 //laenge des Spielzuges berechnen
                 //sendServer(); Spielzug
                 //Spielfeld ausgegeben werden
