@@ -56,8 +56,6 @@ int shm_addr = SHmem(sizeof(struct gds));
 
     char spanset[] = " ";
 
-    int test = 1;
-
     //Schleife für Kommandozeilenparameter
     if (argc<5) {                                               //prüft ob zu wenige Parameter angegeben wurden
         printf(ERR);
@@ -144,7 +142,6 @@ int shm_addr = SHmem(sizeof(struct gds));
     gameData->spielernummer=p-'0'-1;
     //////////SOCKET//////////
     struct sockaddr_in sa;
-    int res;
     int SocketFD;
     SocketFD = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (SocketFD == -1) {
@@ -158,7 +155,7 @@ int shm_addr = SHmem(sizeof(struct gds));
 
     sa.sin_family = AF_INET;
     sa.sin_port = htons(cfg.portNr);
-    res = inet_pton(AF_INET, inet_ntoa(*addr_list[0]), &sa.sin_addr);   //konvertiert die ip und speichert sie in &sa.sin_addr
+    inet_pton(AF_INET, inet_ntoa(*addr_list[0]), &sa.sin_addr);   //konvertiert die ip und speichert sie in &sa.sin_addr
 
     //////////CONNECT//////////
     if (connect(SocketFD, (struct sockaddr *)&sa, sizeof sa) == -1) {
@@ -195,7 +192,6 @@ int shm_addr = SHmem(sizeof(struct gds));
         printf("i bims eins thinker %i \n",gameData->gameover==1);
         close(pfd[0]);// Schliessen der Leseseite
 
-        char test[9]="PiPeTeSt\n";
         //SCHLEIFE, DIE SOLANGE DAS SPIEL LAEUFT AUF DEM SIGNAL THINK() AUFRUFT
         while(gameData->gameover==1){
             signal(SIGUSR1, my_handler);
