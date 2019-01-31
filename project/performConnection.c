@@ -157,7 +157,7 @@ switch(eingabe) {
 return i;
 }
  //Funktion welche die Protokollphase ausführt
- int performConnection(int SocketFD, struct gds *game_data_struct_V2, int pipe){
+ void performConnection(int SocketFD, struct gds *game_data_struct_V2, int pipe){
     for (int i = 1; i<33; i++){
       game_data_struct_V2->spielfeld[i]='*';
     }
