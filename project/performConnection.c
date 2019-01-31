@@ -31,7 +31,7 @@ void recvServer(int SocketFD, char* buf){
         }
     printf("\n");
 
-    memset(buffer, '0',sizeof(buffer));
+    //memset(buffer, '0',sizeof(buffer));
 }
 
 //Funktion zum Senden von Nachrichten an den Server
@@ -157,7 +157,7 @@ switch(eingabe) {
 return i;
 }
  //Funktion welche die Protokollphase ausführt
- void performConnection(int SocketFD, struct gds *game_data_struct_V2, int pipe){
+ int performConnection(int SocketFD, struct gds *game_data_struct_V2, int pipe){
     for (int i = 1; i<33; i++){
       game_data_struct_V2->spielfeld[i]='*';
     }
@@ -218,10 +218,13 @@ return i;
 
             if(strncmp(erhalten, "+ BOARD", 7)==0){
 
-              //sleep(2);
-              spielfeldSchreiben(erhalten,game_data_struct_V2);
 
+              //sleep(1);
               sendServer(SocketFD, "THINKING\n", 9);
+              spielfeldSchreiben(erhalten,game_data_struct_V2);
+              kill(game_data_struct_V2->pid_parent, SIGUSR1);
+
+
 
               //printf("+BOARD-Case\n");
 /*
@@ -232,7 +235,7 @@ return i;
                 protokollphasenendenchecker=0;
               }else{
 */
-               kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
+                      //Signal/Denkanstoß für thinker
 
 
                //sendServer(SocketFD, "PLAY C3:D4\n", 11);//Mein 'Test'
@@ -266,7 +269,7 @@ return i;
               strcpy(zug, "PLAY ");
               strncat(zug, pipebuffer, strlen(pipebuffer));
               strcat(zug, "\n");
-              sleep(1);
+              //sleep(1);
               sendServer(SocketFD, zug , strlen(zug));
                 Spielfeldausgabe(game_data_struct_V2->spielfeld);
                 protokollphasenendenchecker=0;
@@ -316,6 +319,13 @@ return i;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
 
+      if (strncmp(erhalten, "- TIMEOUT", 9)==0) {
+         printf("Timeout - Bitte neu verbinden\n");
+         //printf("Spiel automatisch verloren!\n");
+         game_data_struct_V2->gameover=0;
+         kill(game_data_struct_V2->pid_parent, SIGUSR1);
+       }else
+
             /////REAKTION AUF SERVER-FEHLERMELDUNG/////
              if (strncmp(erhalten, "- ", 2)==0) {
                 printf("Fehler bei der Serverkommunikation\n");
@@ -323,6 +333,8 @@ return i;
                 game_data_struct_V2->gameover=0;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
+
+
             //CASE FUER LEERE NACHRICHT VOM Server
         /*     if (strncmp(erhalten, "  ", 2)==0) {
                 printf("Fehler bei der Serverkommunikation\n");

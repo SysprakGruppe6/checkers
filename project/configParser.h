@@ -6,7 +6,7 @@
 
 #include <sys/shm.h> // include für Shared Memory
 #include <sys/ipc.h> // include für Shared Memory
-#define BUFFER  128
+#define BUFFER  256
 
 struct parameters{
 	char hostName[BUFFER];
