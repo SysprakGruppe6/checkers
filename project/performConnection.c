@@ -19,7 +19,7 @@
 // todo: letzte recievte nachricht inm shm abspeichern
 void recvServer(int SocketFD, char* buf){
     int n = 0;
-    char buffer[2048];
+    char buffer[256];
     memset(buffer, '0',sizeof(buffer));
     n = read(SocketFD, buffer, sizeof(buffer));
     printf("Server: ");
@@ -27,7 +27,7 @@ void recvServer(int SocketFD, char* buf){
           printf("%c", buffer[i]);
         }
     printf("\n");
-    for(int i=0; i<2048; i++){
+    for(int i=0; i<256; i++){
       buf[i]=buffer[i];
     }
     memset(buffer, '0',sizeof(buffer));
@@ -63,11 +63,11 @@ int SHmem(int size){
 
 
 //Funktion um Spielfeld in SHM übertragen
-void spielfeldSchreiben(char buffer[2048],struct gds *game_data_struct_V2){
+void spielfeldSchreiben(char buffer[256],struct gds *game_data_struct_V2){
   int j = 1;
   printf("Spielfeld wird eingegeben\n");
   int line = 0;
-    for(int i=0;i<2048;i++){
+    for(int i=0;i<256;i++){
       if (
       (buffer[i] == '1'||buffer[i] == '2'||buffer[i] == '3'||buffer[i] == '4'||buffer[i] == '5'||buffer[i] == '6'||buffer[i] == '7'||buffer[i] == '8' )
       &&
@@ -157,7 +157,7 @@ return i;
       game_data_struct_V2->spielfeld[i]='*';
     }
     //Serverkommunikation
-        char* erhalten=malloc(sizeof(char[2048]));//BUFFER fuer erhaltene Nachrichten
+        char* erhalten=malloc(sizeof(char[256]));//BUFFER fuer erhaltene Nachrichten
         char* pipebuffer=malloc(sizeof(char[64]));//BUFFER für die PIPE
         strcpy(pipebuffer, "");
         int protokollphasenendenchecker =1;
