@@ -7,7 +7,7 @@
 struct gds {
  char gameID[13];
  char spielernummer;
- char spielfeld [32];
+ char spielfeld [33];
  int anzahl_spieler;
  pid_t pid_child;
  pid_t pid_parent;

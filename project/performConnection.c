@@ -22,14 +22,15 @@ void recvServer(int SocketFD, char* buf){
     char buffer[256];
     memset(buffer, '0',sizeof(buffer));
     n = read(SocketFD, buffer, sizeof(buffer));
+    for(int i=0; i<256; i++){
+      buf[i]=buffer[i];
+    }
     printf("Server: ");
         for(int i =  0; i<n; i++){
           printf("%c", buffer[i]);
         }
     printf("\n");
-    for(int i=0; i<256; i++){
-      buf[i]=buffer[i];
-    }
+
     memset(buffer, '0',sizeof(buffer));
 }
 
@@ -117,7 +118,7 @@ game_data_struct_V2->spielfeld[Stelle1] = '*';
 
 
 //Print Spielfeld
-void Spielfeldausgabe (char feld[32]){
+void Spielfeldausgabe (char feld[33]){
   printf("Spielfeld Clientside\n");
   int x = 1;
   for (int i = 0; i<8; i++){
@@ -169,12 +170,13 @@ return i;
             /////PROTOKOLLPHASE-PROLOG/////
 
             if (strncmp(erhalten, "+ TOTAL", 7)==0) {
+              sendServer(SocketFD, "THINKING\n", 9);
               //SPIELFELD IN STRUCT SPEICHERN
               spielfeldSchreiben(erhalten,game_data_struct_V2);
               Spielfeldausgabe(game_data_struct_V2->spielfeld);
 
                  if(game_data_struct_V2->spielernummer==0){
-                   sendServer(SocketFD, "THINKING\n", 9);
+                   //sendServer(SocketFD, "THINKING\n", 9);
 
                    kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
                    read(pipe, pipebuffer, 64);
@@ -187,7 +189,7 @@ return i;
                    sendServer(SocketFD, zug , strlen(zug));
 
               }else{
-                sendServer(SocketFD, "THINKING\n", 9);
+                //sendServer(SocketFD, "THINKING\n", 9);
 
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
                 read(pipe, pipebuffer, 64);
@@ -210,9 +212,23 @@ return i;
             }
 
             if(strncmp(erhalten, "+ BOARD", 7)==0){
+              //
+              // int bedingung = 0;
+              // //
+              // // while(bedingung==0){
+              // //   if(strstr(erhalten, "+ ENDBOARD")!=NULL){
+              // //   bedingung=1;
+              // // }
+              // // }
               sleep(2);
-              spielfeldSchreiben(erhalten,game_data_struct_V2);
+              //while(){}
+
+              //sleep(2);
+              char * erhalten2;
+              erhalten2=erhalten;
               sendServer(SocketFD, "THINKING\n", 9);
+              spielfeldSchreiben(erhalten2,game_data_struct_V2);
+
               //printf("+BOARD-Case\n");
 /*
               if(game_data_struct_V2->spielernummer==0 && protokollphasenendenchecker==1){
@@ -223,14 +239,7 @@ return i;
               }else{
 */
                kill(game_data_struct_V2->pid_parent, SIGUSR1);       //Signal/Denkanstoß für thinker
-               read(pipe, pipebuffer, 64);
-               printf("PYPE%s \n",pipebuffer);
 
-               char* zug = malloc(sizeof(pipebuffer));
-               strcpy(zug, "PLAY ");
-               strncat(zug, pipebuffer, strlen(pipebuffer));
-               strcat(zug, "\n");
-               sendServer(SocketFD, zug , strlen(zug));
 
                //sendServer(SocketFD, "PLAY C3:D4\n", 11);//Mein 'Test'
                //laenge des Spielzuges berechnen
@@ -252,7 +261,15 @@ return i;
 
             /////SPIELZUG/////
             if(strncmp(erhalten, "+ OKTHINK", 9)==0){
+              read(pipe, pipebuffer, 64);
+              printf("PYPE%s \n",pipebuffer);
 
+              char* zug = malloc(sizeof(pipebuffer));
+              strcpy(zug, "PLAY ");
+              strncat(zug, pipebuffer, strlen(pipebuffer));
+              strcat(zug, "\n");
+              sleep(1);
+              sendServer(SocketFD, zug , strlen(zug));
                 Spielfeldausgabe(game_data_struct_V2->spielfeld);
 
             }
