@@ -315,9 +315,7 @@ return i;
             /////GAMEOVER-BEFEHLSSEQUENZ/////
              if (strncmp(erhalten, "+ GAMEOVER", 10)==0){
                 printf("Spiel vorbei!\n");
-                game_data_struct_V2->gameover=0;
-                kill(game_data_struct_V2->pid_parent, SIGUSR1);
-	    }
+	             }
 
       if (strncmp(erhalten, "- TIMEOUT", 9)==0) {
          printf("Timeout - Bitte neu verbinden\n");
@@ -334,7 +332,11 @@ return i;
                 kill(game_data_struct_V2->pid_parent, SIGUSR1);
 	    }
 
-
+        if (strncmp(erhalten, "0", 1)==0){
+          printf("Server antwortet nicht mehr!\n");
+          game_data_struct_V2->gameover=0;
+          kill(game_data_struct_V2->pid_parent, SIGUSR1);
+        }
             //CASE FUER LEERE NACHRICHT VOM Server
         /*     if (strncmp(erhalten, "  ", 2)==0) {
                 printf("Fehler bei der Serverkommunikation\n");
